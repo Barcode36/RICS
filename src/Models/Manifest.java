@@ -15,6 +15,7 @@ public class Manifest {
     private Boolean manifestApproved;
     private HashMap<Integer, ManifestLine> manifestLines;
 
+
     //getters and setters
     public String getManifestId() {
         return manifestId;

@@ -2,14 +2,11 @@ package Models;
 
 public class ManifestLine
 {
-
-
     //private properties
     private int manifestLineId;
     private OrderLine lineItem;
     private String referenceDoc;
     private double weight;
-
 
     //getters and setters
     public int getManifestLineId()

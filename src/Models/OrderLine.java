@@ -62,6 +62,13 @@ public class OrderLine
     }
 
     //constructors
+    public OrderLine()
+    {
+        this.orderLineId = 1;
+        this.quantity = 0;
+        this.part = new Part();
+        this.requestedBy = "";
+    }
     public OrderLine(int orderLineId, int quantity, Part part, String requestedBy) {
         this.orderLineId = orderLineId;
         this.quantity = quantity;

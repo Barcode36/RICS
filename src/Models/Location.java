@@ -28,4 +28,5 @@ public class Location
     }
 
     //all other methods and functions
+
 }
