@@ -1,23 +1,13 @@
 package Models;
 
-import sun.security.util.Password;
-
 public class User
 {
-    //private properties
-    private int userId;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
-    private Rig rig;
+    private int rig;
     private Boolean adminUser;
-
-    //getters and setters
-    public int getUserId()
-    {
-        return userId;
-    }
 
     public String getUsername()
     {
@@ -39,7 +29,7 @@ public class User
         return lastName;
     }
 
-    public Rig getRig()
+    public int getRig()
     {
         return rig;
     }
@@ -47,11 +37,6 @@ public class User
     public Boolean getAdminUser()
     {
         return adminUser;
-    }
-
-    public void setUserId(int userId)
-    {
-        this.userId = userId;
     }
 
     public void setUsername(String username)
@@ -74,7 +59,7 @@ public class User
         this.lastName = lastName;
     }
 
-    public void setRig(Rig rig)
+    public void setRig(int rig)
     {
         this.rig = rig;
     }
@@ -87,25 +72,22 @@ public class User
     //constructors
     public User()
     {
-        this.userId = 0;
         this.username = "";
         this.password = "";
         this.firstName = "";
         this.lastName = "";
-        this.rig = new Rig();
+        this.rig = 0;
         this.adminUser = false;
     }
 
-    public User(int userId, String username, String password, String firstName,
-                String lastName, Rig rig, Boolean adminUser)
+    public User(String username, String password, String firstName, String lastName, int rig, Boolean adminUser)
     {
-      this.userId = userId;
-      this.username = username;
-      this.password = password;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.rig = rig;
-      this.adminUser = adminUser;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.rig = rig;
+        this.adminUser = adminUser;
     }
 
     //all other methods and functions
