@@ -185,5 +185,12 @@ public class Part
     }
 
     //all other methods and functions
+    @Override
+    public String toString()
+    {
+        String output = this.partNumber + " - " + this.description;
+
+        return output;
+    }
 
 }

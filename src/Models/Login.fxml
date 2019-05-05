@@ -11,19 +11,19 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXButton?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="354.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="360.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.LoginController">
    <children>
-      <ImageView fitHeight="27.0" fitWidth="29.0" layoutX="68.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="icon_userDrark" fitHeight="27.0" fitWidth="29.0" layoutX="76.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_userDark.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="68.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="icon_userDark" fitHeight="27.0" fitWidth="27.0" layoutX="76.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_passwordDark.png" />
          </image>
       </ImageView>
-      <JFXTextField fx:id="txt_username" focusColor="#eda678" labelFloat="true" layoutX="107.0" layoutY="256.0" promptText="Username">
+      <JFXTextField fx:id="txt_username" focusColor="#eda678" labelFloat="true" layoutX="112.0" layoutY="256.0" promptText="Username">
          <effect>
             <Glow />
          </effect>
@@ -31,7 +31,7 @@
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="txt_password" focusColor="#eda678" labelFloat="true" layoutX="107.0" layoutY="299.0" promptText="Password">
+      <JFXPasswordField fx:id="txt_password" focusColor="#eda678" labelFloat="true" layoutX="112.0" layoutY="299.0" promptText="Password">
          <effect>
             <Glow />
          </effect>
@@ -39,24 +39,24 @@
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </JFXPasswordField>
-      <ImageView fitHeight="139.0" fitWidth="129.0" layoutX="111.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="icon_rigDark" fitHeight="139.0" fitWidth="129.0" layoutX="116.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_rigDark.png" />
          </image>
       </ImageView>
-      <Label layoutX="101.0" layoutY="143.0" text="DRILL-DOWN" textFill="#eda678">
+      <Label fx:id="lbl_drillDown" layoutX="104.0" layoutY="143.0" text="DRILL-DOWN" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="97.0" layoutY="174.0" text="Minimal Impact Operations" textFill="#eda678">
+      <Label fx:id="lbl_slogan" layoutX="103.0" layoutY="174.0" text="Minimal Impact Operations" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </Label>
 
 
-      <JFXButton fx:id="btn_login" layoutX="151.0" layoutY="344.0" onAction="#onClick_btn_login" text="Login" textFill="#eda678">
+      <JFXButton fx:id="btn_login" layoutX="156.0" layoutY="341.0" onAction="#onClick_btn_login" text="Login" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>

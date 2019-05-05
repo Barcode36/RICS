@@ -75,13 +75,14 @@ public class LoginController implements Initializable
                 Stage landingPageStage = new Stage();
                 Parent root = FXMLLoader.load(getClass().getResource("LandingPage.fxml"));
                 Models.LandingPageController landing = new LandingPageController();
-                landing.setText(uname);
+                landing.setLabel(uname);
                 Scene scene = new Scene(root);
                 landingPageStage.setScene(scene);
                 landingPageStage.setTitle("RICS 1.0 Landing Page");
                 landingPageStage.initStyle(StageStyle.TRANSPARENT);
-                closeLogin();
                 landingPageStage.show();
+                closeLogin();
+
             }
 
         }

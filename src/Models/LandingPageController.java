@@ -24,11 +24,12 @@ public class LandingPageController implements Initializable
     public static AnchorPane rootP;
 
 
-    private String lbl_username;
+    private String username;
 
     public void initialize (URL url, ResourceBundle rb)
     {
-        lbl_welcome.setText("Welcome "+ lbl_username);
+
+        lbl_welcome.setText("Welcome " + username);
 
         if(!Main.isSplashLoaded)
         {
@@ -36,17 +37,26 @@ public class LandingPageController implements Initializable
 
         }
 
+
         //lbl_welcome.setText("Welcome "+ lbl_username);
 
         rootP = root;
     }
 
-    public void setText(String uname)
+    public void setLabel(String uname)
     {
-        lbl_username = uname;
+        try
+        {
+            username = uname;
+        }
+        catch(Exception e)
+        {
+        e.printStackTrace();
+        }
     }
 
 
+    @FXML
     private void loadSplashScreen()
     {
         Main.isSplashLoaded = true;
