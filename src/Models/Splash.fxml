@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXSpinner layoutX="276.0" layoutY="175.0" />
+      <Label layoutX="119.0" layoutY="67.0" text="Rig Inventory Control Software" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="224.0" layoutY="36.0" text="DRILL-DOWN" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="217.0" layoutY="289.0" text="loading inventory..." textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

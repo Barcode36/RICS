@@ -13,6 +13,8 @@ public class DBManager
     //DB Connection String
     private final String connectionString = "jdbc:sqlite:RICS.sqlite";
 
+
+
     //***User Functions***
     //Register User
     public boolean registerUser(User u)
@@ -57,7 +59,7 @@ public class DBManager
                 String password = userList.getString("password");
                 String firstName = userList.getString("firstName");
                 String lastName = userList.getString("lastName");
-                int rig = userList.getInt("rigNo");
+                int rig = userList.getInt("rig");
                 Boolean adminUser = userList.getBoolean("adminUser");
 
 
@@ -93,7 +95,7 @@ public class DBManager
 
             //Update User record in DB
             stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
-                    "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rigNo = '"+ u.getRig() +
+                    "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
                     "', adminUser = '"+ u.getAdminUser() +"'");
 
             //close connection to DB
@@ -138,7 +140,12 @@ public class DBManager
             {
                 return foundUser;
             }
+            else
+                {
+                    return null;
+                }
         }
+        return null;
     }
 
 }
