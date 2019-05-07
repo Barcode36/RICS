@@ -1,4 +1,4 @@
-package Models;
+package Controllers;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ public class Main extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/Login.fxml"));
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("RICS 1.0 Login");

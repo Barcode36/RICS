@@ -1,0 +1,66 @@
+.tab-header-background{
+    -fx-background-color:  #3D4956;
+
+}
+
+.jfx-tab-pane .tab-selected-line{
+    -fx-border-color: #eda678;
+}
+
+.tab .tab-label{
+    -fx-text-fill: #eda678;
+    -fx-font-family: Quicksand;
+    -fx-font-size: 14px;
+    -fx-font-style: normal;
+    -fx-font-variant: normal;
+    -fx-font-weight: 700;
+}
+
+.jfx-text-field, .jfx-password-field{
+    -fx-text-inner-color: #cccccc;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #3d4956;
+}
+
+.table-view .column-header{
+    -fx-background-color: #3d4956;
+}
+
+
+.table-view
+{
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background .label{
+    -fx-background-color: #3d4956;
+    -fx-text-fill: #cccccc;
+    -fx-font-family: Quicksand;
+    -fx-font-size: 14px;
+    -fx-font-style: normal;
+    -fx-font-variant: normal;
+    -fx-font-weight: 700;
+}
+.table-row-cell{
+    -fx-background-color: #3d4956;
+}
+.table-row-cell:odd{
+    -fx-background-color: #5e6f80;
+}
+
+.table-view .filler{
+    -fx-background-color: #3d4956;
+}
+
+.button{
+    -fx-border-radius: 20px;
+    -fx-border-color: #eda678;
+}
+
+.navigationButtons
+{
+    -fx-text-fill: #cccccc;
+    -fx-border-color: #3D4956;
+}
+

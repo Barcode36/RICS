@@ -1,5 +1,6 @@
 package Models;
 
+import javax.crypto.interfaces.PBEKey;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ public class DBManager
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt= conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, adminUser, rigNo)" +
+            stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, adminUser, rig)" +
                     "VALUES ('"+ u.getUsername() + "','" + u.getPassword() +"','" + u.getFirstName() + "','" +
                     u.getLastName() +"','" + u.getAdminUser() + "','" + u.getRig()+ "')");
             conn.close();
@@ -42,6 +43,7 @@ public class DBManager
     public HashMap<String, User> loadUsers()
     {
         HashMap<String, User> users = new HashMap();
+
 
         try
         {
@@ -82,6 +84,8 @@ public class DBManager
             return users;
         }
     }
+
+
 
     //edit user record
     public void updateUser(User u)

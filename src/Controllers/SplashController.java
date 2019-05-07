@@ -1,4 +1,5 @@
-package Models;
+package Controllers;
 
 public class SplashController {
+
 }

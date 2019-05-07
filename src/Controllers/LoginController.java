@@ -1,6 +1,9 @@
-package Models;
+package Controllers;
 
 
+import Models.AlertHelper;
+import Models.DBManager;
+import Models.User;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -57,7 +60,7 @@ public class LoginController implements Initializable
             Window window = btn_login.getScene().getWindow();
 
             if (txt_username.getText().isEmpty() || txt_password.getText().isEmpty()) {
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Incomplete information", "Please complete both " +
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing information", "Please complete both " +
                         "fields");
 
                 return;
@@ -67,14 +70,13 @@ public class LoginController implements Initializable
             User u = dbm.login(uname, pword);
 
             if (u == null) {
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid login", "Please check and re-enter your " +
-                        "details");
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid login", "Re-enter your details");
 
             }
             else {
                 Stage landingPageStage = new Stage();
-                Parent root = FXMLLoader.load(getClass().getResource("LandingPage.fxml"));
-                Models.LandingPageController landing = new LandingPageController();
+                Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
+                LandingPageController landing = new LandingPageController();
                 landing.setLabel(uname);
                 Scene scene = new Scene(root);
                 landingPageStage.setScene(scene);
