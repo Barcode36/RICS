@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LandingPageController">
+   <children>
+      <Label fx:id="lbl_welcome" layoutX="38.0" layoutY="99.0" text="welcome" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="icon_rigDark" fitHeight="139.0" fitWidth="129.0" layoutX="239.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_rigDark.png" />
+         </image>
+      </ImageView>
+      <ImageView id="btn_users" fx:id="btn_users" fitHeight="64.0" fitWidth="58.0" layoutX="48.0" layoutY="183.0" onMousePressed="#on_usersClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_users.png" />
+         </image>
+      </ImageView>
+      <ImageView id="btn_reports" fx:id="btn_reports" fitHeight="64.0" fitWidth="58.0" layoutX="168.0" layoutY="183.0" onMousePressed="#on_reportsClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_reports.png" />
+         </image>
+      </ImageView>
+      <ImageView id="btn_manifests" fx:id="btn_manifests" fitHeight="64.0" fitWidth="58.0" layoutX="368.0" layoutY="183.0" onMousePressed="#on_manifestsClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_manifestShip.png" />
+         </image>
+      </ImageView>
+      <ImageView id="btn_orders" fx:id="btn_orders" fitHeight="64.0" fitWidth="58.0" layoutX="271.0" layoutY="183.0" onMousePressed="#on_ordersClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_orders.png" />
+         </image>
+      </ImageView>
+      <ImageView id="btn_partMaster" fx:id="btn_partMaster" fitHeight="64.0" fitWidth="58.0" layoutX="479.0" layoutY="183.0" onMousePressed="#on_partsClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_parts.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbl_welcome1" alignment="CENTER" layoutX="29.0" layoutY="244.0" text="User Accounts" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_welcome2" alignment="CENTER" layoutX="468.0" layoutY="244.0" text="Part Master" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_welcome3" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_welcome4" layoutX="364.0" layoutY="244.0" text="Manifests" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_welcome5" layoutX="170.0" layoutY="244.0" text="Reports" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
