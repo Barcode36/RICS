@@ -1,6 +1,8 @@
 package Models;
 
-import javax.crypto.interfaces.PBEKey;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,7 +30,7 @@ public class DBManager
 
             stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, adminUser, rig)" +
                     "VALUES ('"+ u.getUsername() + "','" + u.getPassword() +"','" + u.getFirstName() + "','" +
-                    u.getLastName() +"','" + u.getAdminUser() + "','" + u.getRig()+ "')");
+                    u.getLastName() +"','" +u.getRig() + "','" + u.getAdminUser()+ "')");
             conn.close();
         }
         catch (Exception e)
@@ -43,7 +45,6 @@ public class DBManager
     public HashMap<String, User> loadUsers()
     {
         HashMap<String, User> users = new HashMap();
-
 
         try
         {
@@ -85,7 +86,45 @@ public class DBManager
         }
     }
 
+    public ObservableList<User> loadUsersOBS()
+    {
+        ObservableList<User> users = FXCollections.observableArrayList();
 
+
+        try
+        {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            //DB select statement
+            ResultSet userList = stmt.executeQuery("SELECT * FROM Users");
+
+            //iterate through result set
+            while(userList.next())
+            {
+                users.add(new User(
+                        userList.getString("username"),
+                        userList.getString("password"),
+                        userList.getString("firstName"),
+                        userList.getString("lastName"),
+                        userList.getInt("rig"),
+                        userList.getBoolean("adminUser")
+                ));
+            }
+
+            //close connection to DB
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return users;
+        }
+    }
 
     //edit user record
     public void updateUser(User u)
@@ -100,7 +139,7 @@ public class DBManager
             //Update User record in DB
             stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
                     "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
-                    "', adminUser = '"+ u.getAdminUser() +"'");
+                    "', adminUser = '"+ u.getAdminUser() + "'WHERE Username = '" + u.getUsername() + "'");
 
             //close connection to DB
             conn.close();

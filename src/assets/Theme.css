@@ -44,7 +44,13 @@
 }
 .table-row-cell{
     -fx-background-color: #3d4956;
+    -fx-text-fill: #cccccc;
 }
+
+.table-view .table-cell{
+    -fx-text-fill: #cccccc;
+}
+
 .table-row-cell:odd{
     -fx-background-color: #5e6f80;
 }

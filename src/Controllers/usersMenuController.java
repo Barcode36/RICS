@@ -8,21 +8,22 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.animation.FadeTransition;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.net.URL;
+
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -56,7 +57,7 @@ public class usersMenuController implements Initializable
     private JFXRadioButton rdo_admin;
 
     @FXML
-    private TableView<Map.Entry> tbl_users;
+    private TableView<User> tbl_users;
 
     @FXML
     private TableColumn<Map.Entry, String> col_username;
@@ -78,7 +79,25 @@ public class usersMenuController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        txt_username.setDisable(true);
+
+        on_refreshListClick();
+
+        tbl_users.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                int index = tbl_users.getSelectionModel().getSelectedIndex();
+                User user = tbl_users.getItems().get(index);
+                Boolean admin = user.getAdminUser();
+
+
+                txt_username.setDisable(true);
+                txt_username.setText(user.getUsername());
+                txt_firstName.setText(user.getFirstName());
+                txt_lastName.setText(user.getLastName());
+                txt_rig.setText(Integer.toString(user.getRig()));
+                rdo_admin.setSelected(admin);
+                txt_password.setText(user.getPassword());
+            }
+        });
 
         //fade-in transition for menu buttons
         FadeTransition fadeIn1 = new FadeTransition();
@@ -115,40 +134,37 @@ public class usersMenuController implements Initializable
     }
 
     @FXML
-    private void on_updateUserClick()
+    private void on_refreshListClick()
     {
         DBManager dbm = new DBManager();
+        ObservableList<User> usersOBS = dbm.loadUsersOBS();
 
-
-        HashMap<String, User> usersMap = dbm.loadUsers();
-
-
-        ObservableList<String> keyList = FXCollections.observableArrayList(usersMap.keySet());
-
-        ObservableList<User> valueList = FXCollections.observableArrayList(usersMap.values());
-
-        ObservableList<Map.Entry> usersOBS = FXCollections.observableArrayList(usersMap.entrySet());
-
-
-        col_username.setCellValueFactory(new PropertyValueFactory<Map.Entry, String>("username"));
-        col_firstName.setCellValueFactory(new PropertyValueFactory<Map.Entry, String>("firstName"));
-        col_lastName.setCellValueFactory(new PropertyValueFactory<Map.Entry, String>("lastName"));
         //populate table view
         tbl_users.setItems(usersOBS);
 
-        //disable username textfield - usernames are final
-        txt_username.setDisable(true);
-        txt_username.setText("username");
-        txt_firstName.setText("first name");
-        txt_lastName.setText("last name");
-        txt_rig.setText("164");
-        txt_password.setText("password");
+        col_username.setCellValueFactory(new PropertyValueFactory<>("username"));
+        col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+
+        txt_username.setDisable(false);
+        txt_username.setText("");
+        txt_firstName.setText("");
+        txt_lastName.setText("");
+        txt_rig.setText("");
+        txt_password.setText("");
         txt_passwordConfirm.setText("");
     }
+
+
+
 
     @FXML
     private void on_saveClick()
     {
+        DBManager dbm = new DBManager();
+        HashMap<String, User> usersMap = dbm.loadUsers();
+
         String username = txt_username.getText();
         String firstName = txt_firstName.getText();
         String lastName = txt_lastName.getText();
@@ -172,41 +188,50 @@ public class usersMenuController implements Initializable
 
             return;
         }
-        else
-        {
-            try
+        else if(usersMap.containsKey(txt_username.getText()))
             {
-                int rigNo = Integer.parseInt(rig);
-
-                User u = new User(username, password, firstName, lastName, rigNo, admin);
-                DBManager dbm = new DBManager();
-
-                if(dbm.registerUser(u))
+                try
                 {
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created" , "You have " +
-                            "successfully created " + username + "'s account.");
+                    int rigNo = Integer.parseInt(rig);
+                    User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-                    txt_username.clear();
-                    txt_firstName.clear();
-                    txt_lastName.clear();
-                    txt_rig.clear();
-                    txt_password.clear();
-                    txt_passwordConfirm.clear();
-                    rdo_admin.setSelected(false);
-                }
-                else if (dbm.registerUser(u) == false)
+                    dbm.updateUser(u);
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
+                            "successfully updated account details");
+
+                }catch(Exception e)
                 {
-                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
-                            "account.");
-
-                    return;
+                    e.printStackTrace();
                 }
-
-
-            } catch (Exception e)
-            {
-                e.printStackTrace();
             }
-        }
+            else {
+                try {
+                    int rigNo = Integer.parseInt(rig);
+                    User u = new User(username, password, firstName, lastName, rigNo, admin);
+
+                    if (dbm.registerUser(u)) {
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
+                                "successfully created a new account.");
+
+                        txt_username.clear();
+                        txt_firstName.clear();
+                        txt_lastName.clear();
+                        txt_rig.clear();
+                        txt_password.clear();
+                        txt_passwordConfirm.clear();
+                        rdo_admin.setSelected(false);
+                    } else if (dbm.registerUser(u) == false) {
+                        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
+                                "account.");
+
+                        return;
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
     }
 }
