@@ -28,9 +28,19 @@ public class DBManager
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt= conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, adminUser, rig)" +
+            int adminUser = 0;
+            if(u.getAdminUser().equals(true))
+            {
+                adminUser = 1;
+            }
+            else
+            {
+                 adminUser =0;
+            }
+
+            stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, rig, adminUser)" +
                     "VALUES ('"+ u.getUsername() + "','" + u.getPassword() +"','" + u.getFirstName() + "','" +
-                    u.getLastName() +"','" +u.getRig() + "','" + u.getAdminUser()+ "')");
+                    u.getLastName() +"','" +u.getRig() + "','" + adminUser +  "')");
             conn.close();
         }
         catch (Exception e)
@@ -86,6 +96,8 @@ public class DBManager
         }
     }
 
+    //for populating tbl_users in usersMenu.fxml
+    //javafx table views can only be populated with observable lists
     public ObservableList<User> loadUsersOBS()
     {
         ObservableList<User> users = FXCollections.observableArrayList();
@@ -136,10 +148,20 @@ public class DBManager
 
             Statement stmt = conn.createStatement();
 
+            int adminUser = 0;
+            if(u.getAdminUser().equals(true))
+            {
+                adminUser = 1;
+            }
+            else
+            {
+                adminUser =0;
+            }
+
             //Update User record in DB
             stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
                     "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
-                    "', adminUser = '"+ u.getAdminUser() + "'WHERE Username = '" + u.getUsername() + "'");
+                    "', adminUser = '"+ adminUser + "'WHERE Username = '" + u.getUsername() + "'");
 
             //close connection to DB
             conn.close();

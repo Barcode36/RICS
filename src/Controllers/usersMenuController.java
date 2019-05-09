@@ -79,6 +79,7 @@ public class usersMenuController implements Initializable
 
     private int userAlertCounter =0;
 
+
     private DBManager dbm = new DBManager();
 
 
@@ -95,17 +96,16 @@ public class usersMenuController implements Initializable
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_users.getSelectionModel().getSelectedIndex();
                     User user = tbl_users.getItems().get(index);
-                    Boolean admin = user.getAdminUser();
-
 
                     txt_username.setDisable(true);
                     txt_username.setText(user.getUsername());
                     txt_firstName.setText(user.getFirstName());
                     txt_lastName.setText(user.getLastName());
                     txt_rig.setText(Integer.toString(user.getRig()));
-                    rdo_admin.setSelected(admin);
+                    rdo_admin.setSelected(user.getAdminUser());
                     txt_password.setText(user.getPassword());
                     txt_passwordConfirm.setText("");
+                    userAlertCounter = 0;
                 }
             });
         } catch (Exception e) {
@@ -167,12 +167,14 @@ public class usersMenuController implements Initializable
         txt_rig.setText("");
         txt_password.setText("");
         txt_passwordConfirm.setText("");
+        rdo_admin.setSelected(false);
     }
 
     @FXML
     private void on_saveClick()
     {
         HashMap<String, User> usersMap = dbm.loadUsers();
+
 
         String username = txt_username.getText();
         String firstName = txt_firstName.getText();
@@ -199,12 +201,15 @@ public class usersMenuController implements Initializable
         }
         else if(usersMap.containsKey(txt_username.getText()))
             {
-                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
+                if(userAlertCounter < 1)
+                {
+                    AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
                             "account details click OK & save," + "to cancel click OK & undo.");
+                }
 
-                    userAlertCounter =1;
+                    userAlertCounter ++;
 
-                if(userAlertCounter == 1)
+                if(userAlertCounter == 2)
                 {
                     try {
                         int rigNo = Integer.parseInt(rig);
@@ -225,7 +230,8 @@ public class usersMenuController implements Initializable
                     int rigNo = Integer.parseInt(rig);
                     User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-                    if (dbm.registerUser(u)) {
+                    if (dbm.registerUser(u))
+                    {
                         AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
                                 "successfully created a new account.");
 
@@ -236,7 +242,9 @@ public class usersMenuController implements Initializable
                         txt_password.clear();
                         txt_passwordConfirm.clear();
                         rdo_admin.setSelected(false);
-                    } else if (dbm.registerUser(u) == false) {
+                    }
+                    else if (dbm.registerUser(u) == false)
+                    {
                         AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
                                 "account.");
 
@@ -244,10 +252,13 @@ public class usersMenuController implements Initializable
                     }
 
 
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
+
+            on_refreshListClick();
 
     }
 
@@ -269,6 +280,41 @@ public class usersMenuController implements Initializable
 
             userAlertCounter =0;
 
+        }
+
+    }
+
+    @FXML
+    private void on_deleteClick()
+    {
+        Window window = btn_addUser.getScene().getWindow();
+
+        if(userAlertCounter <= 0 && userAlertCounter >-1)
+        {
+            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Delete account?", "to delete " +
+                    "user click delete again" + "to cancel click OK undo.");
+        }
+        userAlertCounter --;
+
+        if(userAlertCounter == -2)
+        {
+            try
+            {
+                HashMap<String, User> usersMap = dbm.loadUsers();
+
+
+                if(usersMap.containsKey(txt_username.getText()))
+                {
+                    User foundUser = usersMap.get(txt_username.getText());
+                    dbm.deleteUser(foundUser);
+                    userAlertCounter = 0;
+                    on_refreshListClick();
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
     }

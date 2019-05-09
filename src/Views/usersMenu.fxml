@@ -149,7 +149,8 @@
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btn_deleteUser" layoutX="409.0" layoutY="358.0" text="Delete" textFill="#eda678">
+      <JFXButton fx:id="btn_deleteUser" layoutX="409.0" layoutY="358.0" text="Delete" textFill="#eda678"
+                 onAction="#on_deleteClick">
          <effect>
             <Glow />
          </effect>
