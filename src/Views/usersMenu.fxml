@@ -21,8 +21,7 @@
 
 <AnchorPane fx:id="pane_anchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.usersMenuController">
    <children>
-      <JFXButton fx:id="btn_refreshList" layoutX="37.0" layoutY="62.0" onAction="#on_refreshListClick"
-                 text="Refresh List" textFill="#eda678">
+      <JFXButton fx:id="btn_refreshList" layoutX="37.0" layoutY="62.0" onAction="#on_refreshListClick" text="Refresh List" textFill="#eda678">
          <effect>
             <Glow />
          </effect>
@@ -142,7 +141,7 @@
             </TableColumn>
          </columns>
       </TableView>
-      <JFXButton fx:id="btn_saveUser" layoutX="353.0" layoutY="358.0" onAction="#on_saveClick" text="Save" textFill="#eda678">
+      <JFXButton fx:id="btn_saveUser" layoutX="340.0" layoutY="358.0" onAction="#on_saveClick" text="Save" textFill="#eda678">
          <effect>
             <Glow />
          </effect>
@@ -150,7 +149,15 @@
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btn_deleteUser" layoutX="472.0" layoutY="358.0" text="Delete" textFill="#eda678">
+      <JFXButton fx:id="btn_deleteUser" layoutX="409.0" layoutY="358.0" text="Delete" textFill="#eda678">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btn_undo" layoutX="488.0" layoutY="358.0" onAction="#on_undoClick" text="Undo" textFill="#eda678">
          <effect>
             <Glow />
          </effect>

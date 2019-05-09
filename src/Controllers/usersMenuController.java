@@ -74,6 +74,13 @@ public class usersMenuController implements Initializable
     @FXML
     private JFXButton btn_delete;
 
+    @FXML
+    private JFXButton btn_undo;
+
+    private int userAlertCounter =0;
+
+    private DBManager dbm = new DBManager();
+
 
     @FXML
     @Override
@@ -82,22 +89,28 @@ public class usersMenuController implements Initializable
 
         on_refreshListClick();
 
-        tbl_users.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                int index = tbl_users.getSelectionModel().getSelectedIndex();
-                User user = tbl_users.getItems().get(index);
-                Boolean admin = user.getAdminUser();
+
+        try {
+            tbl_users.setOnMouseClicked((MouseEvent event) -> {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    int index = tbl_users.getSelectionModel().getSelectedIndex();
+                    User user = tbl_users.getItems().get(index);
+                    Boolean admin = user.getAdminUser();
 
 
-                txt_username.setDisable(true);
-                txt_username.setText(user.getUsername());
-                txt_firstName.setText(user.getFirstName());
-                txt_lastName.setText(user.getLastName());
-                txt_rig.setText(Integer.toString(user.getRig()));
-                rdo_admin.setSelected(admin);
-                txt_password.setText(user.getPassword());
-            }
-        });
+                    txt_username.setDisable(true);
+                    txt_username.setText(user.getUsername());
+                    txt_firstName.setText(user.getFirstName());
+                    txt_lastName.setText(user.getLastName());
+                    txt_rig.setText(Integer.toString(user.getRig()));
+                    rdo_admin.setSelected(admin);
+                    txt_password.setText(user.getPassword());
+                    txt_passwordConfirm.setText("");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //fade-in transition for menu buttons
         FadeTransition fadeIn1 = new FadeTransition();
@@ -156,13 +169,9 @@ public class usersMenuController implements Initializable
         txt_passwordConfirm.setText("");
     }
 
-
-
-
     @FXML
     private void on_saveClick()
     {
-        DBManager dbm = new DBManager();
         HashMap<String, User> usersMap = dbm.loadUsers();
 
         String username = txt_username.getText();
@@ -186,22 +195,29 @@ public class usersMenuController implements Initializable
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Passwords", "Passwords do not match");
 
-            return;
+
         }
         else if(usersMap.containsKey(txt_username.getText()))
             {
-                try
-                {
-                    int rigNo = Integer.parseInt(rig);
-                    User u = new User(username, password, firstName, lastName, rigNo, admin);
+                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
+                            "account details click OK & save," + "to cancel click OK & undo.");
 
-                    dbm.updateUser(u);
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
-                            "successfully updated account details");
+                    userAlertCounter =1;
 
-                }catch(Exception e)
+                if(userAlertCounter == 1)
                 {
-                    e.printStackTrace();
+                    try {
+                        int rigNo = Integer.parseInt(rig);
+                        User u = new User(username, password, firstName, lastName, rigNo, admin);
+
+                        dbm.updateUser(u);
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
+                                "successfully updated account details");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    userAlertCounter =0;
                 }
             }
             else {
@@ -232,6 +248,28 @@ public class usersMenuController implements Initializable
                     e.printStackTrace();
                 }
             }
+
+    }
+
+    @FXML
+    private void on_undoClick()
+    {
+        HashMap<String, User> usersMap = dbm.loadUsers();
+
+        if(usersMap.containsKey(txt_username.getText()))
+        {
+            User foundUser = usersMap.get(txt_username.getText());
+            txt_username.setText(foundUser.getUsername());
+            txt_firstName.setText(foundUser.getFirstName());
+            txt_lastName.setText(foundUser.getLastName());
+            txt_rig.setText(Integer.toString(foundUser.getRig()));
+            rdo_admin.setSelected(foundUser.getAdminUser());
+            txt_password.setText(foundUser.getPassword());
+            txt_passwordConfirm.setText("");
+
+            userAlertCounter =0;
+
+        }
 
     }
 }
