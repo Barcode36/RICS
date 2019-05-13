@@ -201,7 +201,7 @@ public class usersMenuController implements Initializable
         }
         else if(usersMap.containsKey(txt_username.getText()))
             {
-                if(userAlertCounter < 1)
+                if(userAlertCounter == 0)
                 {
                     AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
                             "account details click OK & save," + "to cancel click OK & undo.");
@@ -265,21 +265,28 @@ public class usersMenuController implements Initializable
     @FXML
     private void on_undoClick()
     {
-        HashMap<String, User> usersMap = dbm.loadUsers();
-
-        if(usersMap.containsKey(txt_username.getText()))
+        try
         {
-            User foundUser = usersMap.get(txt_username.getText());
-            txt_username.setText(foundUser.getUsername());
-            txt_firstName.setText(foundUser.getFirstName());
-            txt_lastName.setText(foundUser.getLastName());
-            txt_rig.setText(Integer.toString(foundUser.getRig()));
-            rdo_admin.setSelected(foundUser.getAdminUser());
-            txt_password.setText(foundUser.getPassword());
-            txt_passwordConfirm.setText("");
+            HashMap<String, User> usersMap = dbm.loadUsers();
 
-            userAlertCounter =0;
+            if(usersMap.containsKey(txt_username.getText()))
+            {
+                User foundUser = usersMap.get(txt_username.getText());
+                txt_username.setText(foundUser.getUsername());
+                txt_firstName.setText(foundUser.getFirstName());
+                txt_lastName.setText(foundUser.getLastName());
+                txt_rig.setText(Integer.toString(foundUser.getRig()));
+                rdo_admin.setSelected(foundUser.getAdminUser());
+                txt_password.setText(foundUser.getPassword());
+                txt_passwordConfirm.setText("");
 
+                userAlertCounter =0;
+
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
     }

@@ -13,9 +13,11 @@ public class Part
     private int onHand;
     private int onOrder;
     private int flagged;
-    private Order lastOrder;
+    private String lastOrder;
     private String unitOfMeasure;
-    private int annualUsage;
+    private String location;
+    private int vendorId;
+    private int accountCode;
 
     //getters and setters
     public String getPartNumber()
@@ -68,7 +70,7 @@ public class Part
         return flagged;
     }
 
-    public Order getLastOrder()
+    public String getLastOrder()
     {
         return lastOrder;
     }
@@ -78,10 +80,11 @@ public class Part
         return unitOfMeasure;
     }
 
-    public int getAnnualUsage()
-    {
-        return annualUsage;
-    }
+    public String getLocation(){return location;}
+
+    public int getVendorId(){return vendorId;}
+
+    public int getAccountCode(){return accountCode;}
 
     public void setPartNumber(String partNumber)
     {
@@ -133,7 +136,7 @@ public class Part
         this.flagged = flagged;
     }
 
-    public void setLastOrder(Order lastOrder)
+    public void setLastOrder(String lastOrder)
     {
         this.lastOrder = lastOrder;
     }
@@ -143,54 +146,76 @@ public class Part
         this.unitOfMeasure = unitOfMeasure;
     }
 
-    public void setAnnualUsage(int annualUsage)
-    {
-        this.annualUsage = annualUsage;
-    }
+    public void setLocation(String location) { this.location = location;}
+
+    public void setVendorId(int vendorId) { this.vendorId = vendorId;}
+
+    public void setAccountCode(int accountCode) { this.accountCode = accountCode;}
 
     //constructors
     public Part()
     {
         this.partNumber = "";
+        this.accountCode = 0;
         this.vendorNumber = "";
         this.minRecVal = 0;
         this.maxRecVal = 0;
         this.partNoun = "";
         this.description = "";
+        this.location = "";
+        this.vendorId = 0;
         this.unitCost = 0.00;
         this.onHand = 0;
         this.onOrder = 0;
         this.flagged = 0;
         this.unitOfMeasure = "Ea";
-        this.annualUsage = 0;
     }
 
-    public Part(String partNumber, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
-                String description, double unitCost, int onHand, int onOrder, int flagged,
-                Order lastOrder, String unitOfMeasure, int annualUsage)
+    public Part(String partNumber, int accountCode, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
+                String description, String location, int vendorId,  double unitCost, int onHand, String unitOfMeasure)
     {
         this.partNumber = partNumber;
+        this.accountCode = accountCode;
         this.vendorNumber = vendorNumber;
         this.minRecVal = minRecVal;
         this.maxRecVal = maxRecVal;
         this.partNoun = partNoun;
         this.description = description;
+        this.location = location;
+        this.vendorId = vendorId;
+        this.unitCost = unitCost;
+        this.onHand = onHand;
+        this.unitOfMeasure = unitOfMeasure;
+    }
+
+    public Part(String partNumber, int accountCode, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
+                String description, String location,int vendorId, double unitCost, int onHand, int onOrder, int flagged,
+                String lastOrder, String unitOfMeasure)
+    {
+        this.partNumber = partNumber;
+        this.accountCode = accountCode;
+        this.vendorNumber = vendorNumber;
+        this.minRecVal = minRecVal;
+        this.maxRecVal = maxRecVal;
+        this.partNoun = partNoun;
+        this.description = description;
+        this.location = location;
+        this.vendorId = vendorId;
         this.unitCost = unitCost;
         this.onHand = onHand;
         this.onOrder = onOrder;
         this.flagged = flagged;
         this.lastOrder = lastOrder;
         this.unitOfMeasure = unitOfMeasure;
-        this.annualUsage = annualUsage;
     }
 
     //all other methods and functions
     @Override
     public String toString()
     {
-        String output = this.partNumber + " - " + this.description;
+        String product = this.partNumber + " - " + this.description;
 
-        return output;
+        return product;
     }
 
 }

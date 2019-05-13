@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
+import static java.lang.Class.forName;
+
 public class DBManager
 {
     //driver string
@@ -19,12 +21,11 @@ public class DBManager
 
 
     //***User Functions***
-    //Register User
     public boolean registerUser(User u)
     {
         try
         {
-            Class.forName(driver);
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt= conn.createStatement();
 
@@ -58,7 +59,7 @@ public class DBManager
 
         try
         {
-            Class.forName(driver);
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
@@ -105,7 +106,7 @@ public class DBManager
 
         try
         {
-            Class.forName(driver);
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
@@ -143,7 +144,7 @@ public class DBManager
     {
         try
         {
-            Class.forName(driver);
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
             Statement stmt = conn.createStatement();
@@ -176,7 +177,7 @@ public class DBManager
     {
         try
         {
-            Class.forName(driver);
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
             Statement stmt = conn.createStatement();
@@ -211,6 +212,107 @@ public class DBManager
                 }
         }
         return null;
+    }
+
+    //***Part Functions***
+    public void addPart(Part p)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO Parts(partNumber, vendorPartNumber, partNoun, description, vendor, " +
+                    "location, unitCost, onHand, minLvl, maxLvl, onOrder, unitOfMeasure, flagged) VALUES " + "('" + p.getPartNumber() + "','" + p.getVendorNumber() + "','" + p.getPartNoun() + "','" + p.getDescription() +
+                    "','"+ p.getVendorNumber() + "','"+ p.getLocation() + "','"+ p.getUnitCost() + "','"+ p.getOnHand() + "'," +
+                    "'"+ p.getMinRecVal() + "','"+ p.getMaxRecVal() + "' + '"+ 0 + "','"+ p.getUnitOfMeasure() + "'," +
+                    "'"+ 0 +"')");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public ObservableList<Part> loadParts()
+    {
+        ObservableList<Part> parts = FXCollections.observableArrayList();
+
+
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            //DB select statement
+            ResultSet partList = stmt.executeQuery("SELECT * FROM Parts");
+
+            //iterate through result set
+            while(partList.next())
+            {
+                parts.add(new Part(
+                        partList.getString("partNumber"),
+                        partList.getInt("accountCode"),
+                        partList.getString("vendorPartNumber"),
+                        partList.getInt("minLvl"),
+                        partList.getInt("maxLvl"),
+                        partList.getString("partNoun"),
+                        partList.getString("description"),
+                        partList.getString("location"),
+                        partList.getInt("vendor"),
+                        partList.getDouble("unitCost"),
+                        partList.getInt("onHand"),
+                        partList.getInt("onOrder"),
+                        partList.getInt("flagged"),
+                        partList.getString("lastOrder"),
+                        partList.getString("unitOfMeasure")
+                ));
+            }
+
+            //close connection to DB
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return parts;
+        }
+    }
+
+    public ObservableList<InventoryAccount> loadInventoryAccounts()
+    {
+        ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet accountList = stmt.executeQuery("SELECT * FROM InventoryAccounts");
+
+            while (accountList.next()) {
+                accounts.add(new InventoryAccount(
+                        accountList.getInt("accountCode"),
+                        accountList.getString("accountName")
+                ));
+            }
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return accounts;
+        }
     }
 
 }

@@ -16,10 +16,13 @@
     -fx-font-weight: 700;
 }
 
-.jfx-text-field, .jfx-password-field{
+.jfx-text-field, .jfx-password-field, .text-area, .combo-box{
     -fx-text-inner-color: #cccccc;
+    -fx-prompt-text-fill: gray;
 }
-
+.text-area {
+    -fx-prompt-text-fill: #cccccc;
+}
 .table-view .column-header-background{
     -fx-background-color: #3d4956;
 }
@@ -62,11 +65,21 @@
 .button{
     -fx-border-radius: 20px;
     -fx-border-color: #eda678;
+    -fx-text-fill: #eda678;
+    -fx-font-family: 'Quicksand';
+    -fx-font-weight: 700;
+
 }
 
 .navigationButtons
 {
     -fx-text-fill: #cccccc;
     -fx-border-color: #3D4956;
+}
+
+.formFields
+{
+    -fx-text-inner-color: #cccccc;
+    -fx-prompt-text-fill: gray;
 }
 
