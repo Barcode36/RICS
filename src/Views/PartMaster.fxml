@@ -49,7 +49,8 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <JFXButton fx:id="btn_issue" layoutX="33.0" layoutY="283.0" prefHeight="25.0" prefWidth="113.0" text="Issue" textFill="#eda678">
+      <JFXButton fx:id="btn_issue" layoutX="33.0" layoutY="283.0" prefHeight="25.0" prefWidth="113.0" text="Issue"
+                 textFill="#eda678" onAction="#on_issueClick">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

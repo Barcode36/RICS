@@ -7,11 +7,17 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -66,8 +72,7 @@ public class AddPartController implements Initializable
     }
 
     @FXML
-    private void on_saveClick()
-    {
+    private void on_saveClick() throws IOException {
         DBManager dbm = new DBManager();
         Window window = btn_cancel.getScene().getWindow();
 
@@ -104,8 +109,23 @@ public class AddPartController implements Initializable
         {
             e.printStackTrace();
         }
+        finally
+        {
+            Stage partsStage = new Stage();
+            Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
+            Scene scene1 = new Scene(root1);
+            partsStage.setScene(scene1);
+            partsStage.setTitle("RICS 1.0 Part Master");
+            partsStage.initStyle(StageStyle.TRANSPARENT);
+            partsStage.show();
+            closeAddPart();
+        }
+    }
 
-
+    private void closeAddPart()
+    {
+        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+        stage.close();
     }
 
 }

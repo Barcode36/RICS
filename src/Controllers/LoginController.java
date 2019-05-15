@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -51,7 +52,7 @@ public class LoginController implements Initializable
 
 
     @FXML
-    private void onClick_btn_login(javafx.event.ActionEvent actionEvent) throws IOException
+    private void onClick_btn_login() throws IOException
     {
         try
         {
@@ -69,22 +70,22 @@ public class LoginController implements Initializable
             DBManager dbm = new DBManager();
             User u = dbm.login(uname, pword);
 
-            if (u == null) {
+            if (u == null)
+            {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid login", "Re-enter your details");
 
             }
-            else {
-                Stage landingPageStage = new Stage();
-                Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
-                LandingPageController landing = new LandingPageController();
-                landing.setLabel(uname);
-                Scene scene = new Scene(root);
-                landingPageStage.setScene(scene);
-                landingPageStage.setTitle("RICS 1.0 Landing Page");
-                landingPageStage.initStyle(StageStyle.TRANSPARENT);
+            else
+            {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/landingPage.fxml"));
+                Stage landingPageStage = new Stage(StageStyle.TRANSPARENT);
+                landingPageStage.setTitle("RICS 1.0 Home Page");
+                landingPageStage.setScene(new Scene(loader.load()));
+                LandingPageController controller = loader.getController();
+                controller.setLabel(uname);
+
                 landingPageStage.show();
                 closeLogin();
-
             }
 
         }

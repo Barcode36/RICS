@@ -234,9 +234,10 @@ public class Part
     @Override
     public String toString()
     {
-        String product = this.partNumber + " - " + this.description;
+        String product = this.partNumber;
 
         return product;
     }
+
 
 }

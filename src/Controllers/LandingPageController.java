@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 public class LandingPageController implements Initializable
 {
 
-
     @FXML
     private Label lbl_welcome;
 
@@ -46,18 +45,16 @@ public class LandingPageController implements Initializable
     public static AnchorPane rootP;
 
 
-    private String username;
 
     public void initialize (URL url, ResourceBundle rb)
     {
 
-        lbl_welcome.setText("Welcome " + username);
 
-        if(!Main.isSplashLoaded)
+       /* if(!Main.isSplashLoaded)
         {
             loadSplashScreen();
 
-        }
+        }*/
 
 
         rootP = root;
@@ -65,9 +62,10 @@ public class LandingPageController implements Initializable
 
     public void setLabel(String uname)
     {
+
         try
         {
-            username = uname;
+            lbl_welcome.setText("Welcome " + uname);
         }
         catch(Exception e)
         {

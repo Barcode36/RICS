@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -82,16 +83,19 @@ public class PartMasterController implements Initializable
     {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
-        ObservableList<Vendor> vendorsOBS = dbm.loadVendors();
+        ObservableList<Vendor> vendors = dbm.loadVendors();
 
         //populate table view
         tbl_parts.setItems(partsOBS);
 
         col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
+        refresh(partsOBS.get(0).toString());
+
 
         try {
             tbl_parts.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getButton().equals(MouseButton.PRIMARY))
+                {
                     int index = tbl_parts.getSelectionModel().getSelectedIndex();
                     Part part = (Part) tbl_parts.getItems().get(index);
 
@@ -108,16 +112,14 @@ public class PartMasterController implements Initializable
                     lbl_flagged.setText("  F : " + part.getFlagged());
                     txt_description.setText(part.getDescription());
                     txt_unitOfMeasure.setText(part.getUnitOfMeasure());
-                    if(vendorsOBS.contains(part.getVendorId()))
+                    for(Vendor vendor : vendors)
                     {
-                        Vendor vendor = new Vendor();
-                        vendor.setVendorId(part.getVendorId());
-
-                        txt_vendor.setText(vendor.toString());
+                        if(vendor.getVendorId()==part.getVendorId())
+                        {
+                            txt_vendor.setText(vendor.toString());
+                        }
                     }
-
-                    //lbl_onOrder
-                    //FIX VENDOR TO DISPLAY AS VENDOR NAME
+                    //lbl onOrder
 
 
                 }
@@ -173,5 +175,61 @@ public class PartMasterController implements Initializable
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void on_issueClick() throws IOException
+    {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/IssuePart.fxml"));
+        Stage issueStage = new Stage();
+        issueStage.setTitle("RICS 1.0 Issue Part");
+        issueStage.setScene(new Scene(loader.load()));
+        IssuePartController controller = loader.getController();
+        controller.setLabel(lbl_partNo.getText());
+
+        issueStage.show();
+        closePartMaster();
+
+    }
+
+    @FXML
+    public void refresh(String partNo)
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> parts = dbm.loadParts();
+        ObservableList<Vendor> vendors = dbm.loadVendors();
+
+        for(Part part : parts)
+        {
+            if(part.getPartNumber().equals(partNo))
+            {
+                lbl_partNo.setText(part.getPartNumber());
+                txt_vendorPartNo.setText(part.getVendorNumber());
+                txt_accountCode.setText(Integer.toString(part.getAccountCode()));
+                txt_partNoun.setText(part.getPartNoun());
+                txt_location.setText(part.getLocation());
+                txt_lastOrder.setText(part.getLastOrder());
+                txt_unitCost.setText(Double.toString(part.getUnitCost()));
+                lbl_min.setText("Min : " + part.getMinRecVal());
+                lbl_max.setText("Max : " + part.getMaxRecVal());
+                lbl_onHand.setText(" OH: " + part.getOnHand());
+                lbl_flagged.setText("  F : " + part.getFlagged());
+                txt_description.setText(part.getDescription());
+                txt_unitOfMeasure.setText(part.getUnitOfMeasure());
+                for(Vendor vendor : vendors)
+                {
+                    if(vendor.getVendorId()==part.getVendorId())
+                    {
+                        txt_vendor.setText(vendor.toString());
+                    }
+                }
+
+            }
+        }
+
+
+
+    }
+
 
 }

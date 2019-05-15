@@ -3,10 +3,7 @@ package Models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 
 import static java.lang.Class.forName;
@@ -329,7 +326,7 @@ public class DBManager
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            ResultSet vendorList = stmt.executeQuery("SELECT * FROM Vendors");
+            ResultSet vendorList = stmt.executeQuery("SELECT * FROM Vendors ORDER BY vendorName");
 
             while (vendorList.next()) {
                 vendors.add(new Vendor(
@@ -361,7 +358,7 @@ public class DBManager
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            ResultSet locationList = stmt.executeQuery("SELECT * FROM Locations");
+            ResultSet locationList = stmt.executeQuery("SELECT * FROM Locations ORDER BY locationId");
 
             while (locationList.next()) {
                 locations.add(new Location(
@@ -381,6 +378,7 @@ public class DBManager
         }
     }
 
+    //generates unique partNumber based on AccountCode
     public String generateUniquePartNo(Part part)
     {
         int PXparts =-1;
@@ -423,6 +421,25 @@ public class DBManager
 
         return partNumber;
 
+    }
+
+    public void updateStockLevel(int newStockLevel, String partNo)
+    {
+        try
+        {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("UPDATE Parts SET onHand = '" + newStockLevel + "' WHERE partNumber = '" + partNo +
+                    "'");
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
