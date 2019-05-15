@@ -188,8 +188,29 @@ public class Part
         this.unitOfMeasure = unitOfMeasure;
     }
 
+    public Part( int accountCode, String vendorNumber, int vendorId, String partNoun, String description,
+                 int minRecVal, int maxRecVal, double unitCost, String location)
+    {
+        this.partNumber ="0";
+        this.accountCode = accountCode;
+        this.vendorNumber = vendorNumber;
+        this.vendorId = vendorId;
+        this.partNoun = partNoun;
+        this.description = description;
+        this.minRecVal = minRecVal;
+        this.maxRecVal = maxRecVal;
+        this.unitCost = unitCost;
+        this.location = location;
+        this.onHand = 0;
+        this.onOrder = 0;
+        this.flagged = 0;
+        this.unitOfMeasure = "Ea";
+
+
+    }
+
     public Part(String partNumber, int accountCode, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
-                String description, String location,int vendorId, double unitCost, int onHand, int onOrder, int flagged,
+                String description, String location, int vendorId, double unitCost, int onHand, int onOrder, int flagged,
                 String lastOrder, String unitOfMeasure)
     {
         this.partNumber = partNumber;

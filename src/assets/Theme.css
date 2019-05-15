@@ -16,9 +16,24 @@
     -fx-font-weight: 700;
 }
 
-.jfx-text-field, .jfx-password-field, .text-area, .combo-box{
+.jfx-text-field, .jfx-password-field, .text-area{
     -fx-text-inner-color: #cccccc;
     -fx-prompt-text-fill: gray;
+}
+
+.jfx-combo-box {
+    -fx-background-color: #5e6f80;
+    -fx-text-fill: #CCCCCC;
+    -fx-font-family: Quicksand;
+    -fx-font-size: 12px;
+    -fx-font-style: normal;
+    -fx-font-variant: normal;
+    -fx-font-weight: 700;
+}
+
+.jfx-combo-box .cell:selected{
+    -fx-background-color: #3d4956;
+    -fx-text-fill: #CCCCCC;
 }
 .text-area {
     -fx-prompt-text-fill: #cccccc;

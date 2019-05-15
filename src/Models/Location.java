@@ -28,5 +28,11 @@ public class Location
     }
 
     //all other methods and functions
+    @Override
+    public String toString()
+    {
+        String location = this.locationId;
 
+        return location;
+    }
 }

@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane_anchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.usersMenuController">
+<AnchorPane fx:id="pane_anchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UsersMenuController">
    <children>
       <JFXButton fx:id="btn_refreshList" layoutX="37.0" layoutY="62.0" onAction="#on_refreshListClick" text="Refresh List" textFill="#eda678">
          <effect>

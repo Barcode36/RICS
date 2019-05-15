@@ -57,6 +57,12 @@ public class InventoryAccount
     }
 
     //all other methods and functions
+    @Override
+    public String toString()
+    {
+        String accountCode = Integer.toString(this.accountCode);
 
+        return accountCode;
+    }
 
 }

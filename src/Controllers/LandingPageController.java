@@ -143,7 +143,7 @@ public class LandingPageController implements Initializable
     {
 
         Stage partsStage = new Stage();
-        Parent root1 = FXMLLoader.load(getClass().getResource("../Views/partMaster.fxml"));
+        Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
         Scene scene1 = new Scene(root1);
         partsStage.setScene(scene1);
         partsStage.setTitle("RICS 1.0 Part Master");
@@ -156,7 +156,7 @@ public class LandingPageController implements Initializable
     private void on_ordersClick() throws IOException
     {
         Stage ordersStage = new Stage();
-        Parent root2 = FXMLLoader.load(getClass().getResource("../Views/ordersMenu.fxml"));
+        Parent root2 = FXMLLoader.load(getClass().getResource("../Views/OrdersMenu.fxml"));
         Scene scene2 = new Scene(root2);
         ordersStage.setScene(scene2);
         ordersStage.setTitle("RICS 1.0 Orders");
@@ -182,7 +182,7 @@ public class LandingPageController implements Initializable
     private void on_reportsClick() throws IOException
     {
         Stage reportsStage = new Stage();
-        Parent root4 = FXMLLoader.load(getClass().getResource("../Views/reportsMenu.fxml"));
+        Parent root4 = FXMLLoader.load(getClass().getResource("../Views/ReportsMenu.fxml"));
         Scene scene4 = new Scene(root4);
         reportsStage.setScene(scene4);
         reportsStage.setTitle("RICS 1.0 Reports");

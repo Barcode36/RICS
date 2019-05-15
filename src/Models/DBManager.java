@@ -221,20 +221,23 @@ public class DBManager
         {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt= conn.createStatement();
 
-            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO Parts(partNumber, accountCode, vendorPartNumber, partNoun, description, " +
+                    "vendor, location, unitCost, onHand, minLvl, maxLvl, onOrder, lastOrder, unitOfMeasure, flagged)" +
+                    "VALUES ('"+ p.getPartNumber() + "','" + p.getAccountCode() +"','" + p.getVendorNumber() +
+                    "','" + p.getPartNoun() +"','" +p.getDescription() + "','" + p.getVendorId()+ "','" + p.getLocation() +
+                    "','" + p.getUnitCost() + "','"  + p.getOnHand() + "','" + p.getMinRecVal() + "','"  + p.getMaxRecVal() +
+                    "','" + p.getOnOrder() + "','" + p.getLastOrder() + "','" + p.getUnitOfMeasure() + "','"  + p.getFlagged() + "')");
 
-            stmt.executeUpdate("INSERT INTO Parts(partNumber, vendorPartNumber, partNoun, description, vendor, " +
-                    "location, unitCost, onHand, minLvl, maxLvl, onOrder, unitOfMeasure, flagged) VALUES " + "('" + p.getPartNumber() + "','" + p.getVendorNumber() + "','" + p.getPartNoun() + "','" + p.getDescription() +
-                    "','"+ p.getVendorNumber() + "','"+ p.getLocation() + "','"+ p.getUnitCost() + "','"+ p.getOnHand() + "'," +
-                    "'"+ p.getMinRecVal() + "','"+ p.getMaxRecVal() + "' + '"+ 0 + "','"+ p.getUnitOfMeasure() + "'," +
-                    "'"+ 0 +"')");
+            conn.close();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
 
     public ObservableList<Part> loadParts()
     {
@@ -248,7 +251,7 @@ public class DBManager
             Statement stmt = conn.createStatement();
 
             //DB select statement
-            ResultSet partList = stmt.executeQuery("SELECT * FROM Parts");
+            ResultSet partList = stmt.executeQuery("SELECT * FROM Parts ORDER BY partNumber");
 
             //iterate through result set
             while(partList.next())
@@ -285,6 +288,8 @@ public class DBManager
         }
     }
 
+
+
     public ObservableList<InventoryAccount> loadInventoryAccounts()
     {
         ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
@@ -314,5 +319,113 @@ public class DBManager
             return accounts;
         }
     }
+
+    public ObservableList<Vendor> loadVendors()
+    {
+        ObservableList<Vendor> vendors = FXCollections.observableArrayList();
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet vendorList = stmt.executeQuery("SELECT * FROM Vendors");
+
+            while (vendorList.next()) {
+                vendors.add(new Vendor(
+                        vendorList.getInt("vendorId"),
+                        vendorList.getString("vendorName"),
+                        vendorList.getString("contactNumber"),
+                        vendorList.getString("shippingAddress")
+                ));
+            }
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return vendors;
+        }
+    }
+
+    public ObservableList<Location> loadLocations()
+    {
+        ObservableList<Location> locations = FXCollections.observableArrayList();
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet locationList = stmt.executeQuery("SELECT * FROM Locations");
+
+            while (locationList.next()) {
+                locations.add(new Location(
+                        locationList.getString("locationId")
+                ));
+            }
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return locations;
+        }
+    }
+
+    public String generateUniquePartNo(Part part)
+    {
+        int PXparts =-1;
+
+       try
+       {
+           forName(driver);
+           Connection conn = DriverManager.getConnection(connectionString);
+           Statement stmt = conn.createStatement();
+
+           ResultSet partsList =
+                   stmt.executeQuery("SELECT COUNT (*) AS parts FROM Parts WHERE accountCode = '" + part.getAccountCode() +
+                           "'");
+
+           //return count of existing parts in that Inventory account
+           PXparts = partsList.getInt("parts");
+
+           conn.close();
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+       }
+
+        PXparts++;
+        String newPart = String.valueOf(PXparts);
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.length() + newPart.length() < 5)
+        {
+            sb.append('0');
+        }
+
+        sb.append(PXparts);
+
+        String suffix = sb.toString();
+        String prefix = String.valueOf(part.getAccountCode()).substring(0,3);
+
+        String partNumber = prefix + "-" + suffix;
+
+        return partNumber;
+
+    }
+
+
+
 
 }

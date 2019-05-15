@@ -67,7 +67,13 @@ public class Vendor
     }
 
     //all other methods and functions
+    @Override
+    public String toString()
+    {
+        String vendor = this.vendorName;
 
+        return vendor;
+    }
 
 }
 

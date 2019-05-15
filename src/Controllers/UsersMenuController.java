@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class usersMenuController implements Initializable
+public class UsersMenuController implements Initializable
 {
     @FXML
     private JFXButton btn_addUser;
