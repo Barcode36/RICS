@@ -77,7 +77,7 @@
     -fx-background-color: #3d4956;
 }
 
-.button{
+.jfx-button{
     -fx-border-radius: 20px;
     -fx-border-color: #eda678;
     -fx-text-fill: #eda678;

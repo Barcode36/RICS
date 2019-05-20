@@ -26,17 +26,6 @@ public class LandingPageController implements Initializable
     @FXML
     private ImageView btn_users;
 
-    @FXML
-    private ImageView btn_orders;
-
-    @FXML
-    private ImageView btn_manifests;
-
-    @FXML
-    private ImageView btn_partMaster;
-
-    @FXML
-    private ImageView btn_reports;
 
     @FXML
     private AnchorPane root;
@@ -187,6 +176,30 @@ public class LandingPageController implements Initializable
         reportsStage.initStyle(StageStyle.TRANSPARENT);
         reportsStage.show();
         closeLandingPage();
+    }
+
+    @FXML
+    private void on_locationClick() throws IOException
+    {
+        Stage locationStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/AddLocation.fxml"));
+        Scene scene = new Scene(root);
+        locationStage.setScene(scene);
+        locationStage.setTitle("RICS 1.0 Add a new storage location");
+        locationStage.initStyle(StageStyle.TRANSPARENT);
+        locationStage.show();
+    }
+
+    @FXML
+    private void on_rigClick() throws IOException
+    {
+        Stage rigStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/ManageRig.fxml"));
+        Scene scene = new Scene(root);
+        rigStage.setScene(scene);
+        rigStage.setTitle("RICS 1.0 Add a rig");
+        rigStage.initStyle(StageStyle.TRANSPARENT);
+        rigStage.show();
     }
 
     private void closeLandingPage() {

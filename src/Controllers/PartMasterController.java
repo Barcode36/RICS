@@ -70,6 +70,9 @@ public class PartMasterController implements Initializable
     private Label lbl_max;
 
     @FXML
+    private Label lbl_onOrder;
+
+    @FXML
     private Label lbl_flagged;
 
     @FXML
@@ -109,9 +112,11 @@ public class PartMasterController implements Initializable
                     lbl_min.setText("Min : " + part.getMinRecVal());
                     lbl_max.setText("Max : " + part.getMaxRecVal());
                     lbl_onHand.setText(" OH: " + part.getOnHand());
-                    lbl_flagged.setText("  F : " + part.getFlagged());
+                    lbl_flagged.setText("   F : " + part.getFlagged());
+                    lbl_onOrder.setText(" OO: "+ part.getOnOrder());
                     txt_description.setText(part.getDescription());
                     txt_unitOfMeasure.setText(part.getUnitOfMeasure());
+
                     for(Vendor vendor : vendors)
                     {
                         if(vendor.getVendorId()==part.getVendorId())
@@ -150,12 +155,6 @@ public class PartMasterController implements Initializable
         }
     }
 
-    private void closePartMaster()
-    {
-        Stage stage = (Stage)btn_home.getScene().getWindow();
-        stage.close();
-    }
-
     @FXML
     private void on_addPartClick()
     {
@@ -168,7 +167,6 @@ public class PartMasterController implements Initializable
             addPartStage.setTitle("RICS 1.0 New Part");
             addPartStage.initStyle(StageStyle.TRANSPARENT);
             addPartStage.show();
-            closePartMaster();
         }
         catch (Exception e)
         {
@@ -183,10 +181,10 @@ public class PartMasterController implements Initializable
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/IssuePart.fxml"));
         Stage issueStage = new Stage();
         issueStage.setTitle("RICS 1.0 Issue Part");
+        issueStage.initStyle(StageStyle.TRANSPARENT);
         issueStage.setScene(new Scene(loader.load()));
         IssuePartController controller = loader.getController();
         controller.setLabel(lbl_partNo.getText());
-
         issueStage.show();
         closePartMaster();
 
@@ -227,8 +225,12 @@ public class PartMasterController implements Initializable
             }
         }
 
+    }
 
-
+    private void closePartMaster()
+    {
+        Stage stage = (Stage)btn_home.getScene().getWindow();
+        stage.close();
     }
 
 

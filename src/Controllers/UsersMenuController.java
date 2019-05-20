@@ -10,13 +10,19 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
@@ -27,13 +33,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class UsersMenuController implements Initializable
-{
+public class UsersMenuController implements Initializable {
     @FXML
-    private JFXButton btn_addUser;
+    private ImageView btn_addUser;
 
     @FXML
-    private JFXButton btn_updateUser;
+    private ImageView btn_refreshList;
 
     @FXML
     private JFXTextField txt_username;
@@ -69,27 +74,18 @@ public class UsersMenuController implements Initializable
     private TableColumn<Map.Entry, String> col_lastName;
 
     @FXML
-    private JFXButton btn_save;
-
-    @FXML
     private JFXButton btn_delete;
 
-    @FXML
-    private JFXButton btn_undo;
-
-    private int userAlertCounter =0;
-
+    private int userAlertCounter = 0;
 
     private DBManager dbm = new DBManager();
 
 
     @FXML
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
 
         on_refreshListClick();
-
 
         try {
             tbl_users.setOnMouseClicked((MouseEvent event) -> {
@@ -111,31 +107,10 @@ public class UsersMenuController implements Initializable
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //fade-in transition for menu buttons
-        FadeTransition fadeIn1 = new FadeTransition();
-        fadeIn1.setDuration(Duration.seconds(3));
-        fadeIn1.setNode(btn_addUser);
-        fadeIn1.setFromValue(0);
-        fadeIn1.setToValue(1);
-        fadeIn1.setCycleCount(1);
-
-        FadeTransition fadeIn2 = new FadeTransition();
-        fadeIn2.setDuration(Duration.seconds(3));
-        fadeIn2.setNode(btn_updateUser);
-        fadeIn2.setFromValue(0);
-        fadeIn2.setToValue(1);
-        fadeIn2.setCycleCount(1);
-
-        fadeIn1.play();
-        fadeIn2.play();
-
-
     }
 
     @FXML
-    private void on_addUserClick()
-    {
+    private void on_addUserClick() {
         txt_username.setDisable(false);
         txt_username.clear();
         txt_firstName.clear();
@@ -147,8 +122,7 @@ public class UsersMenuController implements Initializable
     }
 
     @FXML
-    private void on_refreshListClick()
-    {
+    private void on_refreshListClick() {
         DBManager dbm = new DBManager();
         ObservableList<User> usersOBS = dbm.loadUsersOBS();
 
@@ -173,9 +147,7 @@ public class UsersMenuController implements Initializable
     @FXML
     private void on_saveClick()
     {
-        HashMap<String, User> usersMap = dbm.loadUsers();
-
-
+        ObservableList<User> usersOBS = dbm.loadUsersOBS();
         String username = txt_username.getText();
         String firstName = txt_firstName.getText();
         String lastName = txt_lastName.getText();
@@ -186,80 +158,72 @@ public class UsersMenuController implements Initializable
         Window window = btn_addUser.getScene().getWindow();
 
         //field validation
-        if(username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() || passwordC.isEmpty())
+        if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() || passwordC.isEmpty())
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing information", "Please complete all " +
                     "fields");
-
             return;
         }
-        else if(!password.equals(passwordC))
+        else if (!password.equals(passwordC))
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Passwords", "Passwords do not match");
-
-
         }
-        else if(usersMap.containsKey(txt_username.getText()))
+        else if (dbm.containsUser(usersOBS, username))
+        {
+            if (userAlertCounter == 0)
             {
-                if(userAlertCounter == 0)
-                {
-                    AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
-                            "account details click OK & save," + "to cancel click OK & undo.");
-                }
-
-                    userAlertCounter ++;
-
-                if(userAlertCounter == 2)
-                {
-                    try {
-                        int rigNo = Integer.parseInt(rig);
-                        User u = new User(username, password, firstName, lastName, rigNo, admin);
-
-                        dbm.updateUser(u);
-                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
-                                "successfully updated account details");
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    userAlertCounter =0;
-                }
+                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
+                        "account details click OK & save," + "to cancel click OK & undo.");
             }
-            else {
-                try {
+
+            userAlertCounter++;
+
+            if (userAlertCounter == 2)
+            {
+                try
+                {
                     int rigNo = Integer.parseInt(rig);
                     User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-                    if (dbm.registerUser(u))
-                    {
-                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
-                                "successfully created a new account.");
+                    dbm.updateUser(u);
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
+                            "successfully updated account details");
 
-                        txt_username.clear();
-                        txt_firstName.clear();
-                        txt_lastName.clear();
-                        txt_rig.clear();
-                        txt_password.clear();
-                        txt_passwordConfirm.clear();
-                        rdo_admin.setSelected(false);
-                    }
-                    else if (dbm.registerUser(u) == false)
-                    {
-                        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
-                                "account.");
-
-                        return;
-                    }
-
-
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     e.printStackTrace();
                 }
+                userAlertCounter = 0;
             }
+        }
+        else if(!dbm.containsUser(usersOBS, username))
+        {
+            try {
+                int rigNo = Integer.parseInt(rig);
+                User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-            on_refreshListClick();
+                if (dbm.registerUser(u)) {
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
+                            "successfully created a new account.");
 
+                    txt_username.clear();
+                    txt_firstName.clear();
+                    txt_lastName.clear();
+                    txt_rig.clear();
+                    txt_password.clear();
+                    txt_passwordConfirm.clear();
+                    rdo_admin.setSelected(false);
+                } else if (dbm.registerUser(u) == false) {
+                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
+                            "account.");
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        on_refreshListClick();
     }
 
     @FXML
@@ -267,28 +231,28 @@ public class UsersMenuController implements Initializable
     {
         try
         {
-            HashMap<String, User> usersMap = dbm.loadUsers();
+            ObservableList<User> usersOBS = dbm.loadUsersOBS();
 
-            if(usersMap.containsKey(txt_username.getText()))
+            for(User user : usersOBS)
             {
-                User foundUser = usersMap.get(txt_username.getText());
-                txt_username.setText(foundUser.getUsername());
-                txt_firstName.setText(foundUser.getFirstName());
-                txt_lastName.setText(foundUser.getLastName());
-                txt_rig.setText(Integer.toString(foundUser.getRig()));
-                rdo_admin.setSelected(foundUser.getAdminUser());
-                txt_password.setText(foundUser.getPassword());
-                txt_passwordConfirm.setText("");
+                if(user.getUsername().equals(txt_username.getText()))
+                {
+                    txt_username.setText(user.getUsername());
+                    txt_firstName.setText(user.getFirstName());
+                    txt_lastName.setText(user.getLastName());
+                    txt_rig.setText(Integer.toString(user.getRig()));
+                    rdo_admin.setSelected(user.getAdminUser());
+                    txt_password.setText(user.getPassword());
+                    txt_passwordConfirm.setText("");
 
-                userAlertCounter =0;
-
+                    userAlertCounter =0;
+                }
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -307,15 +271,16 @@ public class UsersMenuController implements Initializable
         {
             try
             {
-                HashMap<String, User> usersMap = dbm.loadUsers();
+                ObservableList<User> usersOBS = dbm.loadUsersOBS();
 
-
-                if(usersMap.containsKey(txt_username.getText()))
+                for(User user : usersOBS)
                 {
-                    User foundUser = usersMap.get(txt_username.getText());
-                    dbm.deleteUser(foundUser);
-                    userAlertCounter = 0;
-                    on_refreshListClick();
+                    if(user.getUsername().equals(txt_username.getText()))
+                    {
+                        dbm.deleteUser(user);
+                        userAlertCounter =0;
+                        on_refreshListClick();
+                    }
                 }
             }
             catch (Exception e)
@@ -324,5 +289,31 @@ public class UsersMenuController implements Initializable
             }
         }
 
+    }
+
+    @FXML
+    private void on_homeClick()
+    {
+        try
+        {
+            Stage homeStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
+            Scene scene = new Scene(root);
+            homeStage.setScene(scene);
+            homeStage.setTitle("RICS 1.0 Home");
+            homeStage.initStyle(StageStyle.TRANSPARENT);
+            homeStage.show();
+            closeUsersMenu();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeUsersMenu()
+    {
+        Stage stage = (Stage)btn_delete.getScene().getWindow();
+        stage.close();
     }
 }

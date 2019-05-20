@@ -122,6 +122,12 @@ public class AddPartController implements Initializable
         }
     }
 
+    @FXML
+    private void on_cancelClick()
+    {
+        closeAddPart();
+    }
+
     private void closeAddPart()
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();

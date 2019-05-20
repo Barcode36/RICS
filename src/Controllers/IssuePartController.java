@@ -102,6 +102,7 @@ public class IssuePartController
             controller.refresh(lbl_partNo.getText());
 
             partMaster.show();
+            closeIssuePart();
         }
         catch(Exception e)
         {

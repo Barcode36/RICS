@@ -94,6 +94,6 @@
       </Label>
       <JFXComboBox fx:id="combo_location" focusColor="#cccccc" layoutX="133.0" layoutY="432.0" prefHeight="25.0" prefWidth="198.0" promptText="location" styleClass="formFields" unFocusColor="#cccccc" />
       <JFXButton fx:id="btn_save" layoutX="104.0" layoutY="489.0" text="Save" onAction="#on_saveClick"/>
-      <JFXButton fx:id="btn_cancel" layoutX="231.0" layoutY="489.0" text="Cancel" />
+      <JFXButton fx:id="btn_cancel" layoutX="231.0" layoutY="489.0" text="Cancel" onAction="#on_cancelClick" />
    </children>
 </AnchorPane>

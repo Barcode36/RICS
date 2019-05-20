@@ -50,52 +50,6 @@ public class DBManager
         return true;
     }
 
-    public HashMap<String, User> loadUsers()
-    {
-        HashMap<String, User> users = new HashMap();
-
-        try
-        {
-            forName(driver);
-            Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt = conn.createStatement();
-
-            //DB select statement
-            ResultSet userList = stmt.executeQuery("SELECT * FROM Users");
-
-            //iterate through result set
-            while(userList.next())
-            {
-                String username = userList.getString("username");
-                String password = userList.getString("password");
-                String firstName = userList.getString("firstName");
-                String lastName = userList.getString("lastName");
-                int rig = userList.getInt("rig");
-                Boolean adminUser = userList.getBoolean("adminUser");
-
-
-                //Build user with data from DB
-                User user = new User(username, password, firstName, lastName, rig, adminUser);
-
-                //Adding users to HashMap using userId as key
-                users.put(username, user);
-            }
-
-            //close connection to DB
-            conn.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            return users;
-        }
-    }
-
-    //for populating tbl_users in usersMenu.fxml
-    //javafx table views can only be populated with observable lists
     public ObservableList<User> loadUsersOBS()
     {
         ObservableList<User> users = FXCollections.observableArrayList();
@@ -170,6 +124,7 @@ public class DBManager
         }
     }
 
+    //delete user record
     public void deleteUser(User u)
     {
         try
@@ -191,17 +146,16 @@ public class DBManager
         }
     }
 
+    //user login
     public User login(String username, String password)
     {
-        HashMap<String, User> users = loadUsers();
+        ObservableList<User> usersOBS = loadUsersOBS();
 
-        if(users.containsKey(username))
+        for(User user : usersOBS)
         {
-            User foundUser = users.get(username);
-
-            if(foundUser.getPassword().equals(password))
+            if(user.getUsername().equals(username) && user.getPassword().equals(password))
             {
-                return foundUser;
+                return user;
             }
             else
                 {
@@ -211,7 +165,27 @@ public class DBManager
         return null;
     }
 
+    public static boolean containsUser(ObservableList<User> users, String username)
+    {
+        for (User user : users) {
+            if (user.getUsername() == username) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
     //***Part Functions***
+
+    //add part to DB
     public void addPart(Part p)
     {
         try
@@ -235,7 +209,7 @@ public class DBManager
         }
     }
 
-
+    //load parts from DB
     public ObservableList<Part> loadParts()
     {
         ObservableList<Part> parts = FXCollections.observableArrayList();
@@ -285,8 +259,109 @@ public class DBManager
         }
     }
 
+    public void updatePart(Part p)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+            int adminUser = 0;
+            if(u.getAdminUser().equals(true))
+            {
+                adminUser = 1;
+            }
+            else
+            {
+                adminUser =0;
+            }
+
+            //Update User record in DB
+            stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
+                    "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
+                    "', adminUser = '"+ adminUser + "'WHERE Username = '" + u.getUsername() + "'");
+
+            //close connection to DB
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    //generates unique partNumber based on AccountCode
+    public String generateUniquePartNo(Part part)
+    {
+        int PXparts =-1;
+
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet partsList =
+                    stmt.executeQuery("SELECT COUNT (*) AS parts FROM Parts WHERE accountCode = '" + part.getAccountCode() +
+                            "'");
+
+            //return count of existing parts in that Inventory account
+            PXparts = partsList.getInt("parts");
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        PXparts++;
+        String newPart = String.valueOf(PXparts);
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.length() + newPart.length() < 5)
+        {
+            sb.append('0');
+        }
+
+        sb.append(PXparts);
+
+        String suffix = sb.toString();
+        String prefix = String.valueOf(part.getAccountCode()).substring(0,3);
+
+        String partNumber = prefix + "-" + suffix;
+
+        return partNumber;
+
+    }
+
+    //updates part stockLevel on issue/receipt
+    public void updateStockLevel(int newStockLevel, String partNo)
+    {
+        try
+        {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("UPDATE Parts SET onHand = '" + newStockLevel + "' WHERE partNumber = '" + partNo +
+                    "'");
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
+
+
+
+    //***Accounts functions***
     public ObservableList<InventoryAccount> loadInventoryAccounts()
     {
         ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
@@ -317,6 +392,7 @@ public class DBManager
         }
     }
 
+    //***Vendor functions****
     public ObservableList<Vendor> loadVendors()
     {
         ObservableList<Vendor> vendors = FXCollections.observableArrayList();
@@ -349,6 +425,7 @@ public class DBManager
         }
     }
 
+    //***Location functions***
     public ObservableList<Location> loadLocations()
     {
         ObservableList<Location> locations = FXCollections.observableArrayList();
@@ -378,61 +455,51 @@ public class DBManager
         }
     }
 
-    //generates unique partNumber based on AccountCode
-    public String generateUniquePartNo(Part part)
-    {
-        int PXparts =-1;
-
-       try
-       {
-           forName(driver);
-           Connection conn = DriverManager.getConnection(connectionString);
-           Statement stmt = conn.createStatement();
-
-           ResultSet partsList =
-                   stmt.executeQuery("SELECT COUNT (*) AS parts FROM Parts WHERE accountCode = '" + part.getAccountCode() +
-                           "'");
-
-           //return count of existing parts in that Inventory account
-           PXparts = partsList.getInt("parts");
-
-           conn.close();
-       }
-       catch(Exception e)
-       {
-           e.printStackTrace();
-       }
-
-        PXparts++;
-        String newPart = String.valueOf(PXparts);
-        StringBuilder sb = new StringBuilder();
-
-        while (sb.length() + newPart.length() < 5)
-        {
-            sb.append('0');
-        }
-
-        sb.append(PXparts);
-
-        String suffix = sb.toString();
-        String prefix = String.valueOf(part.getAccountCode()).substring(0,3);
-
-        String partNumber = prefix + "-" + suffix;
-
-        return partNumber;
-
-    }
-
-    public void updateStockLevel(int newStockLevel, String partNo)
+    public void addLocation(Location loc)
     {
         try
         {
-            Class.forName(driver);
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt= conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO Locations VALUES ('" + loc.getLocationId() + "')");
+
+            conn.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean containsLocation(ObservableList<Location> locs, String locationId)
+    {
+        for (Location loc : locs) {
+            if (loc.getLocationId() == locationId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //***Rig Functions***
+    public ObservableList<Rig> loadRigs()
+    {
+        ObservableList<Rig> rigs = FXCollections.observableArrayList();
+
+        try {
+            forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("UPDATE Parts SET onHand = '" + newStockLevel + "' WHERE partNumber = '" + partNo +
-                    "'");
+            ResultSet rigList = stmt.executeQuery("SELECT * FROM Rigs ORDER BY rigNo");
+
+            while (rigList.next()) {
+                rigs.add(new Rig(rigList.getInt("rigNo"), rigList.getString("rigName"),
+                        rigList.getString("clientName"), rigList.getString("wellName")));
+            }
 
             conn.close();
         }
@@ -440,7 +507,65 @@ public class DBManager
         {
             e.printStackTrace();
         }
+        finally
+        {
+            return rigs;
+        }
     }
+    public void addRig(Rig rig)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt= conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO Rigs VALUES ('" + rig.getRigNo() + "','" +
+                    rig.getRigName() + "','" + rig.getClientName() + "','" + rig.getWellName() +"')");
+
+            conn.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean containsRig(ObservableList<Rig> rigs, int rigNo)
+    {
+        for (Rig rig : rigs) {
+            if (rig.getRigNo() == rigNo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateRig(Rig rig)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+            //Update Rig record in DB
+            stmt.executeUpdate("UPDATE Rigs SET rigNo = '"+ rig.getRigNo() +"', rigName = '"+ rig.getRigName() +
+                    "', clientName = '"+ rig.getClientName() + "', wellName = '"+ rig.getWellName() + "'WHERE rigNo =" +
+                    " '" + rig.getRigNo() + "'");
+
+            //close connection to DB
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 
