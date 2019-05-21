@@ -4,7 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+
 
 import static java.lang.Class.forName;
 
@@ -268,20 +269,11 @@ public class DBManager
 
             Statement stmt = conn.createStatement();
 
-            int adminUser = 0;
-            if(u.getAdminUser().equals(true))
-            {
-                adminUser = 1;
-            }
-            else
-            {
-                adminUser =0;
-            }
 
-            //Update User record in DB
-            stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
-                    "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
-                    "', adminUser = '"+ adminUser + "'WHERE Username = '" + u.getUsername() + "'");
+            //Update Part in DB
+            stmt.executeUpdate("UPDATE Parts SET partNoun = '"+ p.getPartNoun() +"', description = '"+ p.getDescription() +
+                    "', location = '"+ p.getLocation() + "', unitCost = '"+ p.getUnitCost() + "', minLvl = '"+ p.getMinRecVal() +
+                    "', maxLvl = '"+ p.getMaxRecVal() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
 
             //close connection to DB
             conn.close();
@@ -355,6 +347,36 @@ public class DBManager
         {
             e.printStackTrace();
         }
+    }
+
+    //insert  part transaction to DB
+    public void saveTransaction(Part p, char type, int quantity, String personnel)
+    {
+        LocalDateTime now = LocalDateTime.now();
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt= conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
+                    "personnel, price, totalValue)" + "VALUES ('"+ type +"','"+ now +"','"+ p.getPartNumber() +
+                    "','"+ quantity +"','"+ personnel +"', '"+ p.getUnitCost() +"', '"+ quantity*p.getUnitCost() +"')");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Boolean containsPart(ObservableList<Part> parts, String partNumber)
+    {
+        for (Part part : parts) {
+            if (part.getPartNumber() == partNumber) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -171,6 +171,18 @@ public class Part
         this.unitOfMeasure = "Ea";
     }
 
+    public Part(String partNumber, String partNoun, String description, int minRecVal, int maxRecVal, double unitCost,
+                String location)
+    {
+        this.partNumber = partNumber;
+        this.partNoun = partNoun;
+        this.description = description;
+        this.minRecVal = minRecVal;
+        this.maxRecVal = maxRecVal;
+        this.unitCost = unitCost;
+        this.location = location;
+    }
+
     public Part(String partNumber, int accountCode, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
                 String description, String location, int vendorId,  double unitCost, int onHand, String unitOfMeasure)
     {
@@ -234,9 +246,9 @@ public class Part
     @Override
     public String toString()
     {
-        String product = this.partNumber;
+        String part = this.partNumber;
 
-        return product;
+        return part;
     }
 
 

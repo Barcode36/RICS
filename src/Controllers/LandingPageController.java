@@ -49,18 +49,6 @@ public class LandingPageController implements Initializable
         rootP = root;
     }
 
-    public void setLabel(String uname)
-    {
-
-        try
-        {
-            lbl_welcome.setText("Welcome " + uname);
-        }
-        catch(Exception e)
-        {
-        e.printStackTrace();
-        }
-    }
 
 
     @FXML

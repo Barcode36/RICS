@@ -191,6 +191,20 @@ public class PartMasterController implements Initializable
     }
 
     @FXML
+    private void on_editClick() throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/UpdatePart.fxml"));
+        Stage updateStage = new Stage();
+        updateStage.setTitle("RICS 1.0 Update Part");
+        updateStage.initStyle(StageStyle.TRANSPARENT);
+        updateStage.setScene(new Scene(loader.load()));
+        UpdatePartController controller = loader.getController();
+        controller.setLabel(lbl_partNo.getText());
+        updateStage.show();
+
+    }
+
+    @FXML
     public void refresh(String partNo)
     {
         DBManager dbm = new DBManager();

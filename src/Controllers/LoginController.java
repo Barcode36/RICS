@@ -81,9 +81,6 @@ public class LoginController implements Initializable
                 Stage landingPageStage = new Stage(StageStyle.TRANSPARENT);
                 landingPageStage.setTitle("RICS 1.0 Home Page");
                 landingPageStage.setScene(new Scene(loader.load()));
-                LandingPageController controller = loader.getController();
-                controller.setLabel(uname);
-
                 landingPageStage.show();
                 closeLogin();
             }

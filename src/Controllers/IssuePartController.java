@@ -65,9 +65,8 @@ public class IssuePartController
                 {
                     int newStockLevel = part.getOnHand() - qty;
                     dbm.updateStockLevel(newStockLevel, partNo);
+                    dbm.saveTransaction(part, 'I', qty, txt_issuedTo.getText());
 
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part issued", "you have " +
-                            "issued " + qty + " of " + partNo + ".");
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/Partmaster.fxml"));
                     Stage partMaster = new Stage(StageStyle.TRANSPARENT);
@@ -75,9 +74,12 @@ public class IssuePartController
                     partMaster.setScene(new Scene(loader.load()));
                     PartMasterController controller = loader.getController();
                     controller.refresh(partNo);
-
                     partMaster.show();
                     closeIssuePart();
+
+
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part issued", "you have " +
+                            "issued " + qty + " of " + partNo + ".");
 
                 }
             }

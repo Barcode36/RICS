@@ -13,13 +13,7 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LandingPageController">
    <children>
-      <Label fx:id="lbl_welcome" layoutX="38.0" layoutY="99.0" text="welcome" textFill="#eda678">
-         <font>
-            <Font name="Quicksand Bold" size="18.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="btn_rig" fitHeight="51.0" fitWidth="40.0" layoutX="328.0" layoutY="293.0" pickOnBounds="true"
-                 preserveRatio="true" onMousePressed="#on_rigClick">
+      <ImageView fx:id="btn_rig" fitHeight="51.0" fitWidth="40.0" layoutX="328.0" layoutY="293.0" onMousePressed="#on_rigClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_rigDark.png" />
          </image>
@@ -94,7 +88,7 @@
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_rig" alignment="CENTER" layoutX="315.0" layoutY="333.0" prefHeight="18.0" prefWidth="66.0" text="Add rig" textFill="#eda678">
+      <Label fx:id="lbl_rig" alignment="CENTER" layoutX="310.0" layoutY="333.0" prefHeight="18.0" prefWidth="77.0" text="Manage rigs" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>

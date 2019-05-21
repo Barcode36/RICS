@@ -94,6 +94,7 @@ public class AddPartController implements Initializable
         Location location = combo_location.getSelectionModel().getSelectedItem();
         String locationId = location.getLocationId();
 
+
         try
         {
             Part part = new Part(accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationId);
@@ -104,6 +105,7 @@ public class AddPartController implements Initializable
             dbm.addPart(part);
             AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part created", "you have " +
                     "successfully created a new stock card");
+            return;
         }
         catch(Exception e)
         {

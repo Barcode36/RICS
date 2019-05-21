@@ -174,6 +174,7 @@ public class UsersMenuController implements Initializable {
             {
                 AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
                         "account details click OK & save," + "to cancel click OK & undo.");
+                return;
             }
 
             userAlertCounter++;
@@ -188,6 +189,7 @@ public class UsersMenuController implements Initializable {
                     dbm.updateUser(u);
                     AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
                             "successfully updated account details");
+                    return;
 
                 }
                 catch (Exception e)
@@ -204,8 +206,6 @@ public class UsersMenuController implements Initializable {
                 User u = new User(username, password, firstName, lastName, rigNo, admin);
 
                 if (dbm.registerUser(u)) {
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
-                            "successfully created a new account.");
 
                     txt_username.clear();
                     txt_firstName.clear();
@@ -214,6 +214,12 @@ public class UsersMenuController implements Initializable {
                     txt_password.clear();
                     txt_passwordConfirm.clear();
                     rdo_admin.setSelected(false);
+
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Created", "You have " +
+                            "successfully created a new account.");
+
+                    return;
+
                 } else if (dbm.registerUser(u) == false) {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
                             "account.");
@@ -264,6 +270,7 @@ public class UsersMenuController implements Initializable {
         {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Delete account?", "to delete " +
                     "user click delete again" + "to cancel click OK undo.");
+            return;
         }
         userAlertCounter --;
 
