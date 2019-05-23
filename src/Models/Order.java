@@ -7,7 +7,7 @@ public class Order
 {
     //private properties
     private String orderNumber;
-    private String orderType;
+    private char orderType;
     private String shippingMethod;
     private Date date;
     private String header;
@@ -22,7 +22,7 @@ public class Order
         return orderNumber;
     }
 
-    public String getOrderType()
+    public char getOrderType()
     {
         return orderType;
     }
@@ -66,7 +66,7 @@ public class Order
     public Order()
     {
         this.orderNumber = "";
-        this.orderType = "";
+        this.orderType = 'U';
         this.shippingMethod = "";
         this.date = new Date();
         this.header = "";
@@ -76,7 +76,7 @@ public class Order
         this.orderLines = new HashMap();
     }
 
-    public Order(String orderNumber, String orderType, String shippingMethod, Date date,
+    public Order(String orderNumber, char orderType, String shippingMethod, Date date,
                  String header, char orderStatus, double orderTotal, Boolean orderApproved)
     {
         this.orderNumber = orderNumber;

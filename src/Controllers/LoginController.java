@@ -10,11 +10,9 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -35,10 +33,6 @@ public class LoginController implements Initializable
     @FXML
     private JFXButton btn_login;
 
-    @FXML
-    private AnchorPane root;
-
-    public static AnchorPane rootP;
 
 
     @Override
@@ -52,7 +46,7 @@ public class LoginController implements Initializable
 
 
     @FXML
-    private void onClick_btn_login() throws IOException
+    private void onClick_btn_login()
     {
         try
         {
@@ -90,13 +84,10 @@ public class LoginController implements Initializable
         {
             e.printStackTrace();
         }
-
-
-
-
     }
 
-    public void closeLogin() {
+    public void closeLogin()
+    {
        Stage stage1 = (Stage)btn_login.getScene().getWindow();
         stage1.close();
     }

@@ -20,8 +20,6 @@ import java.util.ResourceBundle;
 public class LandingPageController implements Initializable
 {
 
-    @FXML
-    private Label lbl_welcome;
 
     @FXML
     private ImageView btn_users;
@@ -51,6 +49,7 @@ public class LandingPageController implements Initializable
 
 
 
+    //currently disabled
     @FXML
     private void loadSplashScreen()
     {
@@ -188,6 +187,18 @@ public class LandingPageController implements Initializable
         rigStage.setTitle("RICS 1.0 Add a rig");
         rigStage.initStyle(StageStyle.TRANSPARENT);
         rigStage.show();
+    }
+
+    @FXML
+    private void on_accountClick() throws IOException
+    {
+        Stage accountStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/InventoryAccounts.fxml"));
+        Scene scene = new Scene(root);
+        accountStage.setScene(scene);
+        accountStage.setTitle("RICS 1.0 Manage Inventory Accounts");
+        accountStage.initStyle(StageStyle.TRANSPARENT);
+        accountStage.show();
     }
 
     private void closeLandingPage() {

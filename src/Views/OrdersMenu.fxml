@@ -1,14 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pane_anchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3D4956;"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+<AnchorPane fx:id="pane_anchorPane" prefHeight="555.0" prefWidth="703.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrdersMenuController">
+   <children>
+      <Label fx:id="lbl_orderNo" layoutX="223.0" layoutY="22.0" text="placeholder" textFill="#cccccc">
+         <font>
+            <Font name="Quicksand Bold" size="24.0" />
+         </font>
+      </Label>
+      <AnchorPane prefHeight="555.0" prefWidth="150.0" style="-fx-background-color: #585858;">
+         <children>
+            <ImageView fx:id="btn_home" fitHeight="57.0" fitWidth="58.0" layoutX="43.0" layoutY="14.0" onMousePressed="#on_homeClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_rigDark.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="btn_newOrder" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="85.0" onMousePressed="#on_newOrderClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_add32.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="btn_update" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="122.0"  pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_edit32.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="btn_approve" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_approve32.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="btn_newLine" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_ol32.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="btn_cancel" fitHeight="23.0" fitWidth="27.0" layoutX="110.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_delete32.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbl_new" layoutX="12.0" layoutY="90.0" prefHeight="15.0" prefWidth="99.0" text="New Order" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_update" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="99.0" text="Update Header" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_addLine" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="88.0" text="Add Line Item" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_approve" layoutX="12.0" layoutY="215.0" prefHeight="15.0" prefWidth="88.0" text="Approve Order" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_cancel" layoutX="12.0" layoutY="259.0" prefHeight="15.0" prefWidth="78.0" text="Cancel Order" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="btn_print" fitHeight="25.0" fitWidth="27.0" layoutX="110.0" layoutY="298.0"  pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_print32.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbl_print" layoutX="12.0" layoutY="303.0" prefHeight="15.0" prefWidth="99.0" text="Print Order" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_cancel1" layoutX="11.0" layoutY="341.0" prefHeight="15.0" prefWidth="88.0" text="Remove Item" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="btn_removeItem" fitHeight="23.0" fitWidth="27.0" layoutX="109.0" layoutY="337.0"  pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_minus32.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label fx:id="lbl_header" layoutX="175.0" layoutY="232.0" text="Header:" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="155.0" layoutY="81.0" prefHeight="120.0" prefWidth="324.0">
+         <children>
+            <Label fx:id="lbl_vendorPartNo" prefHeight="15.0" prefWidth="40.0" text="Date :" textAlignment="RIGHT" textFill="#eda678" GridPane.halignment="RIGHT">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_shipping" prefHeight="15.0" prefWidth="109.0" text="Shipping Method :" textFill="#eda678" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_partNoun" text="Approved By : " textFill="#eda678" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_vendor" text="Status : " textFill="#eda678" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="txt_date" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txt_shipping" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txt_status" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txt_approved" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </JFXTextField>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="365.0" minWidth="54.0" prefWidth="110.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="537.0" minWidth="108.0" prefWidth="195.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <JFXTextArea fx:id="txt_header" editable="false" focusColor="#cccccc" layoutX="185.0" layoutY="247.0" prefHeight="103.0" prefWidth="305.0" text="placeholder" unFocusColor="#cccccc">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextArea>
+      <TableView fx:id="tbl_orderLines" layoutX="155.0" layoutY="381.0" prefHeight="160.0" prefWidth="630.0">
+         <columns>
+            <TableColumn fx:id="col_status" prefWidth="19.0" text="S" />
+            <TableColumn fx:id="col_lineItem" prefWidth="41.0" text="Item" />
+            <TableColumn fx:id="col_qty" prefWidth="42.0" text="Qty" />
+            <TableColumn fx:id="col_rec" prefWidth="42.0" text="Rec" />
+            <TableColumn fx:id="col_partNo" minWidth="0.0" prefWidth="192.0" text="Part Number" />
+            <TableColumn fx:id="col_noun" minWidth="0.0" prefWidth="115.0" text="Noun" />
+            <TableColumn fx:id="col_price" maxWidth="338.0" minWidth="2.0" prefWidth="72.0" text="Price" />
+            <TableColumn fx:id="col_totalVal" maxWidth="338.0" minWidth="2.0" prefWidth="106.0" text="Total Value" />
+         </columns>
+      </TableView>
+      <TableView fx:id="tbl_order" layoutX="620.0" layoutY="22.0" prefHeight="286.0" prefWidth="144.0">
+         <columns>
+            <TableColumn fx:id="col_orderNo" minWidth="120.0" prefWidth="120.0" text="Browse Orders" />
+         </columns>
+      </TableView>
+      <JFXTextField fx:id="txt_search" focusColor="#eda678" labelFloat="true" layoutX="620.0" layoutY="330.0" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="113.0" promptText="Search" unFocusColor="#eda678">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextField>
+      <ImageView fx:id="btn_search" fitHeight="25.0" fitWidth="26.0" layoutX="733.0" layoutY="328.0" onMousePressed="#on_homeClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_search32.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

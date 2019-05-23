@@ -127,6 +127,10 @@ public class ManageRigController implements Initializable
                     {
                         e.printStackTrace();
                     }
+                    finally
+                {
+                    refresh();
+                }
             }
     }
 
@@ -156,6 +160,22 @@ public class ManageRigController implements Initializable
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void refresh() {
+        DBManager dbm = new DBManager();
+        ObservableList<Rig> rigsOBS = dbm.loadRigs();
+
+        //populate table view
+        tbl_rigs.setItems(rigsOBS);
+
+        col_rigName.setCellValueFactory(new PropertyValueFactory<>("rigName"));
+
+        txt_rigNo.setText("");
+        txt_rigName.setText("");
+        txt_clientName.setText("");
+        txt_wellName.setText("");
     }
 
 }

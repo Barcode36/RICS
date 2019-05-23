@@ -9,41 +9,32 @@ import java.time.LocalDateTime;
 
 import static java.lang.Class.forName;
 
-public class DBManager
-{
+public class DBManager {
     //driver string
     private final String driver = "org.sqlite.JDBC";
     //DB Connection String
     private final String connectionString = "jdbc:sqlite:RICS.sqlite";
 
 
-
-    //***User Functions***
-    public boolean registerUser(User u)
-    {
-        try
-        {
+    //***USER FUNCTIONS***
+    public boolean registerUser(User u) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt= conn.createStatement();
+            Statement stmt = conn.createStatement();
 
             int adminUser = 0;
-            if(u.getAdminUser().equals(true))
-            {
+            if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
-            }
-            else
-            {
-                 adminUser =0;
+            } else {
+                adminUser = 0;
             }
 
             stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, rig, adminUser)" +
-                    "VALUES ('"+ u.getUsername() + "','" + u.getPassword() +"','" + u.getFirstName() + "','" +
-                    u.getLastName() +"','" +u.getRig() + "','" + adminUser +  "')");
+                    "VALUES ('" + u.getUsername() + "','" + u.getPassword() + "','" + u.getFirstName() + "','" +
+                    u.getLastName() + "','" + u.getRig() + "','" + adminUser + "')");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -51,13 +42,11 @@ public class DBManager
         return true;
     }
 
-    public ObservableList<User> loadUsersOBS()
-    {
+    public ObservableList<User> loadUsersOBS() {
         ObservableList<User> users = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -66,8 +55,7 @@ public class DBManager
             ResultSet userList = stmt.executeQuery("SELECT * FROM Users");
 
             //iterate through result set
-            while(userList.next())
-            {
+            while (userList.next()) {
                 users.add(new User(
                         userList.getString("username"),
                         userList.getString("password"),
@@ -80,56 +68,43 @@ public class DBManager
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return users;
         }
     }
 
     //edit user record
-    public void updateUser(User u)
-    {
-        try
-        {
+    public void updateUser(User u) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
             Statement stmt = conn.createStatement();
 
             int adminUser = 0;
-            if(u.getAdminUser().equals(true))
-            {
+            if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
-            }
-            else
-            {
-                adminUser =0;
+            } else {
+                adminUser = 0;
             }
 
             //Update User record in DB
-            stmt.executeUpdate("UPDATE Users SET username = '"+ u.getUsername() +"', password = '"+ u.getPassword() +
-                    "', firstName = '"+ u.getFirstName() + "', lastName = '"+ u.getLastName() + "', rig = '"+ u.getRig() +
-                    "', adminUser = '"+ adminUser + "'WHERE Username = '" + u.getUsername() + "'");
+            stmt.executeUpdate("UPDATE Users SET username = '" + u.getUsername() + "', password = '" + u.getPassword() +
+                    "', firstName = '" + u.getFirstName() + "', lastName = '" + u.getLastName() + "', rig = '" + u.getRig() +
+                    "', adminUser = '" + adminUser + "'WHERE Username = '" + u.getUsername() + "'");
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //delete user record
-    public void deleteUser(User u)
-    {
-        try
-        {
+    public void deleteUser(User u) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
@@ -140,34 +115,26 @@ public class DBManager
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //user login
-    public User login(String username, String password)
-    {
+    public User login(String username, String password) {
         ObservableList<User> usersOBS = loadUsersOBS();
 
-        for(User user : usersOBS)
-        {
-            if(user.getUsername().equals(username) && user.getPassword().equals(password))
-            {
+        for (User user : usersOBS) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
+            } else {
+                return null;
             }
-            else
-                {
-                    return null;
-                }
         }
         return null;
     }
 
-    public static boolean containsUser(ObservableList<User> users, String username)
-    {
+    public static boolean containsUser(ObservableList<User> users, String username) {
         for (User user : users) {
             if (user.getUsername() == username) {
                 return true;
@@ -177,47 +144,34 @@ public class DBManager
     }
 
 
-
-
-
-
-
-
-
-    //***Part Functions***
+    //***PART FUNCTIONS***
 
     //add part to DB
-    public void addPart(Part p)
-    {
-        try
-        {
+    public void addPart(Part p) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt= conn.createStatement();
+            Statement stmt = conn.createStatement();
 
             stmt.executeUpdate("INSERT INTO Parts(partNumber, accountCode, vendorPartNumber, partNoun, description, " +
                     "vendor, location, unitCost, onHand, minLvl, maxLvl, onOrder, lastOrder, unitOfMeasure, flagged)" +
-                    "VALUES ('"+ p.getPartNumber() + "','" + p.getAccountCode() +"','" + p.getVendorNumber() +
-                    "','" + p.getPartNoun() +"','" +p.getDescription() + "','" + p.getVendorId()+ "','" + p.getLocation() +
-                    "','" + p.getUnitCost() + "','"  + p.getOnHand() + "','" + p.getMinRecVal() + "','"  + p.getMaxRecVal() +
-                    "','" + p.getOnOrder() + "','" + p.getLastOrder() + "','" + p.getUnitOfMeasure() + "','"  + p.getFlagged() + "')");
+                    "VALUES ('" + p.getPartNumber() + "','" + p.getAccountCode() + "','" + p.getVendorNumber() +
+                    "','" + p.getPartNoun() + "','" + p.getDescription() + "','" + p.getVendorId() + "','" + p.getLocation() +
+                    "','" + p.getUnitCost() + "','" + p.getOnHand() + "','" + p.getMinRecVal() + "','" + p.getMaxRecVal() +
+                    "','" + p.getOnOrder() + "','" + p.getLastOrder() + "','" + p.getUnitOfMeasure() + "','" + p.getFlagged() + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //load parts from DB
-    public ObservableList<Part> loadParts()
-    {
+    public ObservableList<Part> loadParts() {
         ObservableList<Part> parts = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -226,8 +180,7 @@ public class DBManager
             ResultSet partList = stmt.executeQuery("SELECT * FROM Parts ORDER BY partNumber");
 
             //iterate through result set
-            while(partList.next())
-            {
+            while (partList.next()) {
                 parts.add(new Part(
                         partList.getString("partNumber"),
                         partList.getInt("accountCode"),
@@ -249,21 +202,15 @@ public class DBManager
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return parts;
         }
     }
 
-    public void updatePart(Part p)
-    {
-        try
-        {
+    public void updatePart(Part p) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
@@ -271,26 +218,22 @@ public class DBManager
 
 
             //Update Part in DB
-            stmt.executeUpdate("UPDATE Parts SET partNoun = '"+ p.getPartNoun() +"', description = '"+ p.getDescription() +
-                    "', location = '"+ p.getLocation() + "', unitCost = '"+ p.getUnitCost() + "', minLvl = '"+ p.getMinRecVal() +
-                    "', maxLvl = '"+ p.getMaxRecVal() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
+            stmt.executeUpdate("UPDATE Parts SET partNoun = '" + p.getPartNoun() + "', description = '" + p.getDescription() +
+                    "', location = '" + p.getLocation() + "', unitCost = '" + p.getUnitCost() + "', minLvl = '" + p.getMinRecVal() +
+                    "', maxLvl = '" + p.getMaxRecVal() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //generates unique partNumber based on AccountCode
-    public String generateUniquePartNo(Part part)
-    {
-        int PXparts =-1;
+    public String generateUniquePartNo(Part part) {
+        int PXparts = -1;
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -303,9 +246,7 @@ public class DBManager
             PXparts = partsList.getInt("parts");
 
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -313,15 +254,14 @@ public class DBManager
         String newPart = String.valueOf(PXparts);
         StringBuilder sb = new StringBuilder();
 
-        while (sb.length() + newPart.length() < 5)
-        {
+        while (sb.length() + newPart.length() < 5) {
             sb.append('0');
         }
 
         sb.append(PXparts);
 
         String suffix = sb.toString();
-        String prefix = String.valueOf(part.getAccountCode()).substring(0,3);
+        String prefix = String.valueOf(part.getAccountCode()).substring(0, 3);
 
         String partNumber = prefix + "-" + suffix;
 
@@ -329,48 +269,8 @@ public class DBManager
 
     }
 
-    //updates part stockLevel on issue/receipt
-    public void updateStockLevel(int newStockLevel, String partNo)
-    {
-        try
-        {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("UPDATE Parts SET onHand = '" + newStockLevel + "' WHERE partNumber = '" + partNo +
-                    "'");
-
-            conn.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    //insert  part transaction to DB
-    public void saveTransaction(Part p, char type, int quantity, String personnel)
-    {
-        LocalDateTime now = LocalDateTime.now();
-        try
-        {
-            forName(driver);
-            Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt= conn.createStatement();
-
-            stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
-                    "personnel, price, totalValue)" + "VALUES ('"+ type +"','"+ now +"','"+ p.getPartNumber() +
-                    "','"+ quantity +"','"+ personnel +"', '"+ p.getUnitCost() +"', '"+ quantity*p.getUnitCost() +"')");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public Boolean containsPart(ObservableList<Part> parts, String partNumber)
-    {
+    public Boolean containsPart(ObservableList<Part> parts, String partNumber) {
         for (Part part : parts) {
             if (part.getPartNumber() == partNumber) {
                 return true;
@@ -380,12 +280,8 @@ public class DBManager
     }
 
 
-
-
-
-    //***Accounts functions***
-    public ObservableList<InventoryAccount> loadInventoryAccounts()
-    {
+    //***ACCOUNT FUNCTIONS***
+    public ObservableList<InventoryAccount> loadInventoryAccounts() {
         ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
 
         try {
@@ -403,20 +299,60 @@ public class DBManager
             }
 
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return accounts;
         }
     }
 
-    //***Vendor functions****
-    public ObservableList<Vendor> loadVendors()
-    {
+    public void addInventoryAccount(InventoryAccount account) {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO InventoryAccounts VALUES ('" + account.getAccountCode() + "','" +
+                    account.getAccountName()  + "')");
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateInventoryAccount(InventoryAccount account) {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+            //Update Rig record in DB
+            stmt.executeUpdate("UPDATE InventoryAccounts SET accountCode = '" + account.getAccountCode() + "', " +
+                    "accountName" +
+                    " = '" + account.getAccountName() +
+                     "'WHERE accountCode =" +
+                    " '" + account.getAccountCode() + "'");
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean containsAccount(ObservableList<InventoryAccount> accounts, int accountCode) {
+        for (InventoryAccount account : accounts) {
+            if (account.getAccountCode() == accountCode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //***VENDOR FUNCTIONS****
+    public ObservableList<Vendor> loadVendors() {
         ObservableList<Vendor> vendors = FXCollections.observableArrayList();
 
         try {
@@ -436,20 +372,15 @@ public class DBManager
             }
 
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return vendors;
         }
     }
 
-    //***Location functions***
-    public ObservableList<Location> loadLocations()
-    {
+    //***LOCATION FUNCTIONS***
+    public ObservableList<Location> loadLocations() {
         ObservableList<Location> locations = FXCollections.observableArrayList();
 
         try {
@@ -466,37 +397,28 @@ public class DBManager
             }
 
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return locations;
         }
     }
 
-    public void addLocation(Location loc)
-    {
-        try
-        {
+    public void addLocation(Location loc) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt= conn.createStatement();
+            Statement stmt = conn.createStatement();
 
             stmt.executeUpdate("INSERT INTO Locations VALUES ('" + loc.getLocationId() + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean containsLocation(ObservableList<Location> locs, String locationId)
-    {
+    public static boolean containsLocation(ObservableList<Location> locs, String locationId) {
         for (Location loc : locs) {
             if (loc.getLocationId() == locationId) {
                 return true;
@@ -506,9 +428,8 @@ public class DBManager
     }
 
 
-    //***Rig Functions***
-    public ObservableList<Rig> loadRigs()
-    {
+    //***RIG FUNCTIONS***
+    public ObservableList<Rig> loadRigs() {
         ObservableList<Rig> rigs = FXCollections.observableArrayList();
 
         try {
@@ -524,37 +445,29 @@ public class DBManager
             }
 
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return rigs;
         }
     }
-    public void addRig(Rig rig)
-    {
-        try
-        {
+
+    public void addRig(Rig rig) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
-            Statement stmt= conn.createStatement();
+            Statement stmt = conn.createStatement();
 
             stmt.executeUpdate("INSERT INTO Rigs VALUES ('" + rig.getRigNo() + "','" +
-                    rig.getRigName() + "','" + rig.getClientName() + "','" + rig.getWellName() +"')");
+                    rig.getRigName() + "','" + rig.getClientName() + "','" + rig.getWellName() + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean containsRig(ObservableList<Rig> rigs, int rigNo)
-    {
+    public static boolean containsRig(ObservableList<Rig> rigs, int rigNo) {
         for (Rig rig : rigs) {
             if (rig.getRigNo() == rigNo) {
                 return true;
@@ -563,33 +476,136 @@ public class DBManager
         return false;
     }
 
-    public void updateRig(Rig rig)
-    {
-        try
-        {
+    public void updateRig(Rig rig) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
             Statement stmt = conn.createStatement();
 
             //Update Rig record in DB
-            stmt.executeUpdate("UPDATE Rigs SET rigNo = '"+ rig.getRigNo() +"', rigName = '"+ rig.getRigName() +
-                    "', clientName = '"+ rig.getClientName() + "', wellName = '"+ rig.getWellName() + "'WHERE rigNo =" +
+            stmt.executeUpdate("UPDATE Rigs SET rigNo = '" + rig.getRigNo() + "', rigName = '" + rig.getRigName() +
+                    "', clientName = '" + rig.getClientName() + "', wellName = '" + rig.getWellName() + "'WHERE rigNo =" +
                     " '" + rig.getRigNo() + "'");
 
             //close connection to DB
             conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //***TRANSACTION FUNCTIONS***
+    //insert  part transaction to DB
+    public void saveTransaction(Part p, char type, int quantity, String personnel) {
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
 
+            Double totalVal = quantity*p.getUnitCost();
 
+            stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
+                    "personnel, price, totalVal)" + "VALUES ('" + type + "','" + now + "','" + p.getPartNumber() +
+                    "','" + quantity + "','" + personnel + "', '" + p.getUnitCost() + "', '"+ totalVal + "')");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public ObservableList<Transaction> loadTransactions(Part p)
+    {
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
 
+            ResultSet transactionList =
+                    stmt.executeQuery("SELECT * FROM partHistory WHERE partNo = '" + p.getPartNumber() + "'");
 
+            while (transactionList.next())
+            {
+                transactions.add(new Transaction(
+                        transactionList.getString("transType").charAt(0),
+                        transactionList.getString("transDate"),
+                        transactionList.getString("partNo"),
+                        transactionList.getInt("quantity"),
+                        transactionList.getString("personnel"),
+                        transactionList.getDouble("price"),
+                        transactionList.getDouble("totalVal")
+                ));
+            }
+
+            conn.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            return transactions;
+        }
+    }
+
+    //updates part stockLevel on issue/receipt
+    public void updateStockLevel(int newStockLevel, String partNo) {
+        try {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("UPDATE Parts SET onHand = '" + newStockLevel + "' WHERE partNumber = '" + partNo +
+                    "'");
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //***ORDER FUNCTIONS***
+    //generates unique orderNumber based on users Rig
+    public String generateUniqueOrderNo()
+    {
+        int PXorders = -1;
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet ordersList =
+                    stmt.executeQuery("SELECT COUNT (*) AS orders FROM Orders");
+
+            //return count of existing parts in that Inventory account
+            PXorders = ordersList.getInt("orders");
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PXorders++;
+        String newOrder = String.valueOf(PXorders);
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.length() + newOrder.length() < 5) {
+            sb.append('0');
+        }
+
+        sb.append(PXorders);
+
+        String suffix = sb.toString();
+        String prefix = "164";
+
+        String orderNumber = prefix + "-" + suffix;
+
+        return orderNumber;
+
+    }
 }
+
+
+

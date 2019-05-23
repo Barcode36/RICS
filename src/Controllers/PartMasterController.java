@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.DBManager;
 import Models.Part;
+import Models.Transaction;
 import Models.Vendor;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -21,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.tree.TreeNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,7 +33,32 @@ public class PartMasterController implements Initializable
     private TableView tbl_parts;
 
     @FXML
+    private TableColumn col_partNumber;
+
+    @FXML
+    private TableView tbl_history;
+
+    @FXML
+    private TableColumn col_transType;
+
+    @FXML
+    private TableColumn col_transDate;
+
+    @FXML
     private TableColumn col_partNo;
+
+    @FXML
+    private TableColumn col_personnel;
+
+    @FXML
+    private TableColumn col_qty;
+
+    @FXML
+    private TableColumn col_cost;
+
+    @FXML
+    private TableColumn col_totalVal;
+
 
     @FXML
     private Label lbl_partNo;
@@ -81,6 +108,10 @@ public class PartMasterController implements Initializable
     @FXML
     private ImageView btn_home;
 
+    @FXML
+    private ImageView btn_edit;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -88,11 +119,23 @@ public class PartMasterController implements Initializable
         ObservableList<Part> partsOBS = dbm.loadParts();
         ObservableList<Vendor> vendors = dbm.loadVendors();
 
+
+
         //populate table view
         tbl_parts.setItems(partsOBS);
 
-        col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
+        col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
         refresh(partsOBS.get(0).toString());
+
+        ObservableList<Transaction> transactions = dbm.loadTransactions(partsOBS.get(0));
+        tbl_history.setItems(transactions);
+        col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
+        col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
+        col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
+        col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
 
 
         try {
@@ -124,8 +167,16 @@ public class PartMasterController implements Initializable
                             txt_vendor.setText(vendor.toString());
                         }
                     }
-                    //lbl onOrder
 
+                    ObservableList<Transaction> sTransactions = dbm.loadTransactions(part);
+                    tbl_history.setItems(sTransactions);
+                    col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
+                    col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
+                    col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
+                    col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+                    col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                    col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
+                    col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
 
                 }
             });
@@ -240,6 +291,7 @@ public class PartMasterController implements Initializable
         }
 
     }
+
 
     private void closePartMaster()
     {

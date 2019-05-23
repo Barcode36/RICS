@@ -5,12 +5,15 @@ public class OrderLine
     //private properties
     private int orderLineId;
     private int quantity;
+    private char status;
+    private int receivedQty;
     private Part part;
     private double lineTotal;
     private String requestedBy;
 
 
     //getters and setters
+
     public int getOrderLineId()
     {
         return orderLineId;
@@ -34,6 +37,22 @@ public class OrderLine
     public String getRequestedBy()
     {
         return requestedBy;
+    }
+
+    public char getStatus() {
+        return status;
+    }
+
+    public void setStatus(char status) {
+        this.status = status;
+    }
+
+    public int getReceived() {
+        return receivedQty;
+    }
+
+    public void setReceived(int received) {
+        this.receivedQty = received;
     }
 
     public void setOrderLineId(int orderLineId)
@@ -76,11 +95,14 @@ public class OrderLine
         this.requestedBy = requestedBy;
     }
 
-    public OrderLine(int orderLineId, int quantity, Part part, double lineTotal, String requestedBy) {
+    public OrderLine(int orderLineId, int quantity, Part part, double lineTotal, String requestedBy, char status,
+                     int receivedQty) {
         this.orderLineId = orderLineId;
         this.quantity = quantity;
         this.part = part;
         this.lineTotal = lineTotal;
         this.requestedBy = requestedBy;
+        this.status = status;
+        this.receivedQty = receivedQty;
     }
 }

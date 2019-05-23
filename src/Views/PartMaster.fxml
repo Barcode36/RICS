@@ -31,14 +31,14 @@
       </Label>
       <AnchorPane prefHeight="555.0" prefWidth="150.0" style="-fx-background-color: #585858;">
          <children>
-            <ImageView fx:id="btn_home" fitHeight="66.0" fitWidth="79.0" layoutX="42.0" layoutY="25.0" onMousePressed="#on_homeClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_home" fitHeight="57.0" fitWidth="58.0" layoutX="43.0" layoutY="14.0" onMousePressed="#on_homeClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_rigDark.png" />
                </image>
             </ImageView>
-            <TableView fx:id="tbl_parts" layoutX="15.0" layoutY="332.0" prefHeight="143.0" prefWidth="120.0">
+            <TableView fx:id="tbl_parts" layoutX="3.0" layoutY="332.0" prefHeight="143.0" prefWidth="144.0">
               <columns>
-                <TableColumn fx:id="col_partNo" minWidth="120.0" prefWidth="120.0" text="Browse Parts" />
+                <TableColumn fx:id="col_partNumber" minWidth="120.0" prefWidth="120.0" text="Browse Parts" />
               </columns>
             </TableView>
             <JFXTextField fx:id="txt_search" focusColor="#eda678" labelFloat="true" layoutX="11.0" layoutY="500.0" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="113.0" promptText="Search" unFocusColor="#eda678">
@@ -54,36 +54,66 @@
                   <Image url="@../assets/icon_search32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_addPart" fitHeight="25.0" fitWidth="26.0" layoutX="3.0" layoutY="91.0" onMousePressed="#on_addPartClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_addPart" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="85.0" onMousePressed="#on_addPartClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_add32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_edit" fitHeight="25.0" fitWidth="26.0" layoutX="33.0" layoutY="91.0" onMousePressed="#on_editClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_edit" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="122.0" onMousePressed="#on_editClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_edit32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_flag" fitHeight="25.0" fitWidth="26.0" layoutX="96.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_flag" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_flag32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_archive" fitHeight="25.0" fitWidth="26.0" layoutX="63.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_archive" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_archive32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_issue" fitHeight="23.0" fitWidth="27.0" layoutX="124.0" layoutY="93.0" onMousePressed="#on_issueClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_issue" fitHeight="23.0" fitWidth="27.0" layoutX="110.0" layoutY="255.0" onMousePressed="#on_issueClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_issue32.png" />
                </image>
             </ImageView>
-            <JFXButton fx:id="btn_print" layoutX="19.0" layoutY="177.0" prefHeight="25.0" prefWidth="113.0" text="Print" textFill="#eda678">
+            <Label fx:id="lbl_add" layoutX="12.0" layoutY="90.0" prefHeight="15.0" prefWidth="99.0" text="Add new part" textFill="#eda678">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Quicksand Bold" size="12.0" />
                </font>
-            </JFXButton>
+            </Label>
+            <Label fx:id="lbl_edit" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="78.0" text="Update info" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_archive" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="78.0" text="Archive part" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_flag" layoutX="12.0" layoutY="215.0" prefHeight="15.0" prefWidth="88.0" text="Flag for order" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_issue" layoutX="12.0" layoutY="259.0" prefHeight="15.0" prefWidth="78.0" text="Issue part" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="btn_issue1" fitHeight="25.0" fitWidth="27.0" layoutX="110.0" layoutY="298.0" onMousePressed="#on_issueClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icon_print32.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbl_issue1" layoutX="12.0" layoutY="303.0" prefHeight="15.0" prefWidth="99.0" text="Print card" textFill="#eda678">
+               <font>
+                  <Font name="Quicksand Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Label fx:id="lbl_description" layoutX="239.0" layoutY="258.0" text="Description :" textFill="#eda678">
@@ -252,5 +282,16 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </JFXButton>
+      <TableView fx:id="tbl_history" layoutX="177.0" layoutY="374.0" prefHeight="160.0" prefWidth="630.0">
+        <columns>
+          <TableColumn fx:id="col_transType" prefWidth="19.0" text="T" />
+          <TableColumn fx:id="col_transDate" prefWidth="172.0" text="Date &amp; Time" />
+            <TableColumn fx:id="col_partNo" prefWidth="105.0" text="Part #" />
+            <TableColumn fx:id="col_personnel" prefWidth="102.0" text="Personnel" />
+            <TableColumn fx:id="col_qty" minWidth="0.0" prefWidth="43.0" text="Qty" />
+            <TableColumn fx:id="col_cost" minWidth="0.0" prefWidth="76.0" text="Cost" />
+            <TableColumn fx:id="col_totalVal" maxWidth="127.0" minWidth="2.0" prefWidth="112.0" text="Total Value" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

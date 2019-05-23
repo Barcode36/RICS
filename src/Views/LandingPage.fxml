@@ -53,17 +53,17 @@
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#eda678">
+      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#646464">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_wmanifests" layoutX="364.0" layoutY="244.0" text="Manifests" textFill="#eda678">
+      <Label fx:id="lbl_wmanifests" layoutX="364.0" layoutY="244.0" text="Manifests" textFill="#646464">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_reports" layoutX="170.0" layoutY="244.0" text="Reports" textFill="#eda678">
+      <Label fx:id="lbl_reports" layoutX="170.0" layoutY="244.0" text="Reports" textFill="#646464">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
@@ -91,6 +91,21 @@
       <Label fx:id="lbl_rig" alignment="CENTER" layoutX="310.0" layoutY="333.0" prefHeight="18.0" prefWidth="77.0" text="Manage rigs" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="btn_accounts" fitHeight="51.0" fitWidth="40.0" layoutX="430.0" layoutY="293.0" onMousePressed="#on_accountClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_account80.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbl_accounts" alignment="CENTER" layoutX="421.0" layoutY="331.0" prefHeight="40.0" prefWidth="58.0" text="Inventory Accounts" textFill="#eda678" wrapText="true">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_title" layoutX="192.0" layoutY="30.0" text="RICS 1.0" textFill="#cccccc">
+         <font>
+            <Font name="Quicksand Bold" size="64.0" />
          </font>
       </Label>
    </children>
