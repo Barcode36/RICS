@@ -108,7 +108,7 @@ public class OrdersMenuController implements Initializable
             DBManager dbm = new DBManager();
             String orderNumber = dbm.generateUniqueOrderNo();
             Date date = new Date();
-            
+
             lbl_orderNo.setText(orderNumber);
             txt_date.setText("");
             txt_shipping.setText("");
