@@ -57,24 +57,17 @@ public class IssuePartController
 
         DBManager dbm = new DBManager();
         ObservableList<Part> parts = dbm.loadParts();
+        Part part = dbm.returnPart(parts, partNo);
         try
         {
-            for (Part part : parts)
-            {
-                if (part.getPartNumber().equals(partNo) && part.getOnHand() >= qty && qty > 0)
+                if (part.getOnHand() >= qty && qty > 0)
                 {
                     int newStockLevel = part.getOnHand() - qty;
                     dbm.updateStockLevel(newStockLevel, partNo);
                     dbm.saveTransaction(part, 'I', qty, txt_issuedTo.getText());
 
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/Partmaster.fxml"));
-                    Stage partMaster = new Stage(StageStyle.TRANSPARENT);
-                    partMaster.setTitle("RICS 1.0 PartMaster");
-                    partMaster.setScene(new Scene(loader.load()));
-                    PartMasterController controller = loader.getController();
-                    controller.refresh(partNo);
-                    partMaster.show();
+                    PartMasterController controller = new PartMasterController();
+                    controller.refresh(part);
                     closeIssuePart();
 
 
@@ -82,7 +75,6 @@ public class IssuePartController
                             "issued " + qty + " of " + partNo + ".");
 
                 }
-            }
         }
         catch(Exception e)
         {
@@ -94,23 +86,7 @@ public class IssuePartController
     @FXML
     private void on_cancelClick()
     {
-        try
-        {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/Partmaster.fxml"));
-            Stage partMaster = new Stage(StageStyle.TRANSPARENT);
-            partMaster.setTitle("RICS 1.0 PartMaster");
-            partMaster.setScene(new Scene(loader.load()));
-            PartMasterController controller = loader.getController();
-            controller.refresh(lbl_partNo.getText());
-
-            partMaster.show();
             closeIssuePart();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
     }
 
 

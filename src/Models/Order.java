@@ -62,15 +62,64 @@ public class Order
         return orderLines;
     }
 
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public void setOrderType(char orderType) {
+        this.orderType = orderType;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public void setOrderStatus(char orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setOrderTotal(double orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
+    public void setOrderApproved(Boolean orderApproved) {
+        this.orderApproved = orderApproved;
+    }
+
+    public void setOrderLines(HashMap<Integer, OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
     //constructors
     public Order()
     {
         this.orderNumber = "";
-        this.orderType = 'U';
+        this.orderType = 'P';
         this.shippingMethod = "";
         this.date = new Date();
         this.header = "";
-        this.orderStatus = 'O';
+        this.orderStatus = 'U';
+        this.orderTotal = 0.00;
+        this.orderApproved = false;
+        this.orderLines = new HashMap();
+    }
+
+    public Order(String orderNumber, char orderType, String shippingMethod)
+    {
+        this.orderNumber = orderNumber;
+        this.orderType = orderType;
+        this.shippingMethod = shippingMethod;
+        this.date = new Date();
+        this.header = "";
+        this.orderStatus = 'U';
         this.orderTotal = 0.00;
         this.orderApproved = false;
         this.orderLines = new HashMap();

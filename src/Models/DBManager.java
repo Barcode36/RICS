@@ -4,7 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 import static java.lang.Class.forName;
@@ -143,6 +145,15 @@ public class DBManager {
         return false;
     }
 
+    public static User returnUser(ObservableList<User> users, String username) {
+        for (User user : users) {
+            if (user.getUsername() == username) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 
     //***PART FUNCTIONS***
 
@@ -277,6 +288,15 @@ public class DBManager {
             }
         }
         return false;
+    }
+
+    public static Part returnPart(ObservableList<Part> parts, String partNumber) {
+        for (Part part : parts) {
+            if (part.getPartNumber().equals(partNumber)) {
+                return part;
+            }
+        }
+        return null;
     }
 
 
@@ -605,6 +625,82 @@ public class DBManager {
         return orderNumber;
 
     }
+
+    //add part to DB
+    public void addOrder(Order o)
+    {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO Orders(orderNumber, orderType, shippingMethod, orderDate, header," +
+                    "orderStatus, orderTotal, orderApproved) VALUES ('"+ o.getOrderNumber() + "','" + o.getOrderType() + "','" + o.getShippingMethod() +
+                    "','" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.getDate()) + "','" + o.getHeader() +
+                    "','" + o.getOrderStatus() + "','" + o.getOrderTotal() + "'," +
+                    "'" + o.getOrderApproved() + "')");
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ObservableList<Order> loadOrders()
+    {
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet orderList = stmt.executeQuery("SELECT * FROM Orders ORDER BY orderNumber");
+
+            while (orderList.next()) {
+                Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(orderList.getString("orderDate"));
+                orders.add(new Order(orderList.getString("orderNumber"), orderList.getString("orderType").charAt(0),
+                        orderList.getString("shippingMethod"), orderDate, orderList.getString(
+                                "header"), orderList.getString("orderStatus").charAt(0), orderList.getDouble("orderTotal"),
+                        orderList.getBoolean("orderApproved")));
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return orders;
+        }
+    }
+
+    public void updateOrder(Order o) {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+
+            //Update Part in DB
+            stmt.executeUpdate("UPDATE Orders SET orderType = '" + o.getOrderType() + "', shippingMethod = '" + o.getShippingMethod() +
+                    "', header = '" + o.getHeader() + "', orderTotal = '" + o.getOrderTotal() +  "'WHERE orderNumber =" + " '" + o.getOrderNumber() + "'");
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Order returnOrder(ObservableList<Order> orders, String orderNumber) {
+        for (Order order : orders) {
+            if (order.getOrderNumber().equals(orderNumber)) {
+                return order;
+            }
+        }
+        return null;
+    }
+
 }
 
 

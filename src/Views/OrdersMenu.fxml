@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane_anchorPane" prefHeight="555.0" prefWidth="703.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrdersMenuController">
+<AnchorPane fx:id="pane_anchorPane" prefHeight="555.0" prefWidth="703.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrdersMenuController">
    <children>
       <Label fx:id="lbl_orderNo" layoutX="223.0" layoutY="22.0" text="placeholder" textFill="#cccccc">
          <font>
@@ -27,7 +34,9 @@
                   <Image url="@../assets/icon_add32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_update" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="122.0"  pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_update" fitHeight="25.0" fitWidth="26.0" layoutX="112.0"
+                       onMousePressed="#on_updateClick" layoutY="122.0"
+                       pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_edit32.png" />
                </image>
@@ -72,7 +81,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_print" fitHeight="25.0" fitWidth="27.0" layoutX="110.0" layoutY="298.0"  pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_print" fitHeight="25.0" fitWidth="27.0" layoutX="110.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_print32.png" />
                </image>
@@ -87,7 +96,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_removeItem" fitHeight="23.0" fitWidth="27.0" layoutX="109.0" layoutY="337.0"  pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_removeItem" fitHeight="23.0" fitWidth="27.0" layoutX="109.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_minus32.png" />
                </image>
@@ -111,7 +120,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_partNoun" text="Approved By : " textFill="#eda678" GridPane.rowIndex="2">
+            <Label fx:id="lbl_orderType" text="Order Type: " textFill="#eda678" GridPane.rowIndex="2">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
@@ -121,26 +130,20 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="txt_date" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1">
+            <JFXTextField fx:id="txt_date" editable="false" focusColor="#cccccc" unFocusColor="#cccccc" GridPane.columnIndex="1">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="txt_shipping" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="combo_shipping" editable="false" focusColor="#cccccc" prefHeight="23.0" prefWidth="211.0" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            </JFXComboBox>
+            <JFXTextField fx:id="txt_status" editable="false" focusColor="#cccccc" text="" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="txt_status" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Quicksand Bold" size="12.0" />
-               </font>
-            </JFXTextField>
-            <JFXTextField fx:id="txt_approved" editable="false" focusColor="#cccccc" text="placeholder" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Quicksand Bold" size="12.0" />
-               </font>
-            </JFXTextField>
+            <JFXComboBox fx:id="combo_orderType" editable="false" focusColor="#cccccc" prefHeight="23.0" prefWidth="212.0" unFocusColor="#cccccc" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            </JFXComboBox>
          </children>
          <columnConstraints>
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="365.0" minWidth="54.0" prefWidth="110.0" />
@@ -153,7 +156,7 @@
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <JFXTextArea fx:id="txt_header" editable="false" focusColor="#cccccc" layoutX="185.0" layoutY="247.0" prefHeight="103.0" prefWidth="305.0" text="placeholder" unFocusColor="#cccccc">
+      <JFXTextArea fx:id="txt_header" editable="false" focusColor="#cccccc" layoutX="185.0" layoutY="247.0" prefHeight="103.0" prefWidth="305.0"  unFocusColor="#cccccc">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>

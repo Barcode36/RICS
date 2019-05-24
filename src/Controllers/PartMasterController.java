@@ -125,7 +125,7 @@ public class PartMasterController implements Initializable
         tbl_parts.setItems(partsOBS);
 
         col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
-        refresh(partsOBS.get(0).toString());
+        refresh(partsOBS.get(0));
 
         ObservableList<Transaction> transactions = dbm.loadTransactions(partsOBS.get(0));
         tbl_history.setItems(transactions);
@@ -237,7 +237,6 @@ public class PartMasterController implements Initializable
         IssuePartController controller = loader.getController();
         controller.setLabel(lbl_partNo.getText());
         issueStage.show();
-        closePartMaster();
 
     }
 
@@ -256,41 +255,33 @@ public class PartMasterController implements Initializable
     }
 
     @FXML
-    public void refresh(String partNo)
+    public void refresh(Part part)
     {
         DBManager dbm = new DBManager();
-        ObservableList<Part> parts = dbm.loadParts();
         ObservableList<Vendor> vendors = dbm.loadVendors();
 
-        for(Part part : parts)
+        lbl_partNo.setText(part.getPartNumber());
+        txt_vendorPartNo.setText(part.getVendorNumber());
+        txt_accountCode.setText(Integer.toString(part.getAccountCode()));
+        txt_partNoun.setText(part.getPartNoun());
+        txt_location.setText(part.getLocation());
+        txt_lastOrder.setText(part.getLastOrder());
+        txt_unitCost.setText(Double.toString(part.getUnitCost()));
+        lbl_min.setText("Min : " + part.getMinRecVal());
+        lbl_max.setText("Max : " + part.getMaxRecVal());
+        lbl_onHand.setText(" OH: " + part.getOnHand());
+        lbl_flagged.setText("  F : " + part.getFlagged());
+        txt_description.setText(part.getDescription());
+        txt_unitOfMeasure.setText(part.getUnitOfMeasure());
+        for(Vendor vendor : vendors)
         {
-            if(part.getPartNumber().equals(partNo))
+            if(vendor.getVendorId()==part.getVendorId())
             {
-                lbl_partNo.setText(part.getPartNumber());
-                txt_vendorPartNo.setText(part.getVendorNumber());
-                txt_accountCode.setText(Integer.toString(part.getAccountCode()));
-                txt_partNoun.setText(part.getPartNoun());
-                txt_location.setText(part.getLocation());
-                txt_lastOrder.setText(part.getLastOrder());
-                txt_unitCost.setText(Double.toString(part.getUnitCost()));
-                lbl_min.setText("Min : " + part.getMinRecVal());
-                lbl_max.setText("Max : " + part.getMaxRecVal());
-                lbl_onHand.setText(" OH: " + part.getOnHand());
-                lbl_flagged.setText("  F : " + part.getFlagged());
-                txt_description.setText(part.getDescription());
-                txt_unitOfMeasure.setText(part.getUnitOfMeasure());
-                for(Vendor vendor : vendors)
-                {
-                    if(vendor.getVendorId()==part.getVendorId())
-                    {
-                        txt_vendor.setText(vendor.toString());
-                    }
-                }
-
+                txt_vendor.setText(vendor.toString());
             }
         }
-
     }
+
 
 
     private void closePartMaster()
