@@ -22,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javax.swing.tree.TreeNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -125,7 +124,7 @@ public class PartMasterController implements Initializable
         tbl_parts.setItems(partsOBS);
 
         col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
-        refresh(partsOBS.get(0));
+        initData(partsOBS.get(0));
 
         ObservableList<Transaction> transactions = dbm.loadTransactions(partsOBS.get(0));
         tbl_history.setItems(transactions);
@@ -145,38 +144,7 @@ public class PartMasterController implements Initializable
                     int index = tbl_parts.getSelectionModel().getSelectedIndex();
                     Part part = (Part) tbl_parts.getItems().get(index);
 
-                    lbl_partNo.setText(part.getPartNumber());
-                    txt_vendorPartNo.setText(part.getVendorNumber());
-                    txt_accountCode.setText(Integer.toString(part.getAccountCode()));
-                    txt_partNoun.setText(part.getPartNoun());
-                    txt_location.setText(part.getLocation());
-                    txt_lastOrder.setText(part.getLastOrder());
-                    txt_unitCost.setText(Double.toString(part.getUnitCost()));
-                    lbl_min.setText("Min : " + part.getMinRecVal());
-                    lbl_max.setText("Max : " + part.getMaxRecVal());
-                    lbl_onHand.setText(" OH: " + part.getOnHand());
-                    lbl_flagged.setText("   F : " + part.getFlagged());
-                    lbl_onOrder.setText(" OO: "+ part.getOnOrder());
-                    txt_description.setText(part.getDescription());
-                    txt_unitOfMeasure.setText(part.getUnitOfMeasure());
-
-                    for(Vendor vendor : vendors)
-                    {
-                        if(vendor.getVendorId()==part.getVendorId())
-                        {
-                            txt_vendor.setText(vendor.toString());
-                        }
-                    }
-
-                    ObservableList<Transaction> sTransactions = dbm.loadTransactions(part);
-                    tbl_history.setItems(sTransactions);
-                    col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
-                    col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
-                    col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-                    col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
-                    col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-                    col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
-                    col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
+                    initData(part);
 
                 }
             });
@@ -255,7 +223,7 @@ public class PartMasterController implements Initializable
     }
 
     @FXML
-    public void refresh(Part part)
+    protected void initData(Part part)
     {
         DBManager dbm = new DBManager();
         ObservableList<Vendor> vendors = dbm.loadVendors();
@@ -280,11 +248,26 @@ public class PartMasterController implements Initializable
                 txt_vendor.setText(vendor.toString());
             }
         }
+
+        ObservableList<Transaction> sTransactions = dbm.loadTransactions(part);
+        tbl_history.setItems(sTransactions);
+        col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
+        col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
+        col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
+        col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
+    }
+
+    protected void setOH(int oh)
+    {
+        lbl_onHand.setText(" OH: " + oh);
     }
 
 
 
-    private void closePartMaster()
+    protected void closePartMaster()
     {
         Stage stage = (Stage)btn_home.getScene().getWindow();
         stage.close();

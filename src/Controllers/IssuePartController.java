@@ -8,15 +8,12 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-
-import java.io.IOException;
 
 public class IssuePartController
 {
@@ -66,13 +63,24 @@ public class IssuePartController
                     dbm.updateStockLevel(newStockLevel, partNo);
                     dbm.saveTransaction(part, 'I', qty, txt_issuedTo.getText());
 
-                    PartMasterController controller = new PartMasterController();
-                    controller.refresh(part);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/Partmaster.fxml"));
+                    Stage partMaster = new Stage(StageStyle.TRANSPARENT);
+                    partMaster.setTitle("RICS 1.0 PartMaster");
+                    partMaster.setScene(new Scene(loader.load()));
+
+                    PartMasterController controller = loader.getController();
+                    controller.closePartMaster();
+                    partMaster.show();
                     closeIssuePart();
 
 
                     AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part issued", "you have " +
                             "issued " + qty + " of " + partNo + ".");
+
+                    controller.initData(part);
+                    controller.setOH(newStockLevel);
+
+                    return;
 
                 }
         }
@@ -86,7 +94,9 @@ public class IssuePartController
     @FXML
     private void on_cancelClick()
     {
+
             closeIssuePart();
+
     }
 
 
