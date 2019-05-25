@@ -3,6 +3,7 @@ package Controllers;
 import Models.AlertHelper;
 import Models.DBManager;
 import Models.Order;
+import Models.OrderLine;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -23,6 +24,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -34,25 +36,8 @@ public class OrdersMenuController implements Initializable
 
 
     @FXML
-    private ImageView btn_newOrder;
-
-    @FXML
-    private ImageView btn_update;
-
-    @FXML
-    private ImageView btn_newLine;
-
-    @FXML
-    private ImageView btn_approve;
-
-    @FXML
     private ImageView btn_cancel;
 
-    @FXML
-    private ImageView btn_print;
-
-    @FXML
-    private ImageView btn_removeItem;
 
     @FXML
     private Label lbl_orderNo;
@@ -76,7 +61,29 @@ public class OrdersMenuController implements Initializable
     private TableView tbl_order;
 
     @FXML
+    private TableView tbl_orderLines;
+
+    @FXML
     private TableColumn col_orderNo;
+
+    @FXML
+    private TableColumn col_status;
+
+    @FXML
+    private TableColumn col_qty;
+
+    @FXML
+    private TableColumn col_rec;
+
+    @FXML
+    private TableColumn col_partNo;
+
+    @FXML
+    private TableColumn col_manifestId;
+
+
+    @FXML
+    private TableColumn col_lineTotal;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -109,6 +116,19 @@ public class OrdersMenuController implements Initializable
         {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void on_addLIClick() throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/AddOrderLine.fxml"));
+        Stage orderLineStage = new Stage();
+        orderLineStage.setTitle("RICS 1.0 Add a line item");
+        orderLineStage.initStyle(StageStyle.TRANSPARENT);
+        orderLineStage.setScene(new Scene(loader.load()));
+        AddOrderLineController controller = loader.getController();
+        controller.setLabel(lbl_orderNo.getText());
+        orderLineStage.show();
     }
 
     @FXML
@@ -155,7 +175,7 @@ public class OrdersMenuController implements Initializable
         closeOrdersMenu();
     }
 
-    private void closeOrdersMenu()
+    protected void closeOrdersMenu()
     {
         Stage stage = (Stage)btn_home.getScene().getWindow();
         stage.close();
@@ -237,10 +257,21 @@ public class OrdersMenuController implements Initializable
                         combo_shipping.setDisable(false);
                     }
 
+                    ObservableList<OrderLine> oLines = dbm.loadOrderLines(order.getOrderNumber());
+                    tbl_orderLines.setItems(oLines);
+                    col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+                    col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                    col_rec.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
+                    col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
+                    col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
+                    col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
+
 
 
                 }
             });
+
+
         }
         catch(Exception e)
         {
@@ -248,7 +279,7 @@ public class OrdersMenuController implements Initializable
         }
     }
 
-    public void refreshTable()
+    private void refreshTable()
     {
         DBManager dbm = new DBManager();
         ObservableList<Order> ordersOBS = dbm.loadOrders();
@@ -256,7 +287,7 @@ public class OrdersMenuController implements Initializable
         col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
     }
 
-    public void refresh(Order order)
+    private void refresh(Order order)
     {
         refreshTable();
 
@@ -290,4 +321,6 @@ public class OrdersMenuController implements Initializable
         }
         return varOT;
     }
+
 }
+

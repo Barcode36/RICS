@@ -701,6 +701,77 @@ public class DBManager {
         return null;
     }
 
+
+
+
+    //***ORDERLINE FUNCTIONS***
+    //all other methods and functions
+    public int generateUniqueOrderLineId(String orderNumber)
+    {
+        int orderLineId =1;
+        ObservableList<OrderLine> orderLines = loadOrderLines(orderNumber);
+
+
+        for(OrderLine orderLine : orderLines)
+        {
+            if(orderLine.getOrderLineId()==orderLineId)
+            {
+                orderLineId++;
+            }
+        }
+        return orderLineId;
+    }
+
+    public ObservableList<OrderLine> loadOrderLines(String orderNumber)
+    {
+        ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
+        ObservableList<Part> parts = loadParts();
+
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            ResultSet olList = stmt.executeQuery("SELECT * FROM OrderLines WHERE orderNumber = '" + orderNumber + "'");
+            while(olList.next())
+            {
+                Part part = returnPart(parts, olList.getString("part"));
+                orderLines.add(new OrderLine(olList.getInt("orderLineId"), olList.getInt("quantity"), part,
+                        olList.getDouble(
+                        "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
+                        olList.getInt("receivedQty"), olList.getString("manifestId")));
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return orderLines;
+        }
+    }
+
+    public void addOrderLine(OrderLine ol, String orderNumber)
+    {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+
+            stmt.executeUpdate("INSERT INTO OrderLines(orderLineId, quantity, part, lineTotal, requestedBy," +
+                    "status, receivedQty, manifestId, orderNumber) VALUES " + "('"+ ol.getOrderLineId()+ "','" + ol.getQuantity() +
+                    "','" + ol.getPart() + "','" + ol.getLineTotal() + "','" + ol.getRequestedBy() + "','" + ol.getStatus() +
+                    "','" + ol.getReceivedQty() +"','" + ol.getManifestId() + "'," + "'" + orderNumber + "')");
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 

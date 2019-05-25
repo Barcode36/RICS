@@ -10,7 +10,7 @@ public class OrderLine
     private Part part;
     private double lineTotal;
     private String requestedBy;
-
+    private String manifestId;
 
     //getters and setters
 
@@ -80,6 +80,22 @@ public class OrderLine
         this.requestedBy = requestedBy;
     }
 
+    public int getReceivedQty() {
+        return receivedQty;
+    }
+
+    public void setReceivedQty(int receivedQty) {
+        this.receivedQty = receivedQty;
+    }
+
+    public String getManifestId() {
+        return manifestId;
+    }
+
+    public void setManifestId(String manifestId) {
+        this.manifestId = manifestId;
+    }
+
     //constructors
     public OrderLine()
     {
@@ -93,10 +109,14 @@ public class OrderLine
         this.quantity = quantity;
         this.part = part;
         this.requestedBy = requestedBy;
+        this.status = 'U';
+        this.manifestId ="";
+        this.lineTotal = part.getUnitCost() * quantity;
+        this.receivedQty = 0;
     }
 
     public OrderLine(int orderLineId, int quantity, Part part, double lineTotal, String requestedBy, char status,
-                     int receivedQty) {
+                     int receivedQty, String manifestId) {
         this.orderLineId = orderLineId;
         this.quantity = quantity;
         this.part = part;
@@ -104,5 +124,6 @@ public class OrderLine
         this.requestedBy = requestedBy;
         this.status = status;
         this.receivedQty = receivedQty;
+        this.manifestId = manifestId;
     }
 }

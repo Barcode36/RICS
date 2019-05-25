@@ -48,30 +48,45 @@ public class UpdatePartController implements Initializable
     private JFXButton btn_save;
 
 
+    @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        DBManager dbm = new DBManager();
-
-        ObservableList<Location> locations = dbm.loadLocations();
-        combo_location.setItems(locations);
-
-        ObservableList<Part> partsOBS = dbm.loadParts();
-        for(Part part : partsOBS)
+        try
         {
-            if(part.getPartNumber().equals(lbl_part.getText()))
-            {
-                txt_partNoun.setText(part.getPartNoun());
-                txt_description.setText(part.getDescription());
-                txt_min.setText(String.valueOf(part.getMinRecVal()));
-                txt_max.setText(String.valueOf(part.getMaxRecVal()));
-            }
+
+
         }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
     @FXML
     public void setLabel(String partNo)
     {
         lbl_part.setText(partNo);
+    }
+
+    @FXML
+    protected void initData(String p)
+    {
+        try
+        {
+            DBManager dbm = new DBManager();
+            ObservableList<Part> parts = dbm.loadParts();
+            Part part = dbm.returnPart(parts, p);
+            txt_partNoun.setText(part.getPartNoun());
+            txt_description.setText(part.getDescription());
+            txt_cost.setText(String.valueOf(part.getUnitCost()));
+            txt_min.setText(String.valueOf(part.getMinRecVal()));
+            txt_max.setText(String.valueOf(part.getMaxRecVal()));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -217,8 +217,9 @@ public class PartMasterController implements Initializable
         updateStage.initStyle(StageStyle.TRANSPARENT);
         updateStage.setScene(new Scene(loader.load()));
         UpdatePartController controller = loader.getController();
-        controller.setLabel(lbl_partNo.getText());
         updateStage.show();
+        controller.setLabel(lbl_partNo.getText());
+        controller.initData(lbl_partNo.getText());
 
     }
 

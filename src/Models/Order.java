@@ -1,5 +1,10 @@
 package Models;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.sqlite.core.DB;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -14,7 +19,7 @@ public class Order
     private char orderStatus;
     private double orderTotal;
     private Boolean orderApproved;
-    private HashMap<Integer, OrderLine> orderLines;
+    private ObservableList<OrderLine> orderLines;
 
     //getters and setters
     public String getOrderNumber()
@@ -57,7 +62,7 @@ public class Order
         return orderApproved;
     }
 
-    public HashMap<Integer, OrderLine> getOrderLines()
+    public ObservableList<OrderLine> getOrderLines()
     {
         return orderLines;
     }
@@ -94,7 +99,7 @@ public class Order
         this.orderApproved = orderApproved;
     }
 
-    public void setOrderLines(HashMap<Integer, OrderLine> orderLines) {
+    public void setOrderLines(ObservableList<OrderLine> orderLines) {
         this.orderLines = orderLines;
     }
 
@@ -109,7 +114,7 @@ public class Order
         this.orderStatus = 'U';
         this.orderTotal = 0.00;
         this.orderApproved = false;
-        this.orderLines = new HashMap();
+        this.orderLines = FXCollections.observableArrayList();
     }
 
     public Order(String orderNumber, char orderType, String shippingMethod)
@@ -122,7 +127,7 @@ public class Order
         this.orderStatus = 'U';
         this.orderTotal = 0.00;
         this.orderApproved = false;
-        this.orderLines = new HashMap();
+        this.orderLines = FXCollections.observableArrayList();
     }
 
     public Order(String orderNumber, char orderType, String shippingMethod, Date date,
@@ -136,7 +141,9 @@ public class Order
         this.orderStatus = orderStatus;
         this.orderTotal = orderTotal;
         this.orderApproved = orderApproved;
-        this.orderLines = new HashMap();
+        this.orderLines = FXCollections.observableArrayList();
     }
+
+
 
 }
