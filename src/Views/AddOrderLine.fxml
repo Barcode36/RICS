@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="490.0" style="-fx-background-color: #3d4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddOrderLineController">
+   <children>
+      <Label fx:id="lbl_title" layoutX="197.0" layoutY="27.0" text="New Orderline" textFill="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btn_add" layoutX="319.0" layoutY="241.0" onAction="#on_addClick" prefHeight="25.0" prefWidth="57.0" text="Add" />
+      <JFXTextField fx:id="txt_partNo" focusColor="#cccccc" labelFloat="true" layoutX="319.0" layoutY="73.0" prefHeight="23.0" prefWidth="127.0" promptText="Part Number" unFocusColor="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="txt_requestedBy" focusColor="#cccccc" labelFloat="true" layoutX="319.0" layoutY="125.0" prefHeight="23.0" prefWidth="127.0" promptText="Requested By" unFocusColor="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextField>
+      <TableView fx:id="tbl_parts" layoutX="20.0" layoutY="126.0" prefHeight="161.0" prefWidth="239.0">
+         <columns>
+            <TableColumn fx:id="col_partNumber" minWidth="120.0" prefWidth="120.0" text="Part Number" />
+            <TableColumn fx:id="col_description" minWidth="120.0" prefWidth="120.0" text="Description" />
+         </columns>
+      </TableView>
+      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="464.0" layoutY="2.0" onDragDetected="#closeAddOrderLine" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_delete32.png" />
+         </image>
+      </ImageView>
+      <JFXTextField fx:id="txt_qty" focusColor="#cccccc" labelFloat="true" layoutX="377.0" layoutY="174.0" prefHeight="23.0" prefWidth="69.0" promptText="Quantity" unFocusColor="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="txt_filter" focusColor="#cccccc" labelFloat="true" layoutX="38.0" layoutY="62.0" prefHeight="23.0" prefWidth="127.0" promptText="Filter..." unFocusColor="#eda678">
+         <font>
+            <Font name="Quicksand Bold" size="12.0" />
+         </font>
+      </JFXTextField>
+      <ImageView fx:id="btn_filter" fitHeight="18.0" fitWidth="19.0" layoutX="165.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icon_tick32.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="btn_clear" layoutX="389.0" layoutY="241.0" onAction="#on_clearClick" prefHeight="25.0" prefWidth="57.0" text="Clear" />
+      <Label fx:id="lbl_orderNo" layoutX="20.0" layoutY="27.0" textFill="#cccccc">
+         <font>
+            <Font name="Quicksand Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
