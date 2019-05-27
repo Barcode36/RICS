@@ -3,11 +3,13 @@ package Models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
-
 
 import static java.lang.Class.forName;
 
@@ -25,7 +27,7 @@ public class DBManager {
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            int adminUser = 0;
+            int adminUser;
             if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
             } else {
@@ -85,7 +87,7 @@ public class DBManager {
 
             Statement stmt = conn.createStatement();
 
-            int adminUser = 0;
+            int adminUser;
             if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
             } else {
@@ -138,16 +140,18 @@ public class DBManager {
 
     public static boolean containsUser(ObservableList<User> users, String username) {
         for (User user : users) {
-            if (user.getUsername() == username) {
+            if (user.getUsername().equals(username)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static User returnUser(ObservableList<User> users, String username) {
+    public static User returnUser( String username) {
+        DBManager dbm = new DBManager();
+        ObservableList<User> users = dbm.loadUsersOBS();
         for (User user : users) {
-            if (user.getUsername() == username) {
+            if (user.getUsername().equals(username)) {
                 return user;
             }
         }
@@ -231,7 +235,8 @@ public class DBManager {
             //Update Part in DB
             stmt.executeUpdate("UPDATE Parts SET partNoun = '" + p.getPartNoun() + "', description = '" + p.getDescription() +
                     "', location = '" + p.getLocation() + "', unitCost = '" + p.getUnitCost() + "', minLvl = '" + p.getMinRecVal() +
-                    "', maxLvl = '" + p.getMaxRecVal() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
+                    "', maxLvl = '" + p.getMaxRecVal() + "', onOrder = '" + p.getOnOrder() + "', lastOrder = '" + p.getLastOrder() +
+                    "', flagged = '" + p.getFlagged() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
 
             //close connection to DB
             conn.close();
@@ -281,16 +286,10 @@ public class DBManager {
     }
 
 
-    public Boolean containsPart(ObservableList<Part> parts, String partNumber) {
-        for (Part part : parts) {
-            if (part.getPartNumber() == partNumber) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public static Part returnPart(ObservableList<Part> parts, String partNumber) {
+    public static Part returnPart(String partNumber) {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> parts = dbm.loadParts();
         for (Part part : parts) {
             if (part.getPartNumber().equals(partNumber)) {
                 return part;
@@ -440,7 +439,7 @@ public class DBManager {
 
     public static boolean containsLocation(ObservableList<Location> locs, String locationId) {
         for (Location loc : locs) {
-            if (loc.getLocationId() == locationId) {
+            if (loc.getLocationId().equals(locationId)) {
                 return true;
             }
         }
@@ -517,18 +516,18 @@ public class DBManager {
 
     //***TRANSACTION FUNCTIONS***
     //insert  part transaction to DB
-    public void saveTransaction(Part p, char type, int quantity, String personnel) {
+    public void saveTransaction(Part p, char type, int quantity, String reference) {
         LocalDateTime now = LocalDateTime.now();
         try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            Double totalVal = quantity*p.getUnitCost();
+            double totalVal = quantity*p.getUnitCost();
 
             stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
                     "personnel, price, totalVal)" + "VALUES ('" + type + "','" + now + "','" + p.getPartNumber() +
-                    "','" + quantity + "','" + personnel + "', '" + p.getUnitCost() + "', '"+ totalVal + "')");
+                    "','" + quantity + "','" + reference + "', '" + p.getUnitCost() + "', '"+ totalVal + "')");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -634,11 +633,13 @@ public class DBManager {
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
+            int orderApproved = 0;
+
             stmt.executeUpdate("INSERT INTO Orders(orderNumber, orderType, shippingMethod, orderDate, header," +
                     "orderStatus, orderTotal, orderApproved) VALUES ('"+ o.getOrderNumber() + "','" + o.getOrderType() + "','" + o.getShippingMethod() +
                     "','" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.getDate()) + "','" + o.getHeader() +
                     "','" + o.getOrderStatus() + "','" + o.getOrderTotal() + "'," +
-                    "'" + o.getOrderApproved() + "')");
+                    "'" + orderApproved + "')");
 
             conn.close();
         } catch (Exception e) {
@@ -683,7 +684,8 @@ public class DBManager {
 
             //Update Part in DB
             stmt.executeUpdate("UPDATE Orders SET orderType = '" + o.getOrderType() + "', shippingMethod = '" + o.getShippingMethod() +
-                    "', header = '" + o.getHeader() + "', orderTotal = '" + o.getOrderTotal() +  "'WHERE orderNumber =" + " '" + o.getOrderNumber() + "'");
+                    "', header = '" + o.getHeader() + "', orderStatus = '" + o.getOrderStatus() +   "'WHERE orderNumber" +
+                    " =" + " '" + o.getOrderNumber() + "'");
 
             //close connection to DB
             conn.close();
@@ -692,7 +694,9 @@ public class DBManager {
         }
     }
 
-    public static Order returnOrder(ObservableList<Order> orders, String orderNumber) {
+    public static Order returnOrder(String orderNumber) {
+        DBManager dbm = new DBManager();
+        ObservableList<Order> orders = dbm.loadOrders();
         for (Order order : orders) {
             if (order.getOrderNumber().equals(orderNumber)) {
                 return order;
@@ -701,7 +705,70 @@ public class DBManager {
         return null;
     }
 
+    public void approveOrder(Order order) {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
 
+            Statement stmt = conn.createStatement();
+
+            int orderApproved = 1;
+
+
+            //Update Rig record in DB
+            stmt.executeUpdate("UPDATE Orders SET orderApproved = '" + orderApproved + "', orderStatus = '" + 'O' +
+                    "'WHERE orderNumber =" +
+                    " '" + order.getOrderNumber() + "'");
+
+            stmt.executeUpdate("UPDATE OrderLines SET status = '" + 'O'  + "'WHERE orderNumber =" +
+                    " '" + order.getOrderNumber() + "'");
+
+
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cancelOrder(Order order) {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+
+            //Update Rig record in DB
+            stmt.executeUpdate("UPDATE Orders SET orderStatus = '" + 'X' +
+                    "'WHERE orderNumber =" +
+                    " '" + order.getOrderNumber() + "'");
+
+            stmt.executeUpdate("UPDATE OrderLines SET status =  '" + 'X' + "', lineTotal = '" + 0 +
+                    "'WHERE orderNumber =" + " '" + order.getOrderNumber() + "'");
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateOrderTotal(String orderNumber, double orderTotal)
+    {
+        try{
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("UPDATE Orders SET orderTotal = '" + orderTotal  + "'WHERE orderNumber =" +
+                            " '" + orderNumber + "'");
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
     //***ORDERLINE FUNCTIONS***
@@ -725,7 +792,6 @@ public class DBManager {
     public ObservableList<OrderLine> loadOrderLines(String orderNumber)
     {
         ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
-        ObservableList<Part> parts = loadParts();
 
         try
         {
@@ -736,7 +802,8 @@ public class DBManager {
             ResultSet olList = stmt.executeQuery("SELECT * FROM OrderLines WHERE orderNumber = '" + orderNumber + "'");
             while(olList.next())
             {
-                Part part = returnPart(parts, olList.getString("part"));
+                String partNumber = olList.getString("part");
+                Part part = returnPart(partNumber);
                 orderLines.add(new OrderLine(olList.getInt("orderLineId"), olList.getInt("quantity"), part,
                         olList.getDouble(
                         "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
@@ -750,6 +817,17 @@ public class DBManager {
         {
             return orderLines;
         }
+    }
+
+    public static OrderLine returnOrderLine( int orderLineId, String orderNumber) {
+        DBManager dbm = new DBManager();
+        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(orderNumber);
+        for (OrderLine orderLine : orderLines) {
+            if (orderLine.getOrderLineId()== orderLineId) {
+                return orderLine;
+            }
+        }
+        return null;
     }
 
     public void addOrderLine(OrderLine ol, String orderNumber)
@@ -771,6 +849,51 @@ public class DBManager {
         }
     }
 
+    public void updateOrderLine(OrderLine orderLine, String orderNumber)
+    {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+
+            //Update orderLine
+            stmt.executeUpdate("UPDATE OrderLines SET status = '" + orderLine.getStatus() + "', manifestId = '" +
+                    orderLine.getManifestId() + "', receivedQty = '" + orderLine.getReceivedQty() +  "'WHERE orderLineId =" +
+                    " '" + orderLine.getOrderLineId() + "' AND orderNumber =" + " '" + orderNumber+ "'");
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //delete OrderLine from DB
+    public boolean removeOrderLine(OrderLine orderLine, String orderNumber)
+    {
+        try
+        {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement smt = conn.createStatement();
+
+            //delete orderLine entry in DB
+            smt.executeUpdate("DELETE FROM OrderLines WHERE orderLineId = '" + orderLine.getOrderLineId() +
+                    "' AND orderNumber =" + " '" + orderNumber + "'");
+            conn.close();
+
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 }
 

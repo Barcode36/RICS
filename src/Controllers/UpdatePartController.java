@@ -4,7 +4,10 @@ import Models.AlertHelper;
 import Models.DBManager;
 import Models.Location;
 import Models.Part;
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,15 +54,6 @@ public class UpdatePartController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        try
-        {
-
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
 
     }
     @FXML
@@ -75,8 +68,7 @@ public class UpdatePartController implements Initializable
         try
         {
             DBManager dbm = new DBManager();
-            ObservableList<Part> parts = dbm.loadParts();
-            Part part = dbm.returnPart(parts, p);
+            Part part = DBManager.returnPart(p);
             txt_partNoun.setText(part.getPartNoun());
             txt_description.setText(part.getDescription());
             txt_cost.setText(String.valueOf(part.getUnitCost()));
@@ -90,8 +82,7 @@ public class UpdatePartController implements Initializable
     }
 
     @FXML
-    private void on_saveClick() throws IOException
-    {
+    private void on_saveClick() {
         String partNo = lbl_part.getText();
         String partNoun = txt_partNoun.getText();
         String description = txt_description.getText();

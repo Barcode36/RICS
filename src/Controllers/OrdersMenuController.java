@@ -1,9 +1,6 @@
 package Controllers;
 
-import Models.AlertHelper;
-import Models.DBManager;
-import Models.Order;
-import Models.OrderLine;
+import Models.*;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -14,7 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -22,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +52,10 @@ public class OrdersMenuController implements Initializable
 
     @FXML
     private JFXTextField txt_status;
+
+    @FXML
+    private JFXTextField txt_total;
+
 
     @FXML
     private JFXTextArea txt_header;
@@ -88,14 +91,60 @@ public class OrdersMenuController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        txt_header.setEditable(false);
-        initData();
-        txt_date.setEditable(false);
-        combo_shipping.setDisable(true);
-        combo_orderType.setDisable(true);
-        txt_status.setEditable(false);
+        DBManager dbm = new DBManager();
+        ObservableList<Order> ordersOBS = dbm.loadOrders();
+
+        ObservableList < String > shipMethods = FXCollections.observableArrayList();
+
+        shipMethods.add(0, "OCEAN");
+        shipMethods.add(1, "AIR");
+        shipMethods.add(2, "ROAD");
+        shipMethods.add(3, "RAIL");
+
+        ObservableList<String> orderType = FXCollections.observableArrayList();
+
+        orderType.add(0, "PURCHASE ORDER");
+        orderType.add(1, "REPAIR ORDER");
+        orderType.add(2, "SERVICE REQUISITION ORDER");
+
+        combo_shipping.setItems(shipMethods);
+        combo_orderType.setItems(orderType);
+
+        try
+        {
+        //populate table view
+        tbl_order.setItems(ordersOBS);
+        col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
+
+        Order o = ordersOBS.get(0);
+        initData(o);
 
 
+
+        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(o.getOrderNumber());
+        tbl_orderLines.setItems(orderLines);
+        col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_rec.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
+        col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
+        col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
+        col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
+
+
+
+            tbl_order.setOnMouseClicked((MouseEvent event) -> {
+                if (event.getButton().equals(MouseButton.PRIMARY))
+                {
+                    int index = tbl_order.getSelectionModel().getSelectedIndex();
+                    Order order = (Order) tbl_order.getItems().get(index);
+
+                    initData(order);
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
     @FXML
@@ -129,6 +178,7 @@ public class OrdersMenuController implements Initializable
         AddOrderLineController controller = loader.getController();
         controller.setLabel(lbl_orderNo.getText());
         orderLineStage.show();
+        closeOrdersMenu();
     }
 
     @FXML
@@ -172,13 +222,73 @@ public class OrdersMenuController implements Initializable
     @FXML
     private void on_cancelClick()
     {
-        closeOrdersMenu();
+        try
+        {
+        Window window = btn_cancel.getScene().getWindow();
+        DBManager dbm = new DBManager();
+        String orderNumber = lbl_orderNo.getText();
+
+        Order order = DBManager.returnOrder(orderNumber);
+
+        if(order.getOrderApproved())
+        {
+            dbm.cancelOrder(order);
+            order.calculateOrderTotal();
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order cancelled", "Please inform " +
+                    "the purchasing dept.");
+            initData(order);
+            return;
+        }else{
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Unapproved order", "Unapproved orders " +
+                    "can be re-purposed.");
+            return;
+        }
+    }
+        catch(Exception e)
+    {
+        e.printStackTrace();
+    }
     }
 
-    protected void closeOrdersMenu()
+    @FXML
+    private void on_approveClick()
     {
-        Stage stage = (Stage)btn_home.getScene().getWindow();
-        stage.close();
+
+        try
+        {
+            Window window = btn_cancel.getScene().getWindow();
+            DBManager dbm = new DBManager();
+            String orderNumber = lbl_orderNo.getText();
+
+            Order order = DBManager.returnOrder(orderNumber);
+            ObservableList<OrderLine> ol = dbm.loadOrderLines(orderNumber);
+            if(ol.size() > 0) {
+                dbm.approveOrder(order);
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order Approved", "Export your approved " +
+                        "orders to the Purchasing Dept at the end of the day.");
+
+                for(OrderLine orderLine : ol)
+                {
+                    Part p =  orderLine.getPart();
+                    p.setLastOrder(orderNumber);
+                    p.setOnOrder(p.getOnOrder() + orderLine.getQuantity());
+                    p.setFlagged(p.getFlagged() - orderLine.getQuantity());
+                    dbm.updatePart(p);
+                    dbm.saveTransaction(p, 'O', orderLine.getQuantity(), orderLine.getRequestedBy());
+                }
+                initData(order);
+                return;
+            }else
+                {
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Not Approved", "Add something " +
+                        "to the order before approving it.");
+
+                }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -188,7 +298,7 @@ public class OrdersMenuController implements Initializable
         DBManager dbm = new DBManager();
         ObservableList<Order> ordersOBS = dbm.loadOrders();
         String orderNumber = lbl_orderNo.getText();
-        Order order = dbm.returnOrder(ordersOBS, orderNumber);
+        Order order = DBManager.returnOrder(orderNumber);
 
         if(!order.getOrderApproved())
         {
@@ -198,7 +308,7 @@ public class OrdersMenuController implements Initializable
             dbm.updateOrder(order);
             AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order updated", "You have successfully " +
                     "update order " + order.getOrderNumber());
-            refresh(order);
+            initData(order);
             return;
         }
         else
@@ -210,35 +320,101 @@ public class OrdersMenuController implements Initializable
     }
 
 
-    public void initData()
+    @FXML
+    private void on_removeClick()
+    {
+        Window window = btn_cancel.getScene().getWindow();
+        try {
+            DBManager dbm = new DBManager();
+            String orderNumber = lbl_orderNo.getText();
+            Order order = DBManager.returnOrder(orderNumber);
+            OrderLine orderLine = (OrderLine) tbl_orderLines.getSelectionModel().getSelectedItem();
+
+            char status = orderLine.getStatus();
+            switch (status) {
+                case 'U':
+                    if (dbm.removeOrderLine(orderLine, orderNumber)) {
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order updated", "You have successfully " +
+                                "removed line item " + orderLine.getOrderLineId());
+                        order.calculateOrderTotal();
+                        initData(order);
+                    } else {
+                        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "There was a problem removing " +
+                                "the orderLine. ");
+                    }
+                    break;
+                case 'X':
+                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "The orderLine has already been " +
+                            "cancelled");
+                    break;
+                case 'O':
+                    orderLine.setLineTotal(0);
+                    orderLine.setStatus('X');
+                    dbm.updateOrderLine(orderLine, orderNumber);
+                    Part p = orderLine.getPart();
+                    p.setOnOrder(p.getOnOrder()- orderLine.getQuantity());
+                    p.setFlagged(p.getFlagged() + orderLine.getQuantity());
+                    dbm.updatePart(p);
+                    order.calculateOrderTotal();
+                    if(orderCancelled())
+                    {
+                        order.setOrderStatus('X');
+                        dbm.updateOrder(order);
+                    }
+                    initData(order);
+                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order updated", "You have successfully " +
+                            "cancelled line item " + orderLine.getOrderLineId());
+                    break;
+                case 'C':
+                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "The orderLine has already been " +
+                            "received.");
+                    break;
+            }
+        }
+        catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+
+    }
+
+    @FXML
+    private void on_receiveClick() throws IOException
+    {
+        Window window = btn_cancel.getScene().getWindow();
+        OrderLine orderLine = (OrderLine) tbl_orderLines.getSelectionModel().getSelectedItem();
+
+        if(orderLine.getStatus()=='O')
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/ReceiveOrderLine.fxml"));
+            Stage recStage = new Stage();
+            recStage.setTitle("RICS 1.0 Receive OrderLine");
+            recStage.initStyle(StageStyle.TRANSPARENT);
+            recStage.setScene(new Scene(loader.load()));
+            ReceiveOrderLineController controller = loader.getController();
+            controller.setLabels(lbl_orderNo.getText(), tbl_orderLines.getSelectionModel().getSelectedIndex()+1);
+            recStage.show();
+            closeOrdersMenu();
+        }
+        else
+        {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "The orderLine cannot be received ");
+        }
+
+    }
+
+
+
+    protected void initData(Order order)
     {
         try
         {
             DBManager dbm = new DBManager();
             ObservableList<Order> ordersOBS = dbm.loadOrders();
 
+
             tbl_order.setItems(ordersOBS);
             col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
-            ObservableList < String > shipMethods = FXCollections.observableArrayList();
-
-            shipMethods.add(0, "OCEAN");
-            shipMethods.add(1, "AIR");
-            shipMethods.add(2, "ROAD");
-            shipMethods.add(3, "RAIL");
-
-            ObservableList<String> orderType = FXCollections.observableArrayList();
-
-            orderType.add(0, "PURCHASE ORDER");
-            orderType.add(1, "REPAIR ORDER");
-            orderType.add(2, "SERVICE REQUISITION ORDER");
-
-            combo_shipping.setItems(shipMethods);
-            combo_orderType.setItems(orderType);
-
-            tbl_order.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    int index = tbl_order.getSelectionModel().getSelectedIndex();
-                    Order order = (Order) tbl_order.getItems().get(index);
 
 
                     int varOT = getVarOT(order);
@@ -250,6 +426,7 @@ public class OrdersMenuController implements Initializable
                     combo_orderType.getSelectionModel().select(varOT);
                     txt_status.setText(String.valueOf(order.getOrderStatus()));
                     txt_header.setText(order.getHeader());
+                    txt_total.setText(String.valueOf(order.getOrderTotal()));
                     if(!order.getOrderApproved())
                     {
                         txt_header.setEditable(true);
@@ -265,17 +442,17 @@ public class OrdersMenuController implements Initializable
                     col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
                     col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
                     col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
-
-
-
-                }
-            });
-
-
         }
         catch(Exception e)
         {
             e.printStackTrace();
+        }
+        finally
+        {
+            tbl_orderLines.setEditable(true);
+            if(order.getOrderStatus() == 'O') {
+                col_rec.setEditable(true);
+            }
         }
     }
 
@@ -287,20 +464,6 @@ public class OrdersMenuController implements Initializable
         col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
     }
 
-    private void refresh(Order order)
-    {
-        refreshTable();
-
-        int varOT;
-
-        varOT = getVarOT(order);
-
-        txt_date.setText(String.valueOf(order.getDate()));
-        combo_shipping.getSelectionModel().select(order.getShippingMethod());
-        combo_orderType.getSelectionModel().select(varOT);
-        txt_status.setText(String.valueOf(order.getOrderStatus()));
-        txt_header.setText(order.getHeader());
-    }
 
     private int getVarOT(Order order) {
         int varOT;
@@ -320,6 +483,24 @@ public class OrdersMenuController implements Initializable
                 break;
         }
         return varOT;
+    }
+
+    protected void closeOrdersMenu()
+    {
+        Stage stage = (Stage)btn_home.getScene().getWindow();
+        stage.close();
+    }
+
+    private boolean orderCancelled()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(lbl_orderNo.getText());
+        for (OrderLine orderLine : orderLines) {
+            if (orderLine.getStatus() != 'X') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

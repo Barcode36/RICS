@@ -47,7 +47,7 @@ public class PartMasterController implements Initializable
     private TableColumn col_partNo;
 
     @FXML
-    private TableColumn col_personnel;
+    private TableColumn col_reference;
 
     @FXML
     private TableColumn col_qty;
@@ -116,7 +116,7 @@ public class PartMasterController implements Initializable
     {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
-        ObservableList<Vendor> vendors = dbm.loadVendors();
+
 
 
 
@@ -131,7 +131,7 @@ public class PartMasterController implements Initializable
         col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
         col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
         col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-        col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_reference.setCellValueFactory(new PropertyValueFactory<>("personnel"));
         col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
@@ -205,6 +205,7 @@ public class PartMasterController implements Initializable
         IssuePartController controller = loader.getController();
         controller.setLabel(lbl_partNo.getText());
         issueStage.show();
+        closePartMaster();
 
     }
 
@@ -239,6 +240,7 @@ public class PartMasterController implements Initializable
         lbl_min.setText("Min : " + part.getMinRecVal());
         lbl_max.setText("Max : " + part.getMaxRecVal());
         lbl_onHand.setText(" OH: " + part.getOnHand());
+        lbl_onOrder.setText(" OO: " + part.getOnOrder());
         lbl_flagged.setText("  F : " + part.getFlagged());
         txt_description.setText(part.getDescription());
         txt_unitOfMeasure.setText(part.getUnitOfMeasure());
@@ -255,17 +257,11 @@ public class PartMasterController implements Initializable
         col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
         col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
         col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-        col_personnel.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_reference.setCellValueFactory(new PropertyValueFactory<>("personnel"));
         col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
     }
-
-    protected void setOH(int oh)
-    {
-        lbl_onHand.setText(" OH: " + oh);
-    }
-
 
 
     protected void closePartMaster()

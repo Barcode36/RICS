@@ -47,13 +47,6 @@ public class OrderLine
         this.status = status;
     }
 
-    public int getReceived() {
-        return receivedQty;
-    }
-
-    public void setReceived(int received) {
-        this.receivedQty = received;
-    }
 
     public void setOrderLineId(int orderLineId)
     {

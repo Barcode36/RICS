@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LandingPageController">
+<?import javafx.scene.text.*?>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LandingPageController">
    <children>
       <ImageView fx:id="btn_rig" fitHeight="51.0" fitWidth="40.0" layoutX="328.0" layoutY="293.0" onMousePressed="#on_rigClick" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -53,7 +46,7 @@
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#646464">
+      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>

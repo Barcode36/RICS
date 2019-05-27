@@ -83,17 +83,16 @@ public class AddOrderLineController implements Initializable
         try
         {
             DBManager dbm = new DBManager();
-            ObservableList<Part> parts = dbm.loadParts();
 
             String orderNumber = lbl_orderNo.getText();
             int orderLineId = dbm.generateUniqueOrderLineId(orderNumber);
             int qty = Integer.parseInt(txt_qty.getText());
-            Part part = dbm.returnPart(parts,txt_partNo.getText());
+            Part part = DBManager.returnPart(txt_partNo.getText());
             String reqBy = txt_requestedBy.getText();
-
-
+            Order order = DBManager.returnOrder(orderNumber);
             OrderLine orderLine = new OrderLine(orderLineId, qty, part, reqBy);
             dbm.addOrderLine(orderLine, orderNumber);
+            order.calculateOrderTotal();
 
             AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
                     qty + " of Part " + part.getPartNumber() + "were added to your order.");
@@ -112,9 +111,7 @@ public class AddOrderLineController implements Initializable
             AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
                     qty + " of Part " + part.getPartNumber() + "were added to your order.");
 
-            controller.initData();
-
-            return;
+            controller.initData(order);
 
 
         } catch (Exception e)

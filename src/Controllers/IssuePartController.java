@@ -5,7 +5,6 @@ import Models.DBManager;
 import Models.Part;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+
+import java.io.IOException;
 
 public class IssuePartController
 {
@@ -53,8 +54,7 @@ public class IssuePartController
         Window window = btn_cancel.getScene().getWindow();
 
         DBManager dbm = new DBManager();
-        ObservableList<Part> parts = dbm.loadParts();
-        Part part = dbm.returnPart(parts, partNo);
+        Part part = DBManager.returnPart(partNo);
         try
         {
                 if (part.getOnHand() >= qty && qty > 0)
@@ -63,22 +63,30 @@ public class IssuePartController
                     dbm.updateStockLevel(newStockLevel, partNo);
                     dbm.saveTransaction(part, 'I', qty, txt_issuedTo.getText());
 
+                    //flag X amount for order
+                    if(newStockLevel < part.getMaxRecVal() && part.getOnHand() > 0)
+                    {
+                        part.setFlagged(part.getMaxRecVal() - (newStockLevel + part.getOnOrder()));
+                    }
+                    else if(part.getOnHand() == 0)
+                    {
+                        part.setFlagged(part.getMaxRecVal());
+                    }
+                    dbm.updatePart(part);
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/Partmaster.fxml"));
                     Stage partMaster = new Stage(StageStyle.TRANSPARENT);
                     partMaster.setTitle("RICS 1.0 PartMaster");
                     partMaster.setScene(new Scene(loader.load()));
 
-                    PartMasterController controller = loader.getController();
-                    controller.closePartMaster();
+                   // PartMasterController controller = loader.getController();
+                    //controller.closePartMaster();
                     partMaster.show();
                     closeIssuePart();
 
 
                     AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part issued", "you have " +
                             "issued " + qty + " of " + partNo + ".");
-
-                    controller.initData(part);
-                    controller.setOH(newStockLevel);
 
                     return;
 
@@ -92,10 +100,21 @@ public class IssuePartController
     }
 
     @FXML
-    private void on_cancelClick()
+    private void on_cancelClick() throws IOException
     {
 
-            closeIssuePart();
+        DBManager dbm = new DBManager();
+        Part p = DBManager.returnPart(lbl_partNo.getText());
+        closeIssuePart();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/PartMaster.fxml"));
+        Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);
+        ordersMenu.setTitle("RICS 1.0 PartMaster");
+        ordersMenu.setScene(new Scene(loader.load()));
+
+        PartMasterController controller = loader.getController();
+        controller.initData(p);
+        ordersMenu.show();
+
 
     }
 

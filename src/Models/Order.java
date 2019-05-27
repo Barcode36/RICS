@@ -1,12 +1,9 @@
 package Models;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.sqlite.core.DB;
 
 import java.util.Date;
-import java.util.HashMap;
 
 public class Order
 {
@@ -142,6 +139,26 @@ public class Order
         this.orderTotal = orderTotal;
         this.orderApproved = orderApproved;
         this.orderLines = FXCollections.observableArrayList();
+    }
+
+    public void calculateOrderTotal()
+    {
+        try
+        {
+            DBManager dbm = new DBManager();
+            double orderTotal = 0;
+
+            ObservableList<OrderLine> orderLines = dbm.loadOrderLines(orderNumber);
+            for (OrderLine orderLine : orderLines) {
+                orderTotal = orderTotal + orderLine.getLineTotal();
+            }
+
+            dbm.updateOrderTotal(orderNumber, orderTotal);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

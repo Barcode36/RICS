@@ -8,7 +8,7 @@ public class Transaction
     private String transDate;
     private String partNo;
     private int quantity;
-    private String personnel;
+    private String reference;
     private Double price;
     private Double totalVal;
 
@@ -44,12 +44,12 @@ public class Transaction
         this.quantity = quantity;
     }
 
-    public String getPersonnel() {
-        return personnel;
+    public String getReference() {
+        return reference;
     }
 
-    public void setPersonnel(String personnel) {
-        this.personnel = personnel;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Double getPrice() {
@@ -64,13 +64,13 @@ public class Transaction
 
     public void setTotalVal(Double totalVal) {this.totalVal = totalVal;}
 
-    public Transaction(char transType, String transDate, String partNo, int quantity, String personnel, Double price,
+    public Transaction(char transType, String transDate, String partNo, int quantity, String reference, Double price,
                        Double totalVal) {
         this.transType = transType;
         this.transDate = transDate;
         this.partNo = partNo;
         this.quantity = quantity;
-        this.personnel = personnel;
+        this.reference = reference;
         this.price = price;
         this.totalVal = totalVal;
     }
