@@ -91,6 +91,13 @@ public class IssuePartController
                     return;
 
                 }
+                else
+                {
+                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Quantity", "There " +
+                            "aren't enough of " + partNo + " in stock to issue that amount.");
+
+                    return;
+                }
         }
         catch(Exception e)
         {
@@ -103,7 +110,6 @@ public class IssuePartController
     private void on_cancelClick() throws IOException
     {
 
-        DBManager dbm = new DBManager();
         Part p = DBManager.returnPart(lbl_partNo.getText());
         closeIssuePart();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/PartMaster.fxml"));
@@ -114,8 +120,6 @@ public class IssuePartController
         PartMasterController controller = loader.getController();
         controller.initData(p);
         ordersMenu.show();
-
-
     }
 
 
