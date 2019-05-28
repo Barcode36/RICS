@@ -48,7 +48,7 @@
                   <Image url="@../assets/icon_edit32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_archive" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_delete" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="164.0" onMousePressed="#on_deleteClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_archive32.png" />
                </image>
@@ -68,7 +68,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_archive" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="78.0" text="Archive part" textFill="#eda678">
+            <Label fx:id="lbl_archive" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="78.0" text="Delete part" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
@@ -235,7 +235,7 @@
             <TableColumn fx:id="col_totalVal" maxWidth="127.0" minWidth="2.0" prefWidth="112.0" text="Total Value" />
         </columns>
       </TableView>
-      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="809.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="809.0" layoutY="1.0" onMousePressed="#closePartMaster" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />
          </image>

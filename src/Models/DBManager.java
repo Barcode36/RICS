@@ -224,6 +224,23 @@ public class DBManager {
         }
     }
 
+    public void deletePart(Part p)
+    {
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+
+            Statement stmt = conn.createStatement();
+
+            //Remove user record from DB
+            stmt.executeUpdate("DELETE FROM Parts WHERE partNumber ='" + p.getPartNumber() + "'");
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updatePart(Part p) {
         try {
             forName(driver);

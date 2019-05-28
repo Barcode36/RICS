@@ -87,7 +87,7 @@
       </Label>
       <JFXComboBox fx:id="combo_location" focusColor="#cccccc" layoutX="133.0" layoutY="432.0" prefHeight="25.0" prefWidth="198.0" promptText="location" styleClass="formFields" unFocusColor="#cccccc" />
       <JFXButton fx:id="btn_save" layoutX="104.0" layoutY="489.0" onAction="#on_saveClick" text="Save" />
-      <JFXButton fx:id="btn_cancel" layoutX="231.0" layoutY="489.0" onAction="#on_cancelClick" text="Cancel" />
+      <JFXButton fx:id="btn_cancel" layoutX="231.0" layoutY="489.0" onAction="#closeAddPart" text="Cancel" />
       <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="370.0" layoutY="2.0" onMousePressed="#closeAddPart" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />

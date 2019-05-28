@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -125,11 +124,6 @@ public class AddPartController implements Initializable
     }
 
     @FXML
-    private void on_cancelClick()
-    {
-        closeAddPart();
-    }
-
     private void closeAddPart()
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();

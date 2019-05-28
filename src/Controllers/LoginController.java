@@ -18,6 +18,7 @@ import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class LoginController implements Initializable
 {
@@ -69,6 +70,10 @@ public class LoginController implements Initializable
             }
             else
             {
+                Preferences userPreferences = Preferences.userNodeForPackage(LoginController.class);
+
+                userPreferences.put("username", uname);
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
                 Stage homeStage = new Stage();
                 homeStage.setTitle("RICS 1.0 Issue Part");

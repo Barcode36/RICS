@@ -125,14 +125,6 @@ public class PartMasterController implements Initializable
     {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
-
-
-
-
-        //populate table view
-        tbl_parts.setItems(partsOBS);
-
-        col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
         initData(partsOBS.get(0));
 
         ObservableList<Transaction> transactions = dbm.loadTransactions(partsOBS.get(0));
@@ -183,6 +175,24 @@ public class PartMasterController implements Initializable
         }
     }
 
+    @FXML
+    private void on_deleteClick()
+    {
+        try
+        {
+            DBManager dbm = new DBManager();
+            ObservableList<Part> parts = dbm.loadParts();
+            Part part = DBManager.returnPart(lbl_partNo.getText());
+
+            dbm.deletePart(part);
+            initData(parts.get(0));
+
+
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void on_addPartClick()
     {
@@ -317,6 +327,13 @@ public class PartMasterController implements Initializable
     {
         DBManager dbm = new DBManager();
         ObservableList<Vendor> vendors = dbm.loadVendors();
+        ObservableList<Part> partsOBS = dbm.loadParts();
+
+
+        //populate table view
+        tbl_parts.setItems(partsOBS);
+
+        col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
 
         lbl_partNo.setText(part.getPartNumber());
         txt_vendorPartNo.setText(part.getVendorNumber());
@@ -352,6 +369,7 @@ public class PartMasterController implements Initializable
     }
 
 
+    @FXML
     protected void closePartMaster()
     {
         Stage stage = (Stage)btn_home.getScene().getWindow();
