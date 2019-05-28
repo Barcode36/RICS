@@ -78,7 +78,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_issue1" fitHeight="25.0" fitWidth="27.0" layoutX="112.0" layoutY="244.0" onMousePressed="#on_issueClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_print" fitHeight="25.0" fitWidth="27.0" layoutX="112.0" layoutY="244.0" onMousePressed="#on_printClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_print32.png" />
                </image>
@@ -235,7 +235,7 @@
             <TableColumn fx:id="col_totalVal" maxWidth="127.0" minWidth="2.0" prefWidth="112.0" text="Total Value" />
         </columns>
       </TableView>
-      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="809.0" layoutY="1.0" onDragDetected="#closeAddOrderLine" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="809.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />
          </image>

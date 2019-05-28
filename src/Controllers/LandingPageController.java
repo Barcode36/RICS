@@ -200,7 +200,7 @@ public class LandingPageController implements Initializable
         accountStage.show();
     }
 
-    private void closeLandingPage()
+    public void closeLandingPage()
     {
         Stage stage = (Stage)btn_users.getScene().getWindow();
         stage.close();

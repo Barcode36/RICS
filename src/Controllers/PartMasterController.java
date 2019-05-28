@@ -1,17 +1,20 @@
 package Controllers;
 
-import Models.DBManager;
-import Models.Part;
-import Models.Transaction;
-import Models.Vendor;
+import Models.*;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.lowagie.text.*;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,9 +24,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class PartMasterController implements Initializable
@@ -223,6 +231,85 @@ public class PartMasterController implements Initializable
         controller.setLabel(lbl_partNo.getText());
         controller.initData(lbl_partNo.getText());
 
+    }
+
+    @FXML
+    private void on_printClick() throws IOException, DocumentException {
+
+        DBManager dbm = new DBManager();
+        Part part = DBManager.returnPart(lbl_partNo.getText());
+        ObservableList<Transaction> transactions = dbm.loadTransactions(part);
+
+        Window window = btn_home.getScene().getWindow();
+        Document document = new Document();
+
+        PdfWriter.getInstance(document, new FileOutputStream(new File("stockCard.pdf")));
+        document.open();
+
+        Image logo = Image.getInstance("ddlogo.png");
+        Paragraph title = new Paragraph("DRILL-DOWN STOCK CARD", FontFactory.getFont(FontFactory.COURIER_BOLD, 18));
+        title.setAlignment(1);
+        logo.setAlignment(1);
+        document.add(logo);
+        document.add(title);
+        document.add(new Paragraph(new Date().toString()));
+        document.add(new Paragraph("Part Number : " + lbl_partNo.getText()));
+        document.add(new Paragraph("Vendor Part Number : " + txt_vendor.getText()));
+        document.add(new Paragraph("Inventory Account : " + txt_accountCode.getText()));
+        document.add(new Paragraph("Part Noun : " + txt_partNoun.getText()));
+        document.add(new Paragraph("Location : " + txt_location.getText()));
+        document.add(new Paragraph("Last Order : " + txt_lastOrder.getText()));
+        document.add(new Paragraph("Unit Cost (£) : " + txt_unitCost.getText()));
+        document.add(new Paragraph("Unit of Measure : " + txt_unitOfMeasure.getText()));
+        document.add(new Paragraph(lbl_min.getText()));
+        document.add(new Paragraph(lbl_max.getText()));
+        document.add(new Paragraph(lbl_onOrder.getText()));
+        document.add(new Paragraph(lbl_onHand.getText()));
+        document.add(new Paragraph(lbl_flagged.getText()));
+        document.add(new Paragraph("Description : "));
+        document.add(new Paragraph(txt_description.getText()));
+
+        PdfPTable table = new PdfPTable(7);
+        PdfPCell cell = new PdfPCell( new Paragraph("Transaction History"));
+        cell.setColspan(7);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBackgroundColor(Color.LIGHT_GRAY);
+        table.addCell(cell);
+
+
+        table.addCell("Type");
+        table.addCell("Date");
+        table.addCell("Part #");
+        table.addCell("Reference");
+        table.addCell("Qty");
+        table.addCell("Cost");
+        table.addCell("Total Value");
+
+        for(Transaction transaction : transactions)
+        {
+            String type = String.valueOf(transaction.getTransType());
+            String date = String.valueOf(transaction.getTransDate());
+            String partNo = transaction.getPartNo();
+            String ref = transaction.getReference();
+            String qty = String.valueOf(transaction.getQuantity());
+            String cost = String.valueOf(transaction.getPrice());
+            String val = String.valueOf(transaction.getTotalVal());
+
+            table.addCell(type);
+            table.addCell(date);
+            table.addCell(partNo);
+            table.addCell(ref);
+            table.addCell(qty);
+            table.addCell(cost);
+            table.addCell(val);
+        }
+        document.add(table);
+        document.close();
+
+        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Stock card generated", "stock card for " +
+                 lbl_partNo.getText() + " has been generated.");
+
+        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard.pdf"));
     }
 
     @FXML
