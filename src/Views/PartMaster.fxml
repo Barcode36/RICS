@@ -78,12 +78,12 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_print" fitHeight="25.0" fitWidth="27.0" layoutX="112.0" layoutY="244.0" onMousePressed="#on_printClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_generate" fitHeight="25.0" fitWidth="27.0" layoutX="112.0" layoutY="244.0" onMousePressed="#on_printClick" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../assets/icon_print32.png" />
+                  <Image url="@../assets/icon_pdf32.png" />
                </image>
             </ImageView>
-            <Label fx:id="lbl_print" layoutX="14.0" layoutY="249.0" prefHeight="15.0" prefWidth="99.0" text="Print card" textFill="#eda678">
+            <Label fx:id="lbl_generate" layoutX="14.0" layoutY="249.0" prefHeight="15.0" prefWidth="99.0" text="Generate card" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>

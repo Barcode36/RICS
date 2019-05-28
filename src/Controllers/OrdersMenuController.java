@@ -286,7 +286,7 @@ public class OrdersMenuController implements Initializable
                     }
                     dbm.updatePart(p);
                     dbm.saveTransaction(p, 'O', orderLine.getQuantity(), orderLine.getRequestedBy());
-                    on_printClick();
+                    on_generateClick();
                 }
                 initData(order);
                 return;
@@ -392,7 +392,7 @@ public class OrdersMenuController implements Initializable
 
 
     @FXML
-    private void on_printClick() throws IOException, DocumentException {
+    private void on_generateClick() throws IOException, DocumentException {
 
 
         DBManager dbm = new DBManager();
