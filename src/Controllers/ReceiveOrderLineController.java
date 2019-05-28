@@ -69,7 +69,6 @@ public class ReceiveOrderLineController
     @FXML
     private void on_cancelClick() throws IOException
     {
-        DBManager dbm = new DBManager();
         Order o = DBManager.returnOrder(lbl_orderNo.getText());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));

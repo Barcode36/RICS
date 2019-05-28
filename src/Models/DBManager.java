@@ -299,6 +299,51 @@ public class DBManager {
     }
 
 
+    public ObservableList<Part> searchParts(String criteria) {
+        ObservableList<Part> parts = FXCollections.observableArrayList();
+
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            //DB select statement
+            ResultSet partList =
+                    stmt.executeQuery("SELECT * FROM Parts WHERE partNumber || partNoun || vendorPartNumber || " +
+                            "location || description LIKE" + "'%" + criteria + "%' ORDER BY partNumber");
+
+
+
+            //iterate through result set
+            while (partList.next()) {
+                parts.add(new Part(
+                        partList.getString("partNumber"),
+                        partList.getInt("accountCode"),
+                        partList.getString("vendorPartNumber"),
+                        partList.getInt("minLvl"),
+                        partList.getInt("maxLvl"),
+                        partList.getString("partNoun"),
+                        partList.getString("description"),
+                        partList.getString("location"),
+                        partList.getInt("vendor"),
+                        partList.getDouble("unitCost"),
+                        partList.getInt("onHand"),
+                        partList.getInt("onOrder"),
+                        partList.getInt("flagged"),
+                        partList.getString("lastOrder"),
+                        partList.getString("unitOfMeasure")
+                ));
+            }
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return parts;
+        }
+    }
     //***ACCOUNT FUNCTIONS***
     public ObservableList<InventoryAccount> loadInventoryAccounts() {
         ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
@@ -552,7 +597,7 @@ public class DBManager {
                         transactionList.getString("transDate"),
                         transactionList.getString("partNo"),
                         transactionList.getInt("quantity"),
-                        transactionList.getString("personnel"),
+                        transactionList.getString("reference"),
                         transactionList.getDouble("price"),
                         transactionList.getDouble("totalVal")
                 ));
@@ -770,6 +815,38 @@ public class DBManager {
         }
     }
 
+    public ObservableList<Order> searchOrders(String criteria) {
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+
+
+        try {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            //DB select statement
+            ResultSet orderList =
+                    stmt.executeQuery("SELECT * FROM Orders WHERE orderNumber || header || orderDate || " +
+                            "location || description LIKE" + "'%" + criteria + "%' ORDER BY orderNumber");
+
+
+            //iterate through result set
+            while (orderList.next()) {
+                Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(orderList.getString("orderDate"));
+                orders.add(new Order(orderList.getString("orderNumber"), orderList.getString("orderType").charAt(0),
+                        orderList.getString("shippingMethod"), orderDate, orderList.getString(
+                        "header"), orderList.getString("orderStatus").charAt(0), orderList.getDouble("orderTotal"),
+                        orderList.getBoolean("orderApproved")));
+            }
+
+            //close connection to DB
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return orders;
+        }
+    }
 
     //***ORDERLINE FUNCTIONS***
     //all other methods and functions

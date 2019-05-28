@@ -12,12 +12,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -71,12 +69,16 @@ public class LoginController implements Initializable
             }
             else
             {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/landingPage.fxml"));
-                Stage landingPageStage = new Stage(StageStyle.TRANSPARENT);
-                landingPageStage.setTitle("RICS 1.0 Home Page");
-                landingPageStage.setScene(new Scene(loader.load()));
-                landingPageStage.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
+                Stage homeStage = new Stage();
+                homeStage.setTitle("RICS 1.0 Issue Part");
+                homeStage.initStyle(StageStyle.TRANSPARENT);
+                homeStage.setScene(new Scene(loader.load()));
+                LandingPageController controller = loader.getController();
+                homeStage.show();
+                controller.initData(u);
                 closeLogin();
+
             }
 
         }

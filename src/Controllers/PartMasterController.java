@@ -58,7 +58,6 @@ public class PartMasterController implements Initializable
     @FXML
     private TableColumn col_totalVal;
 
-
     @FXML
     private Label lbl_partNo;
 
@@ -87,6 +86,10 @@ public class PartMasterController implements Initializable
     private JFXTextField txt_unitOfMeasure;
 
     @FXML
+    private JFXTextField txt_search;
+
+
+    @FXML
     private Label lbl_onHand;
 
     @FXML
@@ -107,8 +110,6 @@ public class PartMasterController implements Initializable
     @FXML
     private ImageView btn_home;
 
-    @FXML
-    private ImageView btn_edit;
 
 
     @Override
@@ -131,7 +132,7 @@ public class PartMasterController implements Initializable
         col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
         col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
         col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-        col_reference.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_reference.setCellValueFactory(new PropertyValueFactory<>("reference"));
         col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
@@ -257,7 +258,7 @@ public class PartMasterController implements Initializable
         col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
         col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
         col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-        col_reference.setCellValueFactory(new PropertyValueFactory<>("personnel"));
+        col_reference.setCellValueFactory(new PropertyValueFactory<>("reference"));
         col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
@@ -268,6 +269,17 @@ public class PartMasterController implements Initializable
     {
         Stage stage = (Stage)btn_home.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void on_searchClick()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> partsOBS = dbm.searchParts(txt_search.getText().toUpperCase());
+
+        tbl_parts.setItems(partsOBS);
+
+        col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
     }
 
 

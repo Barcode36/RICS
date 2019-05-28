@@ -35,7 +35,7 @@ public class OrdersMenuController implements Initializable
 
 
     @FXML
-    private ImageView btn_cancel;
+    private ImageView btn_cancel, btn_search;
 
 
     @FXML
@@ -54,7 +54,7 @@ public class OrdersMenuController implements Initializable
     private JFXTextField txt_status;
 
     @FXML
-    private JFXTextField txt_total;
+    private JFXTextField txt_total, txt_search;
 
 
     @FXML
@@ -272,7 +272,10 @@ public class OrdersMenuController implements Initializable
                     Part p =  orderLine.getPart();
                     p.setLastOrder(orderNumber);
                     p.setOnOrder(p.getOnOrder() + orderLine.getQuantity());
-                    p.setFlagged(p.getFlagged() - orderLine.getQuantity());
+                    if(p.getFlagged() >= orderLine.getQuantity())
+                    {
+                        p.setFlagged(p.getFlagged() - orderLine.getQuantity());
+                    }
                     dbm.updatePart(p);
                     dbm.saveTransaction(p, 'O', orderLine.getQuantity(), orderLine.getRequestedBy());
                 }
@@ -403,6 +406,18 @@ public class OrdersMenuController implements Initializable
 
     }
 
+
+    @FXML
+    private void on_searchClick()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Order> orders = dbm.searchOrders(txt_search.getText().toUpperCase());
+
+        tbl_order.setItems(orders);
+
+        col_orderNo.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
+
+    }
 
 
     protected void initData(Order order)

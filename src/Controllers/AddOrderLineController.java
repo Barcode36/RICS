@@ -34,7 +34,7 @@ public class AddOrderLineController implements Initializable
     private TableColumn col_description;
 
     @FXML
-    private JFXTextField txt_partNo;
+    private JFXTextField txt_partNo, txt_filter;
 
     @FXML
     private JFXTextField txt_requestedBy;
@@ -88,9 +88,9 @@ public class AddOrderLineController implements Initializable
             int orderLineId = dbm.generateUniqueOrderLineId(orderNumber);
             int qty = Integer.parseInt(txt_qty.getText());
             Part part = DBManager.returnPart(txt_partNo.getText());
-            String reqBy = txt_requestedBy.getText();
+            String ref = txt_requestedBy.getText();
             Order order = DBManager.returnOrder(orderNumber);
-            OrderLine orderLine = new OrderLine(orderLineId, qty, part, reqBy);
+            OrderLine orderLine = new OrderLine(orderLineId, qty, part, ref);
             dbm.addOrderLine(orderLine, orderNumber);
             order.calculateOrderTotal();
 
@@ -132,6 +132,18 @@ public class AddOrderLineController implements Initializable
         txt_partNo.setText("");
         txt_qty.setText("");
         txt_requestedBy.setText("");
+    }
+
+    @FXML
+    private void on_filterClick()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> partsOBS = dbm.searchParts(txt_filter.getText().toUpperCase());
+
+        tbl_parts.setItems(partsOBS);
+
+        col_partNumber.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
+        col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
     }
 
 

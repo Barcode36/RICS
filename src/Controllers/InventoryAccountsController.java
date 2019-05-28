@@ -87,7 +87,7 @@ public class InventoryAccountsController implements Initializable
                     "fields");
             return;
         }
-        else if(dbm.containsAccount(accountsOBS, accountCode))
+        else if(DBManager.containsAccount(accountsOBS, accountCode))
         {
             try
             {
@@ -132,11 +132,6 @@ public class InventoryAccountsController implements Initializable
         closeInventoryAccounts();
     }
 
-    @FXML
-    private void on_closeClick()
-    {
-        closeInventoryAccounts();
-    }
 
     @FXML
     private void on_addClick()

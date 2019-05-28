@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,12 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import javafx.util.Duration;
 
 import java.net.URL;
-
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -37,8 +32,6 @@ public class UsersMenuController implements Initializable {
     @FXML
     private ImageView btn_addUser;
 
-    @FXML
-    private ImageView btn_refreshList;
 
     @FXML
     private JFXTextField txt_username;
@@ -85,7 +78,7 @@ public class UsersMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        on_refreshListClick();
+        initData();
 
         try {
             tbl_users.setOnMouseClicked((MouseEvent event) -> {
@@ -122,7 +115,7 @@ public class UsersMenuController implements Initializable {
     }
 
     @FXML
-    private void on_refreshListClick() {
+    private void initData() {
         DBManager dbm = new DBManager();
         ObservableList<User> usersOBS = dbm.loadUsersOBS();
 
@@ -168,18 +161,18 @@ public class UsersMenuController implements Initializable {
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Passwords", "Passwords do not match");
         }
-        else if (dbm.containsUser(usersOBS, username))
+        else if (DBManager.containsUser(usersOBS, username))
         {
             if (userAlertCounter == 0)
             {
                 AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
-                        "account details click OK & save," + "to cancel click OK & undo.");
+                        "details click OK & save, " + " to cancel click OK & undo.");
+                userAlertCounter++;
                 return;
             }
 
-            userAlertCounter++;
 
-            if (userAlertCounter == 2)
+            else if (userAlertCounter == 1)
             {
                 try
                 {
@@ -187,6 +180,7 @@ public class UsersMenuController implements Initializable {
                     User u = new User(username, password, firstName, lastName, rigNo, admin);
 
                     dbm.updateUser(u);
+                    userAlertCounter = 0;
                     AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account Updated", "you have " +
                             "successfully updated account details");
                     return;
@@ -196,10 +190,10 @@ public class UsersMenuController implements Initializable {
                 {
                     e.printStackTrace();
                 }
-                userAlertCounter = 0;
+
             }
         }
-        else if(!dbm.containsUser(usersOBS, username))
+        else if(!DBManager.containsUser(usersOBS, username))
         {
             try {
                 int rigNo = Integer.parseInt(rig);
@@ -229,7 +223,7 @@ public class UsersMenuController implements Initializable {
                 e.printStackTrace();
             }
         }
-        on_refreshListClick();
+        initData();
     }
 
     @FXML
@@ -237,23 +231,15 @@ public class UsersMenuController implements Initializable {
     {
         try
         {
-            ObservableList<User> usersOBS = dbm.loadUsersOBS();
-
-            for(User user : usersOBS)
-            {
-                if(user.getUsername().equals(txt_username.getText()))
-                {
-                    txt_username.setText(user.getUsername());
-                    txt_firstName.setText(user.getFirstName());
-                    txt_lastName.setText(user.getLastName());
-                    txt_rig.setText(Integer.toString(user.getRig()));
-                    rdo_admin.setSelected(user.getAdminUser());
-                    txt_password.setText(user.getPassword());
-                    txt_passwordConfirm.setText("");
-
-                    userAlertCounter =0;
-                }
-            }
+           User user =  DBManager.returnUser(txt_username.getText());
+           txt_username.setText(user.getUsername());
+           txt_firstName.setText(user.getFirstName());
+           txt_lastName.setText(user.getLastName());
+           txt_rig.setText(Integer.toString(user.getRig()));
+           rdo_admin.setSelected(user.getAdminUser());
+           txt_password.setText(user.getPassword());
+           txt_passwordConfirm.setText("");
+           userAlertCounter =0;
         }
         catch (Exception e)
         {
@@ -286,7 +272,7 @@ public class UsersMenuController implements Initializable {
                     {
                         dbm.deleteUser(user);
                         userAlertCounter =0;
-                        on_refreshListClick();
+                        initData();
                     }
                 }
             }

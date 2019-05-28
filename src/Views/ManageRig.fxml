@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="414.0" style="-fx-background-color: #3d4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManageRigController">
    <children>
       <Label fx:id="lbl_title" layoutX="165.0" layoutY="28.0" text="Manage rigs" textFill="#eda678">
@@ -46,7 +47,7 @@
             <Image url="@../assets/icon_add32.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="388.0" layoutY="2.0" onMousePressed="#on_closeClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="388.0" layoutY="2.0" onMousePressed="#closeAddRig" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />
          </image>

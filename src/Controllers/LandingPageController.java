@@ -1,12 +1,14 @@
 package Controllers;
 
+
+import Models.User;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -22,9 +24,11 @@ public class LandingPageController implements Initializable
 
 
     @FXML
-    private ImageView btn_users;
+    private ImageView btn_users, btn_location, btn_export, btn_accounts, btn_rig, btn_reports;
 
 
+    @FXML
+    private Label lbl_username;
     @FXML
     private AnchorPane root;
 
@@ -32,10 +36,9 @@ public class LandingPageController implements Initializable
     public static AnchorPane rootP;
 
 
-
     public void initialize (URL url, ResourceBundle rb)
     {
-
+        rootP = root;
 
        /* if(!Main.isSplashLoaded)
         {
@@ -43,13 +46,9 @@ public class LandingPageController implements Initializable
 
         }*/
 
-
-        rootP = root;
     }
 
-
-
-    //currently disabled
+    //SplashScreen currently disabled
     @FXML
     private void loadSplashScreen()
     {
@@ -103,7 +102,7 @@ public class LandingPageController implements Initializable
     {
 
         Stage usersStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("../Views/usersMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/UsersMenu.fxml"));
         Scene scene = new Scene(root);
         usersStage.setScene(scene);
         usersStage.setTitle("RICS 1.0 User Account Management");
@@ -201,9 +200,15 @@ public class LandingPageController implements Initializable
         accountStage.show();
     }
 
-    private void closeLandingPage() {
-        Stage lstage = (Stage)btn_users.getScene().getWindow();
-        lstage.close();
+    private void closeLandingPage()
+    {
+        Stage stage = (Stage)btn_users.getScene().getWindow();
+        stage.close();
+    }
+
+    public void initData(User loggedInUser)
+    {
+        lbl_username.setText(loggedInUser.getUsername());
     }
 
 
