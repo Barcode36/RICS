@@ -586,7 +586,7 @@ public class DBManager {
             double totalVal = quantity*p.getUnitCost();
 
             stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
-                    "personnel, price, totalVal)" + "VALUES ('" + type + "','" + now + "','" + p.getPartNumber() +
+                    "reference, price, totalVal)" + "VALUES ('" + type + "','" + now + "','" + p.getPartNumber() +
                     "','" + quantity + "','" + reference + "', '" + p.getUnitCost() + "', '"+ totalVal + "')");
         } catch (Exception e) {
             e.printStackTrace();

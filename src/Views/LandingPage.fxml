@@ -6,17 +6,17 @@
 <?import javafx.scene.text.*?>
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #3D4956;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LandingPageController">
    <children>
-      <ImageView fx:id="btn_rig" fitHeight="51.0" fitWidth="40.0" layoutX="328.0" layoutY="293.0" onMousePressed="#on_rigClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_rig" fitHeight="51.0" fitWidth="40.0" layoutX="280.0" layoutY="293.0" onMousePressed="#on_rigClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_rigDark.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_users" fx:id="btn_users" fitHeight="64.0" fitWidth="58.0" layoutX="48.0" layoutY="183.0" onMousePressed="#on_usersClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_users" fx:id="btn_users" fitHeight="64.0" fitWidth="58.0" layoutX="45.0" layoutY="183.0" onMousePressed="#on_usersClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_users.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_reports" fx:id="btn_reports" fitHeight="64.0" fitWidth="58.0" layoutX="168.0" layoutY="183.0" onMousePressed="#on_reportsClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_reports" fx:id="btn_reports" fitHeight="64.0" fitWidth="58.0" layoutX="479.0" layoutY="183.0" onMousePressed="#on_reportsClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_reports.png" />
          </image>
@@ -31,17 +31,17 @@
             <Image url="@../assets/icon_orders.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_partMaster" fx:id="btn_partMaster" fitHeight="64.0" fitWidth="58.0" layoutX="479.0" layoutY="183.0" onMousePressed="#on_partsClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_partMaster" fx:id="btn_partMaster" fitHeight="64.0" fitWidth="58.0" layoutX="163.0" layoutY="183.0" onMousePressed="#on_partsClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_parts.png" />
          </image>
       </ImageView>
-      <Label fx:id="lbl_users" alignment="CENTER" layoutX="29.0" layoutY="244.0" text="User Accounts" textFill="#eda678">
+      <Label fx:id="lbl_users" alignment="CENTER" layoutX="26.0" layoutY="244.0" text="User Accounts" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_partMaster" alignment="CENTER" layoutX="468.0" layoutY="244.0" text="Part Master" textFill="#eda678">
+      <Label fx:id="lbl_partMaster" alignment="CENTER" layoutX="152.0" layoutY="244.0" text="Part Master" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
@@ -56,42 +56,32 @@
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_reports" layoutX="170.0" layoutY="244.0" text="Reports" textFill="#646464">
+      <Label fx:id="lbl_reports" layoutX="481.0" layoutY="244.0" text="Reports" textFill="#646464">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_location" alignment="CENTER" layoutX="94.0" layoutY="333.0" prefHeight="18.0" prefWidth="96.0" text="New location" textFill="#eda678">
+      <Label fx:id="lbl_location" alignment="CENTER" layoutX="144.0" layoutY="333.0" prefHeight="18.0" prefWidth="96.0" text="New location" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView id="btn_users" fx:id="btn_location" fitHeight="45.0" fitWidth="40.0" layoutX="122.0" layoutY="293.0" onMousePressed="#on_locationClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_users" fx:id="btn_location" fitHeight="45.0" fitWidth="40.0" layoutX="172.0" layoutY="293.0" onMousePressed="#on_locationClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_location80.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_users" fx:id="btn_export" fitHeight="45.0" fitWidth="40.0" layoutX="232.0" layoutY="293.0" onMousePressed="#on_locationClick" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/icon_export80.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="lbl_export" alignment="CENTER" layoutX="204.0" layoutY="333.0" prefHeight="18.0" prefWidth="96.0" text="Export Orders" textFill="#eda678">
+      <Label fx:id="lbl_rig" alignment="CENTER" layoutX="262.0" layoutY="333.0" prefHeight="18.0" prefWidth="77.0" text="Manage rigs" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_rig" alignment="CENTER" layoutX="310.0" layoutY="333.0" prefHeight="18.0" prefWidth="77.0" text="Manage rigs" textFill="#eda678">
-         <font>
-            <Font name="Quicksand Bold" size="12.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="btn_accounts" fitHeight="51.0" fitWidth="40.0" layoutX="430.0" layoutY="293.0" onMousePressed="#on_accountClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_accounts" fitHeight="51.0" fitWidth="40.0" layoutX="377.0" layoutY="293.0" onMousePressed="#on_accountClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_account80.png" />
          </image>
       </ImageView>
-      <Label fx:id="lbl_accounts" alignment="CENTER" layoutX="421.0" layoutY="331.0" prefHeight="40.0" prefWidth="58.0" text="Inventory Accounts" textFill="#eda678" wrapText="true">
+      <Label fx:id="lbl_accounts" alignment="CENTER" layoutX="368.0" layoutY="331.0" prefHeight="40.0" prefWidth="58.0" text="Inventory Accounts" textFill="#eda678" wrapText="true">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>
@@ -101,7 +91,7 @@
             <Font name="Quicksand Bold" size="64.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_username" alignment="CENTER" layoutX="276.0" layoutY="126.0" text="username" textFill="#cccccc">
+      <Label fx:id="lbl_username" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="120.0" prefHeight="40.0" prefWidth="435.0" text="username" textAlignment="CENTER" textFill="#cccccc">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>

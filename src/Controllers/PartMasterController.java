@@ -118,6 +118,15 @@ public class PartMasterController implements Initializable
     @FXML
     private ImageView btn_home;
 
+    @FXML
+    private Label lbl_add, lbl_update, lbl_delete, lbl_issue;
+
+    @FXML
+    private ImageView btn_addPart, btn_edit, btn_delete, btn_issue;
+
+
+
+
 
 
     @Override
@@ -253,11 +262,13 @@ public class PartMasterController implements Initializable
         Window window = btn_home.getScene().getWindow();
         Document document = new Document();
 
-        PdfWriter.getInstance(document, new FileOutputStream(new File("stockCard.pdf")));
+        PdfWriter.getInstance(document, new FileOutputStream(new File("stockCard" + part.getPartNumber()+".pdf")));
         document.open();
 
         Image logo = Image.getInstance("ddlogo.png");
         Paragraph title = new Paragraph("DRILL-DOWN STOCK CARD", FontFactory.getFont(FontFactory.COURIER_BOLD, 18));
+        document.add(new Paragraph(" --------------  "));
+        document.add(new Paragraph("   "));
         title.setAlignment(1);
         logo.setAlignment(1);
         document.add(logo);
@@ -278,6 +289,7 @@ public class PartMasterController implements Initializable
         document.add(new Paragraph(lbl_flagged.getText()));
         document.add(new Paragraph("Description : "));
         document.add(new Paragraph(txt_description.getText()));
+        document.add(new Paragraph("   "));
 
         PdfPTable table = new PdfPTable(7);
         PdfPCell cell = new PdfPCell( new Paragraph("Transaction History"));
@@ -319,7 +331,7 @@ public class PartMasterController implements Initializable
         AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Stock card generated", "stock card for " +
                  lbl_partNo.getText() + " has been generated.");
 
-        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard.pdf"));
+        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard"+part.getPartNumber()+".pdf"));
     }
 
     @FXML
@@ -366,6 +378,18 @@ public class PartMasterController implements Initializable
         col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
+
+        if(!Main.user.getAdminUser())
+        {
+            lbl_add.setVisible(false);
+            lbl_update.setVisible(false);
+            lbl_issue.setVisible(false);
+            lbl_delete.setVisible(false);
+            btn_addPart.setVisible(false);
+            btn_edit.setVisible(false);
+            btn_issue.setVisible(false);
+            btn_delete.setVisible(false);
+        }
     }
 
 

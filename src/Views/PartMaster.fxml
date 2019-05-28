@@ -63,12 +63,12 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_edit" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="78.0" text="Update info" textFill="#eda678">
+            <Label fx:id="lbl_update" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="78.0" text="Update info" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_archive" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="78.0" text="Delete part" textFill="#eda678">
+            <Label fx:id="lbl_delete" layoutX="12.0" layoutY="169.0" prefHeight="15.0" prefWidth="78.0" text="Delete part" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
@@ -83,7 +83,7 @@
                   <Image url="@../assets/icon_print32.png" />
                </image>
             </ImageView>
-            <Label fx:id="lbl_issue1" layoutX="14.0" layoutY="249.0" prefHeight="15.0" prefWidth="99.0" text="Print card" textFill="#eda678">
+            <Label fx:id="lbl_print" layoutX="14.0" layoutY="249.0" prefHeight="15.0" prefWidth="99.0" text="Print card" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>

@@ -4,6 +4,11 @@ import Models.*;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.lowagie.text.*;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,6 +28,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -278,6 +286,7 @@ public class OrdersMenuController implements Initializable
                     }
                     dbm.updatePart(p);
                     dbm.saveTransaction(p, 'O', orderLine.getQuantity(), orderLine.getRequestedBy());
+                    on_printClick();
                 }
                 initData(order);
                 return;
@@ -379,6 +388,94 @@ public class OrdersMenuController implements Initializable
                 e.printStackTrace();
             }
 
+    }
+
+
+    @FXML
+    private void on_printClick() throws IOException, DocumentException {
+
+
+        DBManager dbm = new DBManager();
+        Order order = DBManager.returnOrder(lbl_orderNo.getText());
+        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(order.getOrderNumber());
+
+        Document document = new Document();
+
+        PdfWriter.getInstance(document, new FileOutputStream(new File("Order"+order.getOrderNumber()+".pdf")));
+        document.open();
+
+        String type="";
+        switch(order.getOrderType())
+        {
+            case 'P':
+                type = "Purchase Order";
+                break;
+            case 'R':
+                type = "Repair Order";
+                break;
+            case 'S':
+                type = "Service Order";
+                break;
+
+        }
+
+        Image logo = Image.getInstance("ddlogo.png");
+        Paragraph title = new Paragraph("DRILL-DOWN " + type , FontFactory.getFont(FontFactory.COURIER_BOLD, 18));
+        document.add(new Paragraph("   "));
+        document.add(new Paragraph("   "));
+        title.setAlignment(1);
+        logo.setAlignment(1);
+        document.add(logo);
+        document.add(title);
+        if(order.getOrderStatus() == 'U')
+        {
+            Paragraph alert = new Paragraph("ORDER UNAPPROVED");
+            document.add(alert);
+        }
+        document.add(new Paragraph(String.valueOf(order.getDate())));
+        document.add(new Paragraph(lbl_orderNo.getText(), FontFactory.getFont(FontFactory.COURIER_BOLD, 16)));
+        document.add(new Paragraph("Shipping Method: " + order.getShippingMethod()));
+        document.add(new Paragraph("Header:"));
+        document.add(new Paragraph(txt_header.getText()));
+        document.add(new Paragraph("   "));
+
+        PdfPTable table = new PdfPTable(6);
+        PdfPCell cell = new PdfPCell(new Paragraph("Order Lines"));
+        cell.setColspan(6);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+
+        table.addCell("Status");
+        table.addCell("Qty");
+        table.addCell("Rec");
+        table.addCell("Part Number");
+        table.addCell("Manifest");
+        table.addCell("Line Total");
+
+        for (OrderLine orderLine : orderLines)
+        {
+            String status = String.valueOf(orderLine.getStatus());
+            String quan = String.valueOf(orderLine.getQuantity());
+            String partNum = orderLine.getPart().getPartNumber();
+            String manID = orderLine.getManifestId();
+            String rec = String.valueOf(orderLine.getQuantity());
+            String lineTotal = String.valueOf(orderLine.getLineTotal());
+
+            table.addCell(status);
+            table.addCell(quan);
+            table.addCell(rec);
+            table.addCell(partNum);
+            table.addCell(manID);
+            table.addCell(lineTotal);
+        }
+        document.add(table);
+
+        document.add(new Paragraph("Order Total: £" + order.getOrderTotal()));
+        document.close();
+
+
+        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\Order"+order.getOrderNumber()+".pdf"));
     }
 
     @FXML
@@ -500,6 +597,7 @@ public class OrdersMenuController implements Initializable
         return varOT;
     }
 
+    @FXML
     protected void closeOrdersMenu()
     {
         Stage stage = (Stage)btn_home.getScene().getWindow();

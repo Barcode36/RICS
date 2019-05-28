@@ -210,9 +210,13 @@ public class LandingPageController implements Initializable
 
     public void initData(User user)
     {
+        lbl_username.setText("Welcome " + user.getFirstName());
+
         Main.user = user;
         if(!Main.user.getAdminUser())
         {
+            lbl_username.setText("Basic users can use RICS to browse parts and orders. \n Only admin users have " +
+                    "access to full functionality. ");
             btn_users.setVisible(false);
             btn_location.setVisible(false);
             btn_export.setVisible(false);
@@ -225,6 +229,7 @@ public class LandingPageController implements Initializable
             lbl_accounts.setVisible(false);
             lbl_accounts.setVisible(false);
             lbl_reports.setVisible(false);
+            lbl_rig.setVisible(false);
         }
     }
 
