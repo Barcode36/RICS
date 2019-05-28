@@ -28,12 +28,14 @@ public class LandingPageController implements Initializable
 
 
     @FXML
-    private Label lbl_username;
+    private Label lbl_username, lbl_users, lbl_location, lbl_export, lbl_accounts, lbl_rig, lbl_reports;
     @FXML
     private AnchorPane root;
 
 
     public static AnchorPane rootP;
+
+
 
 
     public void initialize (URL url, ResourceBundle rb)
@@ -206,10 +208,26 @@ public class LandingPageController implements Initializable
         stage.close();
     }
 
-    public void initData(User loggedInUser)
+    public void initData(User user)
     {
-        lbl_username.setText(loggedInUser.getUsername());
+        Main.user = user;
+        if(!Main.user.getAdminUser())
+        {
+            btn_users.setVisible(false);
+            btn_location.setVisible(false);
+            btn_export.setVisible(false);
+            btn_accounts.setVisible(false);
+            btn_rig.setVisible(false);
+            btn_reports.setVisible(false);
+            lbl_users.setVisible(false);
+            lbl_location.setVisible(false);
+            lbl_export.setVisible(false);
+            lbl_accounts.setVisible(false);
+            lbl_accounts.setVisible(false);
+            lbl_reports.setVisible(false);
+        }
     }
+
 
 
 

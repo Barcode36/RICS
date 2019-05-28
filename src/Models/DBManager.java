@@ -131,8 +131,6 @@ public class DBManager {
         for (User user : usersOBS) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
-            } else {
-                return null;
             }
         }
         return null;

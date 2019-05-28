@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,7 @@ import javafx.stage.StageStyle;
 public class Main extends Application
 {
     public static Boolean isSplashLoaded = false;
+    public static User user;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -27,4 +29,6 @@ public class Main extends Application
     {
         launch(args);
     }
+
 }
+
