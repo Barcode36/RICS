@@ -101,7 +101,7 @@ public class AddPartController implements Initializable
             String partNumber = dbm.generateUniquePartNo(part);
             part.setPartNumber(partNumber);
 
-            dbm.addPart(part);
+            dbm.createPart(part);
             AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part created", "you have " +
                     "successfully created a new stock card");
             return;

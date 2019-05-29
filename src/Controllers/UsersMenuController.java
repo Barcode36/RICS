@@ -117,7 +117,7 @@ public class UsersMenuController implements Initializable {
     @FXML
     private void initData() {
         DBManager dbm = new DBManager();
-        ObservableList<User> usersOBS = dbm.loadUsersOBS();
+        ObservableList<User> usersOBS = dbm.loadUsers();
 
         //populate table view
         tbl_users.setItems(usersOBS);
@@ -140,7 +140,7 @@ public class UsersMenuController implements Initializable {
     @FXML
     private void on_saveClick()
     {
-        ObservableList<User> usersOBS = dbm.loadUsersOBS();
+        ObservableList<User> usersOBS = dbm.loadUsers();
         String username = txt_username.getText();
         String firstName = txt_firstName.getText();
         String lastName = txt_lastName.getText();
@@ -161,7 +161,7 @@ public class UsersMenuController implements Initializable {
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Passwords", "Passwords do not match");
         }
-        else if (DBManager.containsUser(usersOBS, username))
+        else if (User.containsUser(usersOBS, username))
         {
             if (userAlertCounter == 0)
             {
@@ -193,13 +193,13 @@ public class UsersMenuController implements Initializable {
 
             }
         }
-        else if(!DBManager.containsUser(usersOBS, username))
+        else if(!User.containsUser(usersOBS, username))
         {
             try {
                 int rigNo = Integer.parseInt(rig);
                 User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-                if (dbm.registerUser(u)) {
+                if (dbm.createUser(u)) {
 
                     txt_username.clear();
                     txt_firstName.clear();
@@ -214,7 +214,7 @@ public class UsersMenuController implements Initializable {
 
                     return;
 
-                } else if (dbm.registerUser(u) == false) {
+                } else if (dbm.createUser(u) == false) {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
                             "account.");
                     return;
@@ -231,7 +231,7 @@ public class UsersMenuController implements Initializable {
     {
         try
         {
-           User user =  DBManager.returnUser(txt_username.getText());
+           User user =  User.returnUser(txt_username.getText());
            txt_username.setText(user.getUsername());
            txt_firstName.setText(user.getFirstName());
            txt_lastName.setText(user.getLastName());
@@ -264,7 +264,7 @@ public class UsersMenuController implements Initializable {
         {
             try
             {
-                ObservableList<User> usersOBS = dbm.loadUsersOBS();
+                ObservableList<User> usersOBS = dbm.loadUsers();
 
                 for(User user : usersOBS)
                 {

@@ -54,7 +54,7 @@ public class IssuePartController
         Window window = btn_cancel.getScene().getWindow();
 
         DBManager dbm = new DBManager();
-        Part part = DBManager.returnPart(partNo);
+        Part part = Part.returnPart(partNo);
         try
         {
                 if (part.getOnHand() >= qty && qty > 0)
@@ -110,7 +110,7 @@ public class IssuePartController
     private void on_cancelClick() throws IOException
     {
 
-        Part p = DBManager.returnPart(lbl_partNo.getText());
+        Part p = Part.returnPart(lbl_partNo.getText());
         closeIssuePart();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/PartMaster.fxml"));
         Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);

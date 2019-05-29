@@ -191,7 +191,7 @@ public class PartMasterController implements Initializable
         {
             DBManager dbm = new DBManager();
             ObservableList<Part> parts = dbm.loadParts();
-            Part part = DBManager.returnPart(lbl_partNo.getText());
+            Part part = Part.returnPart(lbl_partNo.getText());
 
             dbm.deletePart(part);
             initData(parts.get(0));
@@ -256,7 +256,7 @@ public class PartMasterController implements Initializable
     private void on_printClick() throws IOException, DocumentException {
 
         DBManager dbm = new DBManager();
-        Part part = DBManager.returnPart(lbl_partNo.getText());
+        Part part = Part.returnPart(lbl_partNo.getText());
         ObservableList<Transaction> transactions = dbm.loadTransactions(part);
 
         Window window = btn_home.getScene().getWindow();
@@ -404,7 +404,7 @@ public class PartMasterController implements Initializable
     private void on_searchClick()
     {
         DBManager dbm = new DBManager();
-        ObservableList<Part> partsOBS = dbm.searchParts(txt_search.getText().toUpperCase());
+        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_search.getText().toUpperCase());
 
         tbl_parts.setItems(partsOBS);
 

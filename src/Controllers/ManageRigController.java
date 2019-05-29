@@ -5,7 +5,6 @@ import Models.DBManager;
 import Models.Rig;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -96,7 +95,7 @@ public class ManageRigController implements Initializable
                     "fields");
             return;
         }
-        else if(dbm.containsRig(rigsOBS, rigNo))
+        else if(DBManager.containsRig(rigsOBS, rigNo))
         {
             try
             {

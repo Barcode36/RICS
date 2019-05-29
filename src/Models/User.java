@@ -1,5 +1,7 @@
 package Models;
 
+import javafx.collections.ObservableList;
+
 public class User
 {
     private String username;
@@ -8,6 +10,36 @@ public class User
     private String lastName;
     private int rig;
     private Boolean adminUser;
+
+    /**
+     * Checks if User with 'username' exists in list of Users DB Users Table
+     * @param users - List of all users
+     * @param username - username to search for in 'users'
+     * @return  Boolean success value
+     */
+    public static boolean containsUser(ObservableList<User> users, String username)
+    {
+        /**
+         * Loops through 'users' looking for user with username = 'username'
+         */
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static User returnUser(String username) {
+        DBManager dbm = new DBManager();
+        ObservableList<User> users = dbm.loadUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 
     public String getUsername()
     {

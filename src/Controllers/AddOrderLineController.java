@@ -87,7 +87,7 @@ public class AddOrderLineController implements Initializable
             String orderNumber = lbl_orderNo.getText();
             int orderLineId = dbm.generateUniqueOrderLineId(orderNumber);
             int qty = Integer.parseInt(txt_qty.getText());
-            Part part = DBManager.returnPart(txt_partNo.getText());
+            Part part = Part.returnPart(txt_partNo.getText());
             String ref = txt_requestedBy.getText();
             Order order = DBManager.returnOrder(orderNumber);
             OrderLine orderLine = new OrderLine(orderLineId, qty, part, ref);
@@ -138,7 +138,7 @@ public class AddOrderLineController implements Initializable
     private void on_filterClick()
     {
         DBManager dbm = new DBManager();
-        ObservableList<Part> partsOBS = dbm.searchParts(txt_filter.getText().toUpperCase());
+        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_filter.getText().toUpperCase());
 
         tbl_parts.setItems(partsOBS);
 

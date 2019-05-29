@@ -11,18 +11,17 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import javax.swing.text.html.ImageView;
+
 
 public class AddLocationController
 {
+
     @FXML
     private JFXButton btn_cancel;
 
     @FXML
-    private ImageView btn_close;
-
-    @FXML
     private JFXTextField txt_locationId;
+
 
     @FXML
     private void on_addClick()
@@ -31,7 +30,7 @@ public class AddLocationController
         ObservableList<Location> locs = dbm.loadLocations();
         Window window = btn_cancel.getScene().getWindow();
 
-        if (!dbm.containsLocation(locs, txt_locationId.getText()))
+        if (!DBManager.containsLocation(locs, txt_locationId.getText()))
         {
             try
             {
@@ -55,18 +54,7 @@ public class AddLocationController
         }
     }
 
-
     @FXML
-    private void on_closeClick()
-    {
-        closeAddLocation();
-    }
-    @FXML
-    private void on_cancelClick()
-    {
-            closeAddLocation();
-    }
-
     private void closeAddLocation()
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();

@@ -1,7 +1,13 @@
 package Models;
 
+import javafx.collections.ObservableList;
+
+/**
+ *
+ */
 public class Part
 {
+
     //private properties
     private String partNumber;
     private String vendorNumber;
@@ -18,6 +24,36 @@ public class Part
     private String location;
     private int vendorId;
     private int accountCode;
+
+    /**
+     * Returns Part where Part.partNumber = 'partNumber'
+     * @param partNumber - partNumber of Part to be returned
+     * @return part - Found Part, else returns null
+     */
+    public static Part returnPart(String partNumber)
+    {
+        try
+        {
+            DBManager dbm = new DBManager();
+            ObservableList<Part> parts = dbm.loadParts();
+
+            /**
+             * Loop through 'parts', returns Part 'part' if part.partNumber = 'partNumber'
+             */
+            for (Part part : parts)
+            {
+                if (part.getPartNumber().equals(partNumber))
+                {
+                    return part;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //getters and setters
     public String getPartNumber()

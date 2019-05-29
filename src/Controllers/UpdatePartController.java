@@ -68,7 +68,7 @@ public class UpdatePartController implements Initializable
         try
         {
             DBManager dbm = new DBManager();
-            Part part = DBManager.returnPart(p);
+            Part part = Part.returnPart(p);
             txt_partNoun.setText(part.getPartNoun());
             txt_description.setText(part.getDescription());
             txt_cost.setText(String.valueOf(part.getUnitCost()));

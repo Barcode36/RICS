@@ -87,7 +87,7 @@ public class InventoryAccountsController implements Initializable
                     "fields");
             return;
         }
-        else if(DBManager.containsAccount(accountsOBS, accountCode))
+        else if(InventoryAccount.containsAccount(accountsOBS, accountCode))
         {
             try
             {
@@ -108,7 +108,7 @@ public class InventoryAccountsController implements Initializable
 
             try {
                 InventoryAccount account = new InventoryAccount(accountCode, accountName);
-                dbm.addInventoryAccount(account);
+                dbm.createInventoryAccount(account);
 
                 AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account added", "you have " +
                         "successfully created a new Inventory Account");

@@ -91,7 +91,7 @@ public class ReceiveOrderLineController
             DBManager dbm = new DBManager();
             OrderLine ol = DBManager.returnOrderLine(Integer.parseInt(lbl_orderLineId.getText()), lbl_orderNo.getText());
             Order o = DBManager.returnOrder(lbl_orderNo.getText());
-            Part p = DBManager.returnPart(ol.getPart().getPartNumber());
+            Part p = Part.returnPart(ol.getPart().getPartNumber());
 
             int rec = Integer.parseInt(txt_recQty.getText()) - ol.getReceivedQty();
             if(Integer.parseInt(txt_recQty.getText()) <= ol.getQuantity() && Integer.parseInt(txt_recQty.getText()) > ol.getReceivedQty())
