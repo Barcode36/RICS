@@ -64,6 +64,14 @@ public class Transaction
 
     public void setTotalVal(Double totalVal) {this.totalVal = totalVal;}
 
+    public Transaction(String partNo, char transType, int quantity, String reference)
+    {
+        this.partNo = partNo;
+        this.transType = transType;
+        this.quantity = quantity;
+        this.reference = reference;
+
+    }
     public Transaction(char transType, String transDate, String partNo, int quantity, String reference, Double price,
                        Double totalVal) {
         this.transType = transType;

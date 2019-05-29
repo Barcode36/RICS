@@ -24,11 +24,11 @@ public class LandingPageController implements Initializable
 
 
     @FXML
-    private ImageView btn_users, btn_location, btn_export, btn_accounts, btn_rig, btn_reports;
+    private ImageView btn_users, btn_location, btn_manifests, btn_accounts, btn_rig, btn_reports;
 
 
     @FXML
-    private Label lbl_username, lbl_users, lbl_location, lbl_export, lbl_accounts, lbl_rig, lbl_reports;
+    private Label lbl_username, lbl_users, lbl_location, lbl_manifests, lbl_accounts, lbl_rig, lbl_reports;
     @FXML
     private AnchorPane root;
 
@@ -219,17 +219,17 @@ public class LandingPageController implements Initializable
                     "access to full functionality. ");
             btn_users.setVisible(false);
             btn_location.setVisible(false);
-            btn_export.setVisible(false);
             btn_accounts.setVisible(false);
             btn_rig.setVisible(false);
             btn_reports.setVisible(false);
+            btn_manifests.setVisible(false);
             lbl_users.setVisible(false);
             lbl_location.setVisible(false);
-            lbl_export.setVisible(false);
             lbl_accounts.setVisible(false);
             lbl_accounts.setVisible(false);
             lbl_reports.setVisible(false);
             lbl_rig.setVisible(false);
+            lbl_manifests.setVisible(false);
         }
     }
 

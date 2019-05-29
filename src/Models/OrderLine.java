@@ -1,5 +1,7 @@
 package Models;
 
+import javafx.collections.ObservableList;
+
 public class OrderLine
 {
     //private properties
@@ -11,6 +13,28 @@ public class OrderLine
     private double lineTotal;
     private String requestedBy;
     private String manifestId;
+
+    /**
+     * Returns OrderLine from DB OrderLines Table
+     * @param orderLineId - the orderLineId of orderLine to be returned
+     * @param orderNumber - orderNumber of the Order the OrderLines belong to
+     * @return orderLine - orderLine to be returned, else return null
+     */
+    public static OrderLine returnOrderLine( int orderLineId, String orderNumber)
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(orderNumber);
+
+        //Loop through 'orderLines', return orderLine if orderLine.orderLineId = 'orderLineId'
+        for (OrderLine orderLine : orderLines)
+        {
+            if (orderLine.getOrderLineId()== orderLineId)
+            {
+                return orderLine;
+            }
+        }
+        return null;
+    }
 
     //getters and setters
 

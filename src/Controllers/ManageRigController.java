@@ -95,7 +95,7 @@ public class ManageRigController implements Initializable
                     "fields");
             return;
         }
-        else if(DBManager.containsRig(rigsOBS, rigNo))
+        else if(Rig.containsRig(rigsOBS, rigNo))
         {
             try
             {
@@ -116,7 +116,7 @@ public class ManageRigController implements Initializable
 
                 try {
                     Rig rig = new Rig(rigNo, rigName, clientName, wellName);
-                    dbm.addRig(rig);
+                    dbm.createRig(rig);
 
                     AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Rig added", "you have " +
                             "successfully created added a new rig record");

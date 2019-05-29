@@ -30,7 +30,7 @@ public class AddLocationController
         ObservableList<Location> locs = dbm.loadLocations();
         Window window = btn_cancel.getScene().getWindow();
 
-        if (!DBManager.containsLocation(locs, txt_locationId.getText()))
+        if (!Location.containsLocation(locs, txt_locationId.getText()))
         {
             try
             {

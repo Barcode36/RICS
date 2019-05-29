@@ -18,6 +18,25 @@ public class Order
     private Boolean orderApproved;
     private ObservableList<OrderLine> orderLines;
 
+    /**
+     * Returns Order where Order.orderNumber = 'orderNumber'
+     * @param orderNumber - orderNumber of Order to be returned
+     * @return order - Found Order, else null
+     */
+    public static Order returnOrder(String orderNumber)
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Order> orders = dbm.loadOrders();
+        for (Order order : orders)
+        {
+            if (order.getOrderNumber().equals(orderNumber))
+            {
+                return order;
+            }
+        }
+        return null;
+    }
+
     //getters and setters
     public String getOrderNumber()
     {

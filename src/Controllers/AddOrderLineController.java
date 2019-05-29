@@ -89,7 +89,7 @@ public class AddOrderLineController implements Initializable
             int qty = Integer.parseInt(txt_qty.getText());
             Part part = Part.returnPart(txt_partNo.getText());
             String ref = txt_requestedBy.getText();
-            Order order = DBManager.returnOrder(orderNumber);
+            Order order = Order.returnOrder(orderNumber);
             OrderLine orderLine = new OrderLine(orderLineId, qty, part, ref);
             dbm.addOrderLine(orderLine, orderNumber);
             order.calculateOrderTotal();

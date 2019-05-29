@@ -1,5 +1,7 @@
 package Models;
 
+import javafx.collections.ObservableList;
+
 public class Rig
 {
     //private properties
@@ -7,6 +9,24 @@ public class Rig
     private String rigName;
     private String wellName;
     private String clientName;
+
+    /**
+     * Checks if Rig with 'rigNo' exists in DB Rigs Table
+     * @param rigs - ObservableList of all Rigs loaded from DB Rigs Table
+     * @param rigNo - rigNo of Rig to be checked for
+     * @returns boolean success value
+     */
+    public static boolean containsRig(ObservableList<Rig> rigs, int rigNo)
+    {
+        for (Rig rig : rigs)
+        {
+            if (rig.getRigNo() == rigNo)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //getters and setters
     public int getRigNo()

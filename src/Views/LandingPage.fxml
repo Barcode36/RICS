@@ -91,7 +91,7 @@
             <Font name="Quicksand Bold" size="64.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_username" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="120.0" prefHeight="40.0" prefWidth="435.0" text="username" textAlignment="CENTER" textFill="#cccccc">
+      <Label fx:id="lbl_username" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="120.0" prefHeight="40.0" prefWidth="435.0" textAlignment="CENTER" textFill="#cccccc">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>

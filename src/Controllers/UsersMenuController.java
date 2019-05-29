@@ -199,7 +199,7 @@ public class UsersMenuController implements Initializable {
                 int rigNo = Integer.parseInt(rig);
                 User u = new User(username, password, firstName, lastName, rigNo, admin);
 
-                if (dbm.createUser(u)) {
+                if (dbm.insertUser(u)) {
 
                     txt_username.clear();
                     txt_firstName.clear();
@@ -214,7 +214,7 @@ public class UsersMenuController implements Initializable {
 
                     return;
 
-                } else if (dbm.createUser(u) == false) {
+                } else if (dbm.insertUser(u) == false) {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", "Unable to create user " +
                             "account.");
                     return;
@@ -304,6 +304,7 @@ public class UsersMenuController implements Initializable {
         }
     }
 
+    @FXML
     private void closeUsersMenu()
     {
         Stage stage = (Stage)btn_delete.getScene().getWindow();

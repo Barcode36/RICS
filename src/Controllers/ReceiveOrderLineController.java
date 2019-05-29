@@ -53,7 +53,7 @@ public class ReceiveOrderLineController
         try
         {
             DBManager dbm = new DBManager();
-            OrderLine ol = DBManager.returnOrderLine(orderLineId, orderNumber);
+            OrderLine ol = OrderLine.returnOrderLine(orderLineId, orderNumber);
             lbl_orderNo.setText(orderNumber);
             lbl_orderLineId.setText(String.valueOf(orderLineId));
             lbl_partNumber.setText(ol.getPart().getPartNumber());
@@ -69,7 +69,7 @@ public class ReceiveOrderLineController
     @FXML
     private void on_cancelClick() throws IOException
     {
-        Order o = DBManager.returnOrder(lbl_orderNo.getText());
+        Order o = Order.returnOrder(lbl_orderNo.getText());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
         Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);
@@ -89,8 +89,8 @@ public class ReceiveOrderLineController
         {
             Window window = btn_cancel.getScene().getWindow();
             DBManager dbm = new DBManager();
-            OrderLine ol = DBManager.returnOrderLine(Integer.parseInt(lbl_orderLineId.getText()), lbl_orderNo.getText());
-            Order o = DBManager.returnOrder(lbl_orderNo.getText());
+            OrderLine ol = OrderLine.returnOrderLine(Integer.parseInt(lbl_orderLineId.getText()), lbl_orderNo.getText());
+            Order o = Order.returnOrder(lbl_orderNo.getText());
             Part p = Part.returnPart(ol.getPart().getPartNumber());
 
             int rec = Integer.parseInt(txt_recQty.getText()) - ol.getReceivedQty();

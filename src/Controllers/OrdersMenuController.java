@@ -236,7 +236,7 @@ public class OrdersMenuController implements Initializable
         DBManager dbm = new DBManager();
         String orderNumber = lbl_orderNo.getText();
 
-        Order order = DBManager.returnOrder(orderNumber);
+        Order order = Order.returnOrder(orderNumber);
 
         if(order.getOrderApproved())
         {
@@ -268,7 +268,7 @@ public class OrdersMenuController implements Initializable
             DBManager dbm = new DBManager();
             String orderNumber = lbl_orderNo.getText();
 
-            Order order = DBManager.returnOrder(orderNumber);
+            Order order = Order.returnOrder(orderNumber);
             ObservableList<OrderLine> ol = dbm.loadOrderLines(orderNumber);
             if(ol.size() > 0) {
                 dbm.approveOrder(order);
@@ -310,7 +310,7 @@ public class OrdersMenuController implements Initializable
         DBManager dbm = new DBManager();
         ObservableList<Order> ordersOBS = dbm.loadOrders();
         String orderNumber = lbl_orderNo.getText();
-        Order order = DBManager.returnOrder(orderNumber);
+        Order order = Order.returnOrder(orderNumber);
 
         if(!order.getOrderApproved())
         {
@@ -339,7 +339,7 @@ public class OrdersMenuController implements Initializable
         try {
             DBManager dbm = new DBManager();
             String orderNumber = lbl_orderNo.getText();
-            Order order = DBManager.returnOrder(orderNumber);
+            Order order = Order.returnOrder(orderNumber);
             OrderLine orderLine = (OrderLine) tbl_orderLines.getSelectionModel().getSelectedItem();
 
             char status = orderLine.getStatus();
@@ -396,7 +396,7 @@ public class OrdersMenuController implements Initializable
 
 
         DBManager dbm = new DBManager();
-        Order order = DBManager.returnOrder(lbl_orderNo.getText());
+        Order order = Order.returnOrder(lbl_orderNo.getText());
         ObservableList<OrderLine> orderLines = dbm.loadOrderLines(order.getOrderNumber());
 
         Document document = new Document();
