@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.User;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ public class Main extends Application
 {
     public static Boolean isSplashLoaded = false;
     public static User user;
+    public RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
 
     @Override
     public void start(Stage primaryStage) throws Exception{

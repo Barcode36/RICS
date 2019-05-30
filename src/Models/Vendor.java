@@ -1,5 +1,7 @@
 package Models;
 
+import javafx.collections.ObservableList;
+
 public class Vendor
 {
     //private properties
@@ -73,6 +75,24 @@ public class Vendor
         String vendor = this.vendorName;
 
         return vendor;
+    }
+
+    /**
+     * Checks if Vendor with 'vendorId' exists in DB Vendors Table
+     * @param vendors - ObservableList of all Vendors loaded from DB Vendors Table
+     * @param vendorId - rigNo of Vendor to be checked for
+     * @returns boolean success value
+     */
+    public static boolean containsVendor(ObservableList<Vendor> vendors, int vendorId)
+    {
+        for (Vendor vendor : vendors)
+        {
+            if (vendor.getVendorId() == vendorId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -20,7 +20,7 @@
       </JFXTextField>
       <JFXComboBox fx:id="combo_location" focusColor="#cccccc" layoutX="55.0" layoutY="319.0" prefHeight="25.0" prefWidth="198.0" promptText="location" styleClass="formFields" unFocusColor="#eda678" />
       <JFXButton fx:id="btn_save" layoutX="68.0" layoutY="399.0" onAction="#on_saveClick" text="Save" />
-      <JFXButton fx:id="btn_cancel" layoutX="196.0" layoutY="399.0" onAction="#on_cancelClick" text="Cancel" />
+      <JFXButton fx:id="btn_cancel" layoutX="196.0" layoutY="399.0" onAction="#closeUpdatePart" text="Cancel" />
       <Label layoutX="115.0" layoutY="27.0" text="Search Parts" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />

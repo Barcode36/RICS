@@ -134,17 +134,7 @@ public class ManageRigController implements Initializable
     }
 
 
-    @FXML
-    private void on_cancelClick()
-    {
-        closeAddRig();
-    }
 
-    @FXML
-    private void on_closeClick()
-    {
-        closeAddRig();
-    }
 
     @FXML
     private void on_addClick()
@@ -155,6 +145,7 @@ public class ManageRigController implements Initializable
         txt_wellName.setText("");
     }
 
+    @FXML
     private void closeAddRig()
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();

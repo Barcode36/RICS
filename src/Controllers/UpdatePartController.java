@@ -68,12 +68,14 @@ public class UpdatePartController implements Initializable
         try
         {
             DBManager dbm = new DBManager();
+            ObservableList<Location> locations = dbm.loadLocations();
             Part part = Part.returnPart(p);
             txt_partNoun.setText(part.getPartNoun());
             txt_description.setText(part.getDescription());
             txt_cost.setText(String.valueOf(part.getUnitCost()));
             txt_min.setText(String.valueOf(part.getMinRecVal()));
             txt_max.setText(String.valueOf(part.getMaxRecVal()));
+            combo_location.setItems(locations);
         }
         catch(Exception e)
         {
@@ -134,12 +136,8 @@ public class UpdatePartController implements Initializable
         }
     }
 
-    @FXML
-    private void on_cancelClick()
-    {
-        closeUpdatePart();
-    }
 
+    @FXML
     private void closeUpdatePart()
     {
         Stage stage = (Stage)btn_save.getScene().getWindow();

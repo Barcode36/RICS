@@ -24,7 +24,7 @@ public class LandingPageController implements Initializable
 
 
     @FXML
-    private ImageView btn_users, btn_location, btn_manifests, btn_accounts, btn_rig, btn_reports;
+    private ImageView btn_users, btn_location, btn_manifests, btn_accounts, btn_rig, btn_reports, btn_vendors;
 
 
     @FXML
@@ -190,6 +190,17 @@ public class LandingPageController implements Initializable
         rigStage.show();
     }
 
+    @FXML
+    private void on_vendorClick() throws IOException
+    {
+        Stage vendorStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/ManageVendors.fxml"));
+        Scene scene = new Scene(root);
+        vendorStage.setScene(scene);
+        vendorStage.setTitle("RICS 1.0 Manage Vendors");
+        vendorStage.initStyle(StageStyle.TRANSPARENT);
+        vendorStage.show();
+    }
     @FXML
     private void on_accountClick() throws IOException
     {

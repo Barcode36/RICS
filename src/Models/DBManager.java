@@ -565,6 +565,30 @@ public class DBManager
         }
     }
 
+    /**
+     * Inserts new Vendor 'vendor' to DB Vendors Table
+     * @param vendor - new Vendor to be added to DB
+     */
+    public void createVendor(Vendor vendor)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            /*
+             * Insert new Vendor 'vendor' into DB Rigs Table
+             */
+            stmt.executeUpdate("INSERT INTO Vendors VALUES ('" + vendor.getVendorId() + "','" +
+                    vendor.getVendorName() + "','" + vendor.getPhoneNumber() + "','" + vendor.getShippingAddress() + "')");
+            conn.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Loads all Vendors from DB Vendors Table
@@ -606,6 +630,32 @@ public class DBManager
             return vendors;
     }
 
+    /**
+     * Update Vendor 'vendor' in DB Vendors Table
+     * @param vendor - Vendor to be updated in DB
+     */
+    public void updateVendor(Vendor vendor)
+    {
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+
+            /*
+             * Update DB Vendors Table where vendorId = 'vendorId'
+             */
+            stmt.executeUpdate("UPDATE Vendors SET vendorName = '" + vendor.getVendorName() +
+                    "', contactNumber = '" + vendor.getPhoneNumber() + "', shipingAddress = '" + vendor.getShippingAddress() +
+                    "'WHERE " + "rigNo =" + " '" + vendor.getVendorId() + "'");
+
+            conn.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Loads all Locations from DB Locations Table
@@ -748,10 +798,9 @@ public class DBManager
             /*
              * Update DB Rigs Table where rigNo = 'rigNo'
              */
-            stmt.executeUpdate("UPDATE Rigs SET rigNo = '" + rig.getRigNo() + "', rigName = '" + rig.getRigName() +
+            stmt.executeUpdate("UPDATE Rigs SET  rigName = '" + rig.getRigName() +
                     "', clientName = '" + rig.getClientName() + "', wellName = '" + rig.getWellName() + "'WHERE rigNo =" +
                     " '" + rig.getRigNo() + "'");
-
             conn.close();
         }
         catch (Exception e)
