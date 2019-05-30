@@ -140,6 +140,7 @@ public class InventoryAccountsController implements Initializable
         txt_accountName.setText("");
     }
 
+    @FXML
     private void closeInventoryAccounts()
     {
         Stage stage = (Stage)btn_cancel.getScene().getWindow();

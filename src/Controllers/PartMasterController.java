@@ -126,9 +126,6 @@ public class PartMasterController implements Initializable
 
 
 
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -214,6 +211,7 @@ public class PartMasterController implements Initializable
             addPartStage.setTitle("RICS 1.0 New Part");
             addPartStage.initStyle(StageStyle.TRANSPARENT);
             addPartStage.show();
+
         }
         catch (Exception e)
         {
@@ -249,8 +247,10 @@ public class PartMasterController implements Initializable
         updateStage.show();
         controller.setLabel(lbl_partNo.getText());
         controller.initData(lbl_partNo.getText());
+        closePartMaster();
 
     }
+
 
     @FXML
     private void on_printClick() throws IOException, DocumentException {

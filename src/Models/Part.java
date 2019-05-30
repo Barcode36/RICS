@@ -1,5 +1,6 @@
 package Models;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -53,6 +54,22 @@ public class Part
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ObservableList<Part> flaggedParts()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> parts = dbm.loadParts();
+        ObservableList<Part> flaggedParts = FXCollections.observableArrayList();
+        for (Part part : parts)
+        {
+            if (part.getFlagged() > 0)
+            {
+                flaggedParts.add(part);
+            }
+        }
+
+        return flaggedParts;
     }
 
     //getters and setters

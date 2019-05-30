@@ -41,10 +41,8 @@ public class OrdersMenuController implements Initializable
     @FXML
     private ImageView btn_home;
 
-
     @FXML
-    private ImageView btn_cancel, btn_search;
-
+    private ImageView btn_cancel;
 
     @FXML
     private Label lbl_orderNo;
@@ -63,7 +61,6 @@ public class OrdersMenuController implements Initializable
 
     @FXML
     private JFXTextField txt_total, txt_search;
-
 
     @FXML
     private JFXTextArea txt_header;
@@ -92,55 +89,23 @@ public class OrdersMenuController implements Initializable
     @FXML
     private TableColumn col_manifestId;
 
-
     @FXML
     private TableColumn col_lineTotal;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        DBManager dbm = new DBManager();
-        ObservableList<Order> ordersOBS = dbm.loadOrders();
-
-        ObservableList < String > shipMethods = FXCollections.observableArrayList();
-
-        shipMethods.add(0, "OCEAN");
-        shipMethods.add(1, "AIR");
-        shipMethods.add(2, "ROAD");
-        shipMethods.add(3, "RAIL");
-
-        ObservableList<String> orderType = FXCollections.observableArrayList();
-
-        orderType.add(0, "PURCHASE ORDER");
-        orderType.add(1, "REPAIR ORDER");
-        orderType.add(2, "SERVICE REQUISITION ORDER");
-
-        combo_shipping.setItems(shipMethods);
-        combo_orderType.setItems(orderType);
 
         try
         {
-        //populate table view
-        tbl_order.setItems(ordersOBS);
-        col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
 
+            DBManager dbm = new DBManager();
+        ObservableList<Order> ordersOBS = dbm.loadOrders();
         Order o = ordersOBS.get(0);
         initData(o);
-
-
-
-        ObservableList<OrderLine> orderLines = dbm.loadOrderLines(o.getOrderNumber());
-        tbl_orderLines.setItems(orderLines);
-        col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        col_rec.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
-        col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
-        col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
-        col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
-
-
-
-            tbl_order.setOnMouseClicked((MouseEvent event) -> {
+        tbl_order.setOnMouseClicked((MouseEvent event) -> {
                 if (event.getButton().equals(MouseButton.PRIMARY))
                 {
                     int index = tbl_order.getSelectionModel().getSelectedIndex();
@@ -150,11 +115,83 @@ public class OrdersMenuController implements Initializable
 
                 }
             });
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
     }
+
+    protected void initData(Order order)
+    {
+        txt_header.setDisable(true);
+        combo_shipping.setDisable(true);
+        combo_orderType.setDisable(true);
+        try
+        {
+            DBManager dbm = new DBManager();
+            ObservableList<Order> ordersOBS = dbm.loadOrders();
+
+            ObservableList < String > shipMethods = FXCollections.observableArrayList();
+
+            shipMethods.add(0, "OCEAN");
+            shipMethods.add(1, "AIR");
+            shipMethods.add(2, "ROAD");
+            shipMethods.add(3, "RAIL");
+
+            ObservableList<String> orderType = FXCollections.observableArrayList();
+
+            orderType.add(0, "PURCHASE ORDER");
+            orderType.add(1, "REPAIR ORDER");
+            orderType.add(2, "SERVICE REQUISITION ORDER");
+
+            combo_shipping.setItems(shipMethods);
+            combo_orderType.setItems(orderType);
+
+            tbl_order.setItems(ordersOBS);
+            col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
+
+
+            int varOT = getVarOT(order);
+
+
+            lbl_orderNo.setText(order.getOrderNumber());
+            txt_date.setText(String.valueOf(order.getDate()));
+            combo_shipping.getSelectionModel().select(order.getShippingMethod());
+            combo_orderType.getSelectionModel().select(varOT);
+            txt_status.setText(String.valueOf(order.getOrderStatus()));
+            txt_header.setText(order.getHeader());
+            txt_total.setText(String.valueOf(order.getOrderTotal()));
+            if(!order.getOrderApproved())
+            {
+                txt_header.setEditable(true);
+                combo_orderType.setDisable(false);
+                combo_shipping.setDisable(false);
+            }
+
+            ObservableList<OrderLine> oLines = dbm.loadOrderLines(order.getOrderNumber());
+            tbl_orderLines.setItems(oLines);
+            col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+            col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            col_rec.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
+            col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
+            col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
+            col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            tbl_orderLines.setEditable(true);
+            if(order.getOrderStatus() == 'O') {
+                col_rec.setEditable(true);
+            }
+        }
+    }
+
     @FXML
     private void on_homeClick()
     {
@@ -178,15 +215,25 @@ public class OrdersMenuController implements Initializable
     @FXML
     private void on_addLIClick() throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/AddOrderLine.fxml"));
-        Stage orderLineStage = new Stage();
-        orderLineStage.setTitle("RICS 1.0 Add a line item");
-        orderLineStage.initStyle(StageStyle.TRANSPARENT);
-        orderLineStage.setScene(new Scene(loader.load()));
-        AddOrderLineController controller = loader.getController();
-        controller.setLabel(lbl_orderNo.getText());
-        orderLineStage.show();
-        closeOrdersMenu();
+        Window window = btn_cancel.getScene().getWindow();
+        Order order = Order.returnOrder(lbl_orderNo.getText());
+        if(!order.getOrderApproved()) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/AddOrderLine.fxml"));
+            Stage orderLineStage = new Stage();
+            orderLineStage.setTitle("RICS 1.0 Add a line item");
+            orderLineStage.initStyle(StageStyle.TRANSPARENT);
+            orderLineStage.setScene(new Scene(loader.load()));
+            AddOrderLineController controller = loader.getController();
+            controller.initData(lbl_orderNo.getText());
+            orderLineStage.show();
+            closeOrdersMenu();
+        }
+        else
+        {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, " Approved order", "Closed or open orders " +
+                    "cannot be amended.");
+            return;
+        }
     }
 
     @FXML
@@ -247,7 +294,7 @@ public class OrdersMenuController implements Initializable
             initData(order);
             return;
         }else{
-            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Unapproved order", "Unapproved orders " +
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unapproved order", "Unapproved orders " +
                     "can be re-purposed.");
             return;
         }
@@ -272,7 +319,7 @@ public class OrdersMenuController implements Initializable
             ObservableList<OrderLine> ol = dbm.loadOrderLines(orderNumber);
             if(ol.size() > 0) {
                 dbm.approveOrder(order);
-                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order Approved", "Export your approved " +
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order Approved", "Send your approved " +
                         "orders to the Purchasing Dept at the end of the day.");
 
                 for(OrderLine orderLine : ol)
@@ -330,7 +377,6 @@ public class OrdersMenuController implements Initializable
             return;
         }
     }
-
 
     @FXML
     private void on_removeClick()
@@ -390,11 +436,9 @@ public class OrdersMenuController implements Initializable
 
     }
 
-
     @FXML
-    private void on_generateClick() throws IOException, DocumentException {
-
-
+    private void on_generateClick() throws IOException, DocumentException
+    {
         DBManager dbm = new DBManager();
         Order order = Order.returnOrder(lbl_orderNo.getText());
         ObservableList<OrderLine> orderLines = dbm.loadOrderLines(order.getOrderNumber());
@@ -503,7 +547,6 @@ public class OrdersMenuController implements Initializable
 
     }
 
-
     @FXML
     private void on_searchClick()
     {
@@ -516,58 +559,6 @@ public class OrdersMenuController implements Initializable
 
     }
 
-
-    protected void initData(Order order)
-    {
-        try
-        {
-            DBManager dbm = new DBManager();
-            ObservableList<Order> ordersOBS = dbm.loadOrders();
-
-
-            tbl_order.setItems(ordersOBS);
-            col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
-
-
-                    int varOT = getVarOT(order);
-
-
-                    lbl_orderNo.setText(order.getOrderNumber());
-                    txt_date.setText(String.valueOf(order.getDate()));
-                    combo_shipping.getSelectionModel().select(order.getShippingMethod());
-                    combo_orderType.getSelectionModel().select(varOT);
-                    txt_status.setText(String.valueOf(order.getOrderStatus()));
-                    txt_header.setText(order.getHeader());
-                    txt_total.setText(String.valueOf(order.getOrderTotal()));
-                    if(!order.getOrderApproved())
-                    {
-                        txt_header.setEditable(true);
-                        combo_orderType.setDisable(false);
-                        combo_shipping.setDisable(false);
-                    }
-
-                    ObservableList<OrderLine> oLines = dbm.loadOrderLines(order.getOrderNumber());
-                    tbl_orderLines.setItems(oLines);
-                    col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-                    col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-                    col_rec.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
-                    col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
-                    col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
-                    col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            tbl_orderLines.setEditable(true);
-            if(order.getOrderStatus() == 'O') {
-                col_rec.setEditable(true);
-            }
-        }
-    }
-
     private void refreshTable()
     {
         DBManager dbm = new DBManager();
@@ -575,7 +566,6 @@ public class OrdersMenuController implements Initializable
         tbl_order.setItems(ordersOBS);
         col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
     }
-
 
     private int getVarOT(Order order) {
         int varOT;

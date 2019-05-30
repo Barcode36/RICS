@@ -30,6 +30,8 @@ public class AddLocationController
         ObservableList<Location> locs = dbm.loadLocations();
         Window window = btn_cancel.getScene().getWindow();
 
+        txt_locationId.setValidators();
+
         if (!Location.containsLocation(locs, txt_locationId.getText()))
         {
             try

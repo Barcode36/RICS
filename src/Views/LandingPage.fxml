@@ -106,7 +106,7 @@
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView id="btn_users" fx:id="btn_vendor" fitHeight="45.0" fitWidth="40.0" layoutX="118.0" layoutY="293.0" onMousePressed="#on_vendorClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_users" fx:id="btn_vendors" fitHeight="45.0" fitWidth="40.0" layoutX="118.0" layoutY="293.0" onMousePressed="#on_vendorClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_vendor80.png" />
          </image>

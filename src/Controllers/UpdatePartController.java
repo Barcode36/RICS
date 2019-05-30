@@ -126,7 +126,9 @@ public class UpdatePartController implements Initializable
                         dbm.updatePart(uPart);
                         AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part Updated", "you have " +
                                 "successfully updated the stock card for " + partNo + ".");
+                        closeUpdatePart();
                         return;
+
                     }
                 }
             }catch(Exception e)

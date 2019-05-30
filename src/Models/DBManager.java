@@ -1178,6 +1178,55 @@ public class DBManager
             return orders;
     }
 
+    public ObservableList<Order> openOrders()
+    {
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+        ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
+
+        try
+        {
+            forName(driver);
+            Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+            Statement stmt1 = conn.createStatement();
+
+
+            /*
+             * SELECT all Open Orders from DB OrdersTable order by orderNumber asc
+             */
+            char open = 'O';
+            ResultSet openOrdersSet = stmt.executeQuery("SELECT * FROM Orders WHERE orderStatus ='" + open + "'");
+
+            ResultSet openLinesSet = stmt1.executeQuery("SELECT * FROM OrderLines WHERE status ='" + open + "'");
+
+            while(openOrdersSet.next())
+            {
+                    while (openLinesSet.next())
+                    {
+                        String partNumber = openLinesSet.getString("part");
+                        Part part = Part.returnPart(partNumber);
+
+                        orderLines.add(new OrderLine(openLinesSet.getInt("orderLineId"), openLinesSet.getInt("quantity"), part,
+                                openLinesSet.getDouble("lineTotal"), openLinesSet.getString("requestedBy"), openLinesSet.getString("status").charAt(0),
+                                openLinesSet.getInt("receivedQty"), openLinesSet.getString("manifestId"),
+                                openLinesSet.getString("orderNumber")));
+                    }
+
+                    Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(openOrdersSet.getString("orderDate"));
+                    orders.add(new Order(openOrdersSet.getString("orderNumber"), openOrdersSet.getString("orderType").charAt(0),
+                            openOrdersSet.getString("shippingMethod"), orderDate, openOrdersSet.getString(
+                            "header"), openOrdersSet.getString("orderStatus").charAt(0), openOrdersSet.getDouble("orderTotal"),
+                            openOrdersSet.getBoolean("orderApproved"), orderLines));
+            }
+            conn.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
     /**
      * Generates orderLineId unqiue to that Order
      * @param orderNumber - orderNumber of Order 'orderLines' belongs to
@@ -1326,6 +1375,44 @@ public class DBManager
         }
         return false;
     }
+
+//    public ObservableList<OrderLine> loadOpenOrderLines()
+//    {
+//        ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
+//
+//        try
+//        {
+//            forName(driver);
+//            Connection conn = DriverManager.getConnection(connectionString);
+//            Statement stmt = conn.createStatement();
+//
+//            /*
+//             * Select all from DB OrderLines Table where orderNumber = 'orderNumber'
+//             */
+//            ResultSet olList = stmt.executeQuery("SELECT * FROM OrderLines WHERE status = '" + 'O' + "'");
+//
+//            /*
+//             * Build OrderLine from each entry in 'olList' and add to 'orderLines'
+//             */
+//            while(olList.next())
+//            {
+//                String partNumber = olList.getString("part");
+//                Part part = Part.returnPart(partNumber);
+//                orderLines.add(new OrderLine(olList.getInt("orderLineId"), olList.getInt("quantity"), part,
+//                        olList.getDouble(
+//                                "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
+//                        olList.getInt("receivedQty"), olList.getString("manifestId")));
+//            }
+//        }catch(Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        finally
+//        {
+//            return orderLines;
+//        }
+//    }
+
 
 }
 

@@ -160,6 +160,21 @@ public class Order
         this.orderLines = FXCollections.observableArrayList();
     }
 
+    public Order(String orderNumber, char orderType, String shippingMethod, Date date,
+                 String header, char orderStatus, double orderTotal, Boolean orderApproved,
+                 ObservableList<OrderLine> orderLines)
+    {
+        this.orderNumber = orderNumber;
+        this.orderType = orderType;
+        this.shippingMethod = shippingMethod;
+        this.date = date;
+        this.header = header;
+        this.orderStatus = orderStatus;
+        this.orderTotal = orderTotal;
+        this.orderApproved = orderApproved;
+        this.orderLines = orderLines;
+    }
+
     public void calculateOrderTotal()
     {
         try

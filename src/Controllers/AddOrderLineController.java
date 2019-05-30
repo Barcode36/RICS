@@ -121,7 +121,7 @@ public class AddOrderLineController implements Initializable
 
     }
 
-    public void setLabel(String orderNumber)
+    public void initData(String orderNumber)
     {
         lbl_orderNo.setText(orderNumber);
     }

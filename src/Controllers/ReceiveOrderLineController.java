@@ -96,7 +96,7 @@ public class ReceiveOrderLineController
             int rec = Integer.parseInt(txt_recQty.getText()) - ol.getReceivedQty();
             if(Integer.parseInt(txt_recQty.getText()) <= ol.getQuantity() && Integer.parseInt(txt_recQty.getText()) > ol.getReceivedQty())
             {
-                if(ol.getReceivedQty() == ol.getQuantity())
+                if(Integer.parseInt(txt_recQty.getText()) == ol.getQuantity())
                 {
                     ol.setStatus('C');
                 }
