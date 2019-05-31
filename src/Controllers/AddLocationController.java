@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 
-
+/**
+ * Handles Actions for AddLocation.fxml
+ */
 public class AddLocationController
 {
 
@@ -23,6 +25,10 @@ public class AddLocationController
     private JFXTextField txt_locationId;
 
 
+
+    /**
+     * Adds new Location to DB
+     */
     @FXML
     private void on_addClick()
     {
@@ -30,9 +36,13 @@ public class AddLocationController
         ObservableList<Location> locs = dbm.loadLocations();
         Window window = btn_cancel.getScene().getWindow();
 
-        txt_locationId.setValidators();
+        if(txt_locationId.getText().equals(""))
+        {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing Information", "please " +
+                    "enter a Location ID.");
+        }
 
-        if (!Location.containsLocation(locs, txt_locationId.getText()))
+        else if (!Location.containsLocation(locs, txt_locationId.getText()))
         {
             try
             {
@@ -56,6 +66,9 @@ public class AddLocationController
         }
     }
 
+    /**
+     * Closes AddLocation.fxml
+     */
     @FXML
     private void closeAddLocation()
     {

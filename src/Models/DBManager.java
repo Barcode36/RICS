@@ -1178,45 +1178,30 @@ public class DBManager
             return orders;
     }
 
-    public ObservableList<Order> openOrders()
+    public ObservableList<OrderLine> openOrders(String selection)
     {
-        ObservableList<Order> orders = FXCollections.observableArrayList();
         ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
+
 
         try
         {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
-            Statement stmt1 = conn.createStatement();
 
-
-            /*
-             * SELECT all Open Orders from DB OrdersTable order by orderNumber asc
-             */
             char open = 'O';
-            ResultSet openOrdersSet = stmt.executeQuery("SELECT * FROM Orders WHERE orderStatus ='" + open + "'");
+            ResultSet openLinesSet = stmt.executeQuery("SELECT * FROM OrderLines WHERE status =" +
+                    " '" + open + "' AND part LIKE" + " '" + selection + "%'");
 
-            ResultSet openLinesSet = stmt1.executeQuery("SELECT * FROM OrderLines WHERE status ='" + open + "'");
-
-            while(openOrdersSet.next())
+            while(openLinesSet.next())
             {
-                    while (openLinesSet.next())
-                    {
-                        String partNumber = openLinesSet.getString("part");
-                        Part part = Part.returnPart(partNumber);
-
-                        orderLines.add(new OrderLine(openLinesSet.getInt("orderLineId"), openLinesSet.getInt("quantity"), part,
-                                openLinesSet.getDouble("lineTotal"), openLinesSet.getString("requestedBy"), openLinesSet.getString("status").charAt(0),
-                                openLinesSet.getInt("receivedQty"), openLinesSet.getString("manifestId"),
-                                openLinesSet.getString("orderNumber")));
-                    }
-
-                    Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(openOrdersSet.getString("orderDate"));
-                    orders.add(new Order(openOrdersSet.getString("orderNumber"), openOrdersSet.getString("orderType").charAt(0),
-                            openOrdersSet.getString("shippingMethod"), orderDate, openOrdersSet.getString(
-                            "header"), openOrdersSet.getString("orderStatus").charAt(0), openOrdersSet.getDouble("orderTotal"),
-                            openOrdersSet.getBoolean("orderApproved"), orderLines));
+                String partNumber = openLinesSet.getString("part");
+                    Part part = Part.returnPart(partNumber);
+                    orderLines.add(new OrderLine(openLinesSet.getInt("orderLineId"), openLinesSet.getInt(
+                            "quantity"), part, openLinesSet.getDouble("lineTotal"),
+                            openLinesSet.getString("requestedBy"), openLinesSet.getString("status").charAt(0),
+                            openLinesSet.getInt("receivedQty"), openLinesSet.getString("manifestId"),
+                            openLinesSet.getString("orderNumber")));
             }
             conn.close();
         }
@@ -1224,7 +1209,7 @@ public class DBManager
         {
             e.printStackTrace();
         }
-        return orders;
+        return orderLines;
     }
 
     /**

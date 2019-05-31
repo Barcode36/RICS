@@ -503,7 +503,7 @@ public class OrdersMenuController implements Initializable
             String quan = String.valueOf(orderLine.getQuantity());
             String partNum = orderLine.getPart().getPartNumber();
             String manID = orderLine.getManifestId();
-            String rec = String.valueOf(orderLine.getQuantity());
+            String rec = String.valueOf(orderLine.getReceivedQty());
             String lineTotal = String.valueOf(orderLine.getLineTotal());
 
             table.addCell(status);

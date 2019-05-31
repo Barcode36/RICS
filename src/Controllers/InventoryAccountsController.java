@@ -21,6 +21,9 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles Actions for Managing Inventory Accounts (View, Add, Update)
+ */
 public class InventoryAccountsController implements Initializable
 {
     @FXML
@@ -39,6 +42,11 @@ public class InventoryAccountsController implements Initializable
     @FXML
     private TableColumn col_accountCode;
 
+    /**
+     * Initialises The Accounts Table & Fills TextFields on selection from Table
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -66,11 +74,11 @@ public class InventoryAccountsController implements Initializable
         {
             e.printStackTrace();
         }
-
-
-
     }
 
+    /**
+     * Controls Actions for adding + updating InventoryAccounts
+     */
     @FXML
     private void on_saveClick()
     {
@@ -87,6 +95,7 @@ public class InventoryAccountsController implements Initializable
                     "fields");
             return;
         }
+
         else if(InventoryAccount.containsAccount(accountsOBS, accountCode))
         {
             try
@@ -126,13 +135,9 @@ public class InventoryAccountsController implements Initializable
     }
 
 
-    @FXML
-    private void on_cancelClick()
-    {
-        closeInventoryAccounts();
-    }
-
-
+    /**
+     *Clears Text Fields
+     */
     @FXML
     private void on_addClick()
     {
@@ -140,6 +145,9 @@ public class InventoryAccountsController implements Initializable
         txt_accountName.setText("");
     }
 
+    /**
+     * Closes InventotyAccounts.fxml
+     */
     @FXML
     private void closeInventoryAccounts()
     {
@@ -147,6 +155,9 @@ public class InventoryAccountsController implements Initializable
         stage.close();
     }
 
+    /**
+     * Refreshes The InventoryAccounts Table and Text Fields
+     */
     @FXML
     private void refresh() {
         DBManager dbm = new DBManager();

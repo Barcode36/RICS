@@ -22,6 +22,9 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * AddOrderLine allows Admin Users to add new OrderLines to unapproved Orders
+ */
 public class AddOrderLineController implements Initializable
 {
     @FXML
@@ -48,6 +51,11 @@ public class AddOrderLineController implements Initializable
     @FXML
     private JFXButton btn_clear;
 
+    /**
+     * Initalises the Parts Table and fills fields with selected Part Info
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -76,9 +84,13 @@ public class AddOrderLineController implements Initializable
         }
     }
 
+    /**
+     * AddOrderLine Controller Adds the new OrderLine to Order / Inserts OrderLine to DB OrderLines Table
+     */
     @FXML
     private void on_addClick()
     {
+
         Window window = btn_clear.getScene().getWindow();
         try
         {
@@ -121,11 +133,19 @@ public class AddOrderLineController implements Initializable
 
     }
 
+    /**
+     * Initialises the Order Number Label
+     * @param orderNumber
+     */
     public void initData(String orderNumber)
     {
         lbl_orderNo.setText(orderNumber);
     }
 
+
+    /**
+     * Clears the text fields of any input
+     */
     @FXML
     private void on_clearClick()
     {
@@ -134,11 +154,15 @@ public class AddOrderLineController implements Initializable
         txt_requestedBy.setText("");
     }
 
+    /**
+     * Filters the Parts Table to Parts matching the users criteria
+     * Checks the criteria against PartNumber, Description, VendorPartNumber, Location
+     */
     @FXML
     private void on_filterClick()
     {
         DBManager dbm = new DBManager();
-        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_filter.getText().toUpperCase());
+        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_filter.getText());
 
         tbl_parts.setItems(partsOBS);
 
@@ -147,6 +171,9 @@ public class AddOrderLineController implements Initializable
     }
 
 
+    /**
+     * Closes addOrderLine.fxml
+     */
     @FXML
     private void closeAddOrderLine()
     {

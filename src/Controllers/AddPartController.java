@@ -17,6 +17,11 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static Controllers.Main.requiredFieldValidator;
+
+/**
+ * Add Part Controller handles functionality for Adding new Parts to DB
+ */
 public class AddPartController implements Initializable
 {
     @FXML
@@ -51,6 +56,11 @@ public class AddPartController implements Initializable
 
 
 
+    /**
+     * Initalises combo boxes on AddPart.fxml
+     * @param location
+     * @param resources
+     */
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -67,11 +77,22 @@ public class AddPartController implements Initializable
         combo_location.setItems(locations);
     }
 
+    /**
+     * On clicking save adds new Part to DB using user inputs
+     */
     @FXML
     private void on_saveClick()
    {
         DBManager dbm = new DBManager();
 
+        combo_vendor.getValidators().add(requiredFieldValidator);
+        txt_vendorPartNo.getValidators().add(requiredFieldValidator);
+        combo_vendor.getValidators().add(requiredFieldValidator);
+        txt_partNoun.getValidators().add(requiredFieldValidator);
+        txt_description.getValidators().add(requiredFieldValidator);
+        txt_cost.getValidators().add(requiredFieldValidator);
+        txt_min.getValidators().add(requiredFieldValidator);
+        txt_max.getValidators().add(requiredFieldValidator);
 
 
         InventoryAccount account = combo_accCode.getSelectionModel().getSelectedItem();
@@ -118,6 +139,9 @@ public class AddPartController implements Initializable
 
     }
 
+    /**
+     * Closes AddPart.fxml
+     */
     @FXML
     private void closeAddPart()
     {

@@ -13,17 +13,17 @@ public class Main extends Application
 {
     public static Boolean isSplashLoaded = false;
     public static User user;
-    public RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+    public static RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../Views/Login.fxml"));
-
         Scene scene = new Scene(root);
         primaryStage.setTitle("RICS 1.0 Login");
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.show();
+        requiredFieldValidator.setMessage("Please complete all fields");
     }
 
 
