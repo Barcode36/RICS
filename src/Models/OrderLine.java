@@ -17,7 +17,6 @@ public class OrderLine
 
 
     //getters and setters
-
     public int getOrderLineId()
     {
         return orderLineId;
@@ -56,21 +55,6 @@ public class OrderLine
         return orderNumber;
     }
 
-    public void setOrderNumber(String orderNumber)
-    {
-        this.orderNumber = orderNumber;
-    }
-
-    public void setOrderLineId(int orderLineId)
-    {
-        this.orderLineId = orderLineId;
-    }
-
-    public void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
-    }
-
     public void setPart(Part part)
     {
         this.part = part;
@@ -79,11 +63,6 @@ public class OrderLine
     public void setLineTotal(double lineTotal)
     {
         this.lineTotal = lineTotal;
-    }
-
-    public void setRequestedBy(String requestedBy)
-    {
-        this.requestedBy = requestedBy;
     }
 
     public int getReceivedQty() {
@@ -103,6 +82,10 @@ public class OrderLine
     }
 
     //constructors
+
+    /**
+     * Empty Constructor
+     */
     public OrderLine()
     {
         this.orderLineId = 1;
@@ -110,7 +93,9 @@ public class OrderLine
         this.part = new Part();
         this.requestedBy = "";
     }
-    public OrderLine(int orderLineId, int quantity, Part part, String requestedBy) {
+
+    public OrderLine(int orderLineId, int quantity, Part part, String requestedBy)
+    {
         this.orderLineId = orderLineId;
         this.quantity = quantity;
         this.part = part;
@@ -120,6 +105,7 @@ public class OrderLine
         this.lineTotal = part.getUnitCost() * quantity;
         this.receivedQty = 0;
     }
+
 
     public OrderLine(int orderLineId, int quantity, Part part, double lineTotal, String requestedBy, char status,
                      int receivedQty, String manifestId)
@@ -134,6 +120,19 @@ public class OrderLine
         this.manifestId = manifestId;
     }
 
+
+    /**
+     * Constructor
+     * @param orderLineId orderLine ID
+     * @param quantity quantity requested
+     * @param part part on orderLine
+     * @param lineTotal total cost of orderLine
+     * @param requestedBy who initiated the requisition
+     * @param status orderLine status
+     * @param receivedQty how many of the part have been received
+     * @param manifestId the most recent manifest the orderline was received on
+     * @param orderNumber the order the orderLine appears on
+     */
     public OrderLine(int orderLineId, int quantity, Part part, double lineTotal, String requestedBy, char status,
                      int receivedQty, String manifestId, String orderNumber)
     {

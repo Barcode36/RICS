@@ -2,6 +2,9 @@ package Models;
 
 import javafx.collections.ObservableList;
 
+/**
+ * Class contains data which describes a vendor and the methods which act on it
+ */
 public class Vendor
 {
     //private properties
@@ -31,25 +34,6 @@ public class Vendor
         return shippingAddress;
     }
 
-    public void setVendorId(int vendorId)
-    {
-        this.vendorId = vendorId;
-    }
-
-    public void setVendorName(String vendorName)
-    {
-        this.vendorName = vendorName;
-    }
-
-    public void setPhoneNumber(String phoneNumber)
-    {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setShippingAddress(String shippingAddress)
-    {
-        this.shippingAddress = shippingAddress;
-    }
 
     //constructors
     public Vendor()
@@ -60,6 +44,13 @@ public class Vendor
         this.shippingAddress = "";
     }
 
+    /**
+     * Constructor
+     * @param vendorId vendors ID (Provided by Purchasing Dept)
+     * @param vendorName name of supplier
+     * @param phoneNumber contact number of supplier
+     * @param shippingAddress shipping Address for returns / contact
+     */
     public Vendor(int vendorId, String vendorName, String phoneNumber, String shippingAddress)
     {
         this.vendorId = vendorId;
@@ -69,6 +60,11 @@ public class Vendor
     }
 
     //all other methods and functions
+
+    /**
+     * Vendor to String method
+     * @returns Vendors Name
+     */
     @Override
     public String toString()
     {

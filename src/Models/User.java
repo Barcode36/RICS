@@ -2,6 +2,9 @@ package Models;
 
 import javafx.collections.ObservableList;
 
+/**
+ * Class contains data that describes a user and the methods which act on it
+ */
 public class User
 {
     private String username;
@@ -10,36 +13,6 @@ public class User
     private String lastName;
     private int rig;
     private Boolean adminUser;
-
-    /**
-     * Checks if User with 'username' exists in list of Users DB Users Table
-     * @param users - List of all users
-     * @param username - username to search for in 'users'
-     * @return  Boolean success value
-     */
-    public static boolean containsUser(ObservableList<User> users, String username)
-    {
-        /**
-         * Loops through 'users' looking for user with username = 'username'
-         */
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static User returnUser(String username) {
-        DBManager dbm = new DBManager();
-        ObservableList<User> users = dbm.loadUsers();
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
-    }
 
     public String getUsername()
     {
@@ -71,37 +44,12 @@ public class User
         return adminUser;
     }
 
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
-    }
-
-    public void setRig(int rig)
-    {
-        this.rig = rig;
-    }
-
-    public void setAdminUser(Boolean adminUser)
-    {
-        this.adminUser = adminUser;
-    }
 
     //constructors
+
+    /**
+     * Empty Constructor
+     */
     public User()
     {
         this.username = "";
@@ -112,6 +60,15 @@ public class User
         this.adminUser = false;
     }
 
+    /**
+     * Constructor
+     * @param username username of user
+     * @param password users passsword
+     * @param firstName first name of user
+     * @param lastName users surname
+     * @param rig rig the user belongs to
+     * @param adminUser whether they are are an admin or not
+     */
     public User(String username, String password, String firstName, String lastName, int rig, Boolean adminUser)
     {
         this.username = username;
@@ -123,5 +80,38 @@ public class User
     }
 
     //all other methods and functions
+    /**
+     * Checks if User with 'username' exists in list of Users DB Users Table
+     * @param users - List of all users
+     * @param username - username to search for in 'users'
+     * @return  Boolean success value
+     */
+    public static boolean containsUser(ObservableList<User> users, String username)
+    {
+        /**
+         * Loops through 'users' looking for user with username = 'username'
+         */
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * Returns the user
+     * @param username user to be returned
+     * @return found User
+     */
+    public static User returnUser(String username) {
+        DBManager dbm = new DBManager();
+        ObservableList<User> users = dbm.loadUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

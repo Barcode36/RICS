@@ -1,7 +1,9 @@
 package Models;
 
 
-
+/**
+ * Class contains the data the describes a stock transaction and the methods which act on it
+ */
 public class Transaction
 {
     private char transType;
@@ -16,24 +18,12 @@ public class Transaction
         return transType;
     }
 
-    public void setTransType(char transType) {
-        this.transType = transType;
-    }
-
     public String getTransDate() {
         return transDate;
     }
 
-    public void setTransDate(String transDate) {
-        this.transDate = transDate;
-    }
-
     public String getPartNo() {
         return partNo;
-    }
-
-    public void setPartNo(String partNo) {
-        this.partNo = partNo;
     }
 
     public int getQuantity() {
@@ -48,30 +38,22 @@ public class Transaction
         return reference;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public Double getTotalVal() {return totalVal;}
 
-    public void setTotalVal(Double totalVal) {this.totalVal = totalVal;}
-
-    public Transaction(String partNo, char transType, int quantity, String reference)
-    {
-        this.partNo = partNo;
-        this.transType = transType;
-        this.quantity = quantity;
-        this.reference = reference;
-
-    }
+    /**
+     * Constructor
+     * @param transType the type of transaction (order, receive, issue)
+     * @param transDate date and time of the transaction
+     * @param partNo the part
+     * @param quantity the quantity of the part
+     * @param reference who requested the part, who it was issued to, or the manifest ID it was received on
+     * @param price the value of the part
+     * @param totalVal total value of the transaction
+     */
     public Transaction(char transType, String transDate, String partNo, int quantity, String reference, Double price,
                        Double totalVal) {
         this.transType = transType;

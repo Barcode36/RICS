@@ -3,6 +3,9 @@ package Models;
 
 import javafx.collections.ObservableList;
 
+/**
+ * Class contains Data describing inventory accounts & Methods that work on it
+ */
 public class InventoryAccount
 {
     //private properties
@@ -31,7 +34,6 @@ public class InventoryAccount
         return false;
     }
 
-
     public int getAccountCode()
     {
         return accountCode;
@@ -40,35 +42,18 @@ public class InventoryAccount
     {
         return accountName;
     }
-    public void setAccountCode(int accountCode)
-    {
-        this.accountCode = accountCode;
-    }
-    public void setAccountName(String accountName)
-    {
-        this.accountName = accountName;
-    }
 
-
-    //constructors
-    public InventoryAccount()
-    {
-        this.accountCode = 0;
-        this.accountName = "";
-    }
 
     /**
      * Constructor
-     * @param accountCode
-     * @param accountName
+     * @param accountCode the accountCode provided by user
+     * @param accountName the account name provided by user
      */
     public InventoryAccount(int accountCode, String accountName)
     {
         this.accountCode = accountCode;
         this.accountName = accountName;
     }
-
-    //all other methods and functions
 
     /**
      * Returns String value of accountCode

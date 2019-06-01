@@ -5,6 +5,9 @@ import javafx.collections.ObservableList;
 
 import java.util.Date;
 
+/**
+ * Class contains data that describes an Order and methods which act on it
+ */
 public class Order
 {
     //private properties
@@ -18,24 +21,6 @@ public class Order
     private Boolean orderApproved;
     private ObservableList<OrderLine> orderLines;
 
-    /**
-     * Returns Order where Order.orderNumber = 'orderNumber'
-     * @param orderNumber - orderNumber of Order to be returned
-     * @return order - Found Order, else null
-     */
-    public static Order returnOrder(String orderNumber)
-    {
-        DBManager dbm = new DBManager();
-        ObservableList<Order> orders = dbm.loadOrders();
-        for (Order order : orders)
-        {
-            if (order.getOrderNumber().equals(orderNumber))
-            {
-                return order;
-            }
-        }
-        return null;
-    }
 
     //getters and setters
     public String getOrderNumber()
@@ -78,25 +63,12 @@ public class Order
         return orderApproved;
     }
 
-    public ObservableList<OrderLine> getOrderLines()
-    {
-        return orderLines;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     public void setOrderType(char orderType) {
         this.orderType = orderType;
     }
 
     public void setShippingMethod(String shippingMethod) {
         this.shippingMethod = shippingMethod;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setHeader(String header) {
@@ -107,17 +79,6 @@ public class Order
         this.orderStatus = orderStatus;
     }
 
-    public void setOrderTotal(double orderTotal) {
-        this.orderTotal = orderTotal;
-    }
-
-    public void setOrderApproved(Boolean orderApproved) {
-        this.orderApproved = orderApproved;
-    }
-
-    public void setOrderLines(ObservableList<OrderLine> orderLines) {
-        this.orderLines = orderLines;
-    }
 
     //constructors
     public Order()
@@ -175,6 +136,9 @@ public class Order
         this.orderLines = orderLines;
     }
 
+    /**
+     * Calculates Order Total
+     */
     public void calculateOrderTotal()
     {
         try
@@ -193,6 +157,25 @@ public class Order
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns Order where Order.orderNumber = 'orderNumber'
+     * @param orderNumber - orderNumber of Order to be returned
+     * @return order - Found Order, else null
+     */
+    public static Order returnOrder(String orderNumber)
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Order> orders = dbm.loadOrders();
+        for (Order order : orders)
+        {
+            if (order.getOrderNumber().equals(orderNumber))
+            {
+                return order;
+            }
+        }
+        return null;
     }
 
 

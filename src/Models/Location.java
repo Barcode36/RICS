@@ -2,9 +2,11 @@ package Models;
 
 import javafx.collections.ObservableList;
 
+/**
+ * Contains Data describing Stock Locations and the Methods which act on it
+ */
 public class Location
 {
-    //private properties
     private String locationId;
 
     /**
@@ -28,29 +30,33 @@ public class Location
         return false;
     }
 
-    //getter and setter
+
     public String getLocationId()
     {
         return locationId;
     }
 
-    public void setLocationId(String locationId)
-    {
-        this.locationId = locationId;
-    }
-
-    //contructors
+    /**
+     * Empty Constructor
+     */
     public Location()
     {
         this.locationId = "";
     }
 
+    /**
+     * Constructor
+     * @param locationId locationId provided by user
+     */
     public Location(String locationId)
     {
         this.locationId = locationId;
     }
 
-    //all other methods and functions
+    /**
+     * Inventory Account toString method
+     * @return String value of inventoryAccount
+     */
     @Override
     public String toString()
     {

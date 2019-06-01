@@ -4,11 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- *
+ *Class contains the data that describes a Part in Stock and the data which acts on it
  */
 public class Part
 {
-
     //private properties
     private String partNumber;
     private String vendorNumber;
@@ -26,51 +25,6 @@ public class Part
     private int vendorId;
     private int accountCode;
 
-    /**
-     * Returns Part where Part.partNumber = 'partNumber'
-     * @param partNumber - partNumber of Part to be returned
-     * @return part - Found Part, else returns null
-     */
-    public static Part returnPart(String partNumber)
-    {
-        try
-        {
-            DBManager dbm = new DBManager();
-            ObservableList<Part> parts = dbm.loadParts();
-
-            /**
-             * Loop through 'parts', returns Part 'part' if part.partNumber = 'partNumber'
-             */
-            for (Part part : parts)
-            {
-                if (part.getPartNumber().equals(partNumber))
-                {
-                    return part;
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static ObservableList<Part> flaggedParts()
-    {
-        DBManager dbm = new DBManager();
-        ObservableList<Part> parts = dbm.loadParts();
-        ObservableList<Part> flaggedParts = FXCollections.observableArrayList();
-        for (Part part : parts)
-        {
-            if (part.getFlagged() > 0)
-            {
-                flaggedParts.add(part);
-            }
-        }
-
-        return flaggedParts;
-    }
 
     //getters and setters
     public String getPartNumber()
@@ -144,39 +98,9 @@ public class Part
         this.partNumber = partNumber;
     }
 
-    public void setVendorNumber(String vendorNumber)
-    {
-        this.vendorNumber = vendorNumber;
-    }
-
-    public void setMinRecVal(int minRecVal)
-    {
-        this.minRecVal = minRecVal;
-    }
-
-    public void setMaxRecVal(int maxRecVal)
-    {
-        this.maxRecVal = maxRecVal;
-    }
-
-    public void setPartNoun(String partNoun)
-    {
-        this.partNoun = partNoun;
-    }
-
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-    public void setUnitCost(float unitCost)
-    {
-        this.unitCost = unitCost;
-    }
-
-    public void setOnHand(int onHand)
-    {
-        this.onHand = onHand;
     }
 
     public void setOnOrder(int onOrder)
@@ -194,16 +118,8 @@ public class Part
         this.lastOrder = lastOrder;
     }
 
-    public void setUnitOfMeasure(String unitOfMeasure)
-    {
-        this.unitOfMeasure = unitOfMeasure;
-    }
-
     public void setLocation(String location) { this.location = location;}
 
-    public void setVendorId(int vendorId) { this.vendorId = vendorId;}
-
-    public void setAccountCode(int accountCode) { this.accountCode = accountCode;}
 
     //constructors
     public Part()
@@ -274,6 +190,24 @@ public class Part
 
     }
 
+    /**
+     * Constructor
+     * @param partNumber
+     * @param accountCode Inventory Account the part belongs to
+     * @param vendorNumber the vendors Part Number
+     * @param minRecVal minimum recommended stock level
+     * @param maxRecVal maximum recommended stock level
+     * @param partNoun descriptive noun
+     * @param description a brief description of the part
+     * @param location the location the part is stored in
+     * @param vendorId the vendors ID in DB Vendors Table
+     * @param unitCost Cost of the part
+     * @param onHand level currently in stock
+     * @param onOrder quantity currently on order
+     * @param flagged quantity flagged for order
+     * @param lastOrder last order the part appeared on
+     * @param unitOfMeasure unit of measure for the part (Each, Sets of 100 etc)
+     */
     public Part(String partNumber, int accountCode, String vendorNumber, int minRecVal, int maxRecVal, String partNoun,
                 String description, String location, int vendorId, double unitCost, int onHand, int onOrder, int flagged,
                 String lastOrder, String unitOfMeasure)
@@ -296,12 +230,67 @@ public class Part
     }
 
     //all other methods and functions
+
+    /**
+     * Part toString method
+     * @returns PartNumber
+     */
     @Override
     public String toString()
     {
         String part = this.partNumber;
 
         return part;
+    }
+
+    /**
+     * Returns Part where Part.partNumber = 'partNumber'
+     * @param partNumber - partNumber of Part to be returned
+     * @return part - Found Part, else returns null
+     */
+    public static Part returnPart(String partNumber)
+    {
+        try
+        {
+            DBManager dbm = new DBManager();
+            ObservableList<Part> parts = dbm.loadParts();
+
+            /**
+             * Loop through 'parts', returns Part 'part' if part.partNumber = 'partNumber'
+             */
+            for (Part part : parts)
+            {
+                if (part.getPartNumber().equals(partNumber))
+                {
+                    return part;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all parts that are currently flagged for order
+     * @return
+     */
+    public static ObservableList<Part> flaggedParts()
+    {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> parts = dbm.loadParts();
+        ObservableList<Part> flaggedParts = FXCollections.observableArrayList();
+        for (Part part : parts)
+        {
+            if (part.getFlagged() > 0)
+            {
+                flaggedParts.add(part);
+            }
+        }
+
+        return flaggedParts;
     }
 
 

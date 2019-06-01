@@ -194,11 +194,70 @@ public class ReportsMenuController implements Initializable
 
                     excess = excess +(part.getOnHand() - part.getMaxRecVal()) * part.getUnitCost();
 
+
                 }
 
             }
             document.add(omTable);
             document.add(new Paragraph("Excess inventory: £" + excess));
+
+            document.add(new Paragraph("   "));
+            document.add(new Paragraph("   "));
+
+            PdfPTable flaggedTable = new PdfPTable(11);
+            PdfPCell flagCell = new PdfPCell(new Paragraph("Flagged Parts"));
+            flagCell.setColspan(11);
+            flagCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            flagCell.setBackgroundColor(Color.BLUE);
+            flaggedTable.addCell(flagCell);
+
+            flaggedTable.addCell("Part No.");
+            PdfPCell desc = new PdfPCell(new Paragraph("Description"));
+            desc.setColspan(2);
+            flaggedTable.addCell(desc);
+            PdfPCell noun = new PdfPCell(new Paragraph("Part Noun"));
+            noun.setColspan(2);
+            flaggedTable.addCell(noun);
+            flaggedTable.addCell("Location");
+            flaggedTable.addCell("On Order");
+            flaggedTable.addCell("Min");
+            flaggedTable.addCell("Max");
+            flaggedTable.addCell("On Hand");
+            flaggedTable.addCell("Flagged");
+
+            ObservableList<Part> fParts = Part.flaggedParts();
+
+            for(Part part : fParts)
+            {
+                String partNumber = part.getPartNumber();
+                String des = part.getDescription();
+                String pNoun = part.getPartNoun();
+                String location = part.getLocation();
+                String oo = String.valueOf(part.getOnHand());
+                String min = String.valueOf(part.getMinRecVal());
+                String max = String.valueOf(part.getMaxRecVal());
+                String oh = String.valueOf(part.getOnHand());
+                String flag = String.valueOf(part.getFlagged());
+
+                flaggedTable.addCell(partNumber);
+                PdfPCell desVCell = new PdfPCell(new Paragraph(des));
+                desVCell.setColspan(2);
+                flaggedTable.addCell(desVCell);
+                PdfPCell pNounVCell = new PdfPCell(new Paragraph(pNoun));
+                pNounVCell.setColspan(2);
+                flaggedTable.addCell(pNounVCell);
+                flaggedTable.addCell(location);
+                flaggedTable.addCell(oo);
+                flaggedTable.addCell(min);
+                flaggedTable.addCell(max);
+                flaggedTable.addCell(oh);
+                flaggedTable.addCell(flag);
+
+            }
+            document.add(new Paragraph(" Flagged Items for all accounts are listed."));
+            document.add(new Paragraph("   "));
+            document.add(new Paragraph("   "));
+            document.add(flaggedTable);
             document.close();
 
 
