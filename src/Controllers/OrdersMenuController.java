@@ -36,6 +36,9 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/**
+ * The OrdersMenu Controller Allows Admin Users to Create, Manage, Approve, Receive, Cancel, View and Print Orders.
+ */
 public class OrdersMenuController implements Initializable
 {
     @FXML
@@ -93,14 +96,17 @@ public class OrdersMenuController implements Initializable
     private TableColumn col_lineTotal;
 
 
-
+    /**
+     * Initalises the Orders Table
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
 
         try
         {
-
             DBManager dbm = new DBManager();
         ObservableList<Order> ordersOBS = dbm.loadOrders();
         Order o = ordersOBS.get(0);
@@ -123,9 +129,13 @@ public class OrdersMenuController implements Initializable
 
     }
 
+    /**
+     * Initalises the OrderLines Table & The Order information Fields
+     * @param order
+     */
     protected void initData(Order order)
     {
-        txt_header.setDisable(true);
+        txt_header.setEditable(false);
         combo_shipping.setDisable(true);
         combo_orderType.setDisable(true);
         try
@@ -192,6 +202,9 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Returns to the LandingPage.fxml
+     */
     @FXML
     private void on_homeClick()
     {
@@ -212,6 +225,10 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Allows users to add orderLines to the order
+     * @throws IOException
+     */
     @FXML
     private void on_addLIClick() throws IOException
     {
@@ -236,6 +253,9 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Generates a new empty order
+     */
     @FXML
     private void on_newOrderClick()
     {
@@ -274,6 +294,9 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Cancels Open Orders
+     */
     @FXML
     private void on_cancelClick()
     {
@@ -285,7 +308,7 @@ public class OrdersMenuController implements Initializable
 
         Order order = Order.returnOrder(orderNumber);
 
-        if(order.getOrderApproved())
+        if(order.getOrderApproved() || order.getOrderStatus() != 'C')
         {
             dbm.cancelOrder(order);
             order.calculateOrderTotal();
@@ -305,6 +328,9 @@ public class OrdersMenuController implements Initializable
     }
     }
 
+    /**
+     * Approves Orders with 1 or more orderLines
+     */
     @FXML
     private void on_approveClick()
     {
@@ -350,6 +376,9 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Saves Changes to the Order type, Shipping Method and Header
+     */
     @FXML
     private void on_updateClick()
     {
@@ -378,6 +407,9 @@ public class OrdersMenuController implements Initializable
         }
     }
 
+    /**
+     * Removes / Cancels OrderLines Unapproved and Open OrderLines
+     */
     @FXML
     private void on_removeClick()
     {
@@ -436,6 +468,11 @@ public class OrdersMenuController implements Initializable
 
     }
 
+    /**
+     * Generates The Current Order as PDF that can be printed, or saved
+     * @throws IOException
+     * @throws DocumentException
+     */
     @FXML
     private void on_generateClick() throws IOException, DocumentException
     {
@@ -522,6 +559,10 @@ public class OrdersMenuController implements Initializable
         Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\Order"+order.getOrderNumber()+".pdf"));
     }
 
+    /**
+     * Allows you to receive a quantity of the orderLine currently selected in the table
+     * @throws IOException
+     */
     @FXML
     private void on_receiveClick() throws IOException
     {
@@ -547,18 +588,24 @@ public class OrdersMenuController implements Initializable
 
     }
 
+    /**
+     *Searches DB Orders Table for matches in Columns Header, orderNumber, orderDate for users criteria
+     */
     @FXML
     private void on_searchClick()
     {
         DBManager dbm = new DBManager();
-        ObservableList<Order> orders = dbm.searchOrders(txt_search.getText().toUpperCase());
+        ObservableList<Order> orders = dbm.searchOrders(txt_search.getText());
 
         tbl_order.setItems(orders);
 
-        col_orderNo.setCellValueFactory(new PropertyValueFactory<>("partNumber"));
+        col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
 
     }
 
+    /**
+     * Refreshes Orders Table
+     */
     private void refreshTable()
     {
         DBManager dbm = new DBManager();
@@ -567,6 +614,11 @@ public class OrdersMenuController implements Initializable
         col_orderNo.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
     }
 
+    /**
+     * Gets Order Type
+     * @param order
+     * @return an int value for orderType
+     */
     private int getVarOT(Order order) {
         int varOT;
         switch (order.getOrderType())
@@ -587,6 +639,9 @@ public class OrdersMenuController implements Initializable
         return varOT;
     }
 
+    /**
+     * Closes Application
+     */
     @FXML
     protected void closeOrdersMenu()
     {
@@ -594,6 +649,10 @@ public class OrdersMenuController implements Initializable
         stage.close();
     }
 
+    /**
+     * Checks if the order is cancelled
+     * @return boolean value
+     */
     private boolean orderCancelled()
     {
         DBManager dbm = new DBManager();

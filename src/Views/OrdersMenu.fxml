@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="pane_anchorPane" prefHeight="578.0" prefWidth="783.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrdersMenuController">
+<AnchorPane fx:id="pane_anchorPane" prefHeight="578.0" prefWidth="783.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrdersMenuController">
    <children>
       <Label fx:id="lbl_orderNo" layoutX="223.0" layoutY="22.0" textFill="#cccccc">
          <font>
@@ -20,27 +21,22 @@
                   <Image url="@../assets/icon_rigDark.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_newOrder" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="85.0" onMousePressed="#on_newOrderClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_newOrder" fitHeight="25.0" fitWidth="26.0" layoutX="115.0" layoutY="85.0" onMousePressed="#on_newOrderClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_add32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_update" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="122.0" onMousePressed="#on_updateClick" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../assets/icon_edit32.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="btn_approve" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="210.0" onMousePressed="#on_approveClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_approve" fitHeight="25.0" fitWidth="26.0" layoutX="115.0" layoutY="210.0" onMousePressed="#on_approveClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_approve32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_newLine" fitHeight="25.0" fitWidth="26.0" layoutX="112.0" layoutY="164.0" onMousePressed="#on_addLIClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_newLine" fitHeight="25.0" fitWidth="26.0" layoutX="115.0" layoutY="164.0" onMousePressed="#on_addLIClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_ol32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_cancel" fitHeight="23.0" fitWidth="27.0" layoutX="110.0" layoutY="255.0" onMousePressed="#on_cancelClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_cancel" fitHeight="23.0" fitWidth="27.0" layoutX="116.0" layoutY="255.0" onMousePressed="#on_cancelClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_delete32.png" />
                </image>
@@ -50,7 +46,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_update" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="99.0" text="Update Header" textFill="#eda678">
+            <Label fx:id="lbl_update" layoutX="12.0" layoutY="127.0" prefHeight="15.0" prefWidth="99.0" text="Save Changes" textFill="#eda678">
                <font>
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
@@ -70,7 +66,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_generate" fitHeight="25.0" fitWidth="27.0" layoutX="110.0" layoutY="298.0" onMousePressed="#on_generateClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_generate" fitHeight="25.0" fitWidth="27.0" layoutX="115.0" layoutY="298.0" onMousePressed="#on_generateClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_pdf32.png" />
                </image>
@@ -85,12 +81,12 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="btn_removeItem" fitHeight="23.0" fitWidth="27.0" layoutX="109.0" layoutY="337.0" onMousePressed="#on_removeClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_removeItem" fitHeight="23.0" fitWidth="27.0" layoutX="116.0" layoutY="337.0" onMousePressed="#on_removeClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_minus32.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="btn_receive" fitHeight="23.0" fitWidth="27.0" layoutX="109.0" layoutY="381.0" onMousePressed="#on_receiveClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btn_receive" fitHeight="23.0" fitWidth="27.0" layoutX="116.0" layoutY="381.0" onMousePressed="#on_receiveClick" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/icon_receive32.png" />
                </image>
@@ -100,6 +96,7 @@
                   <Font name="Quicksand Bold" size="12.0" />
                </font>
             </Label>
+            <FontAwesomeIconView fx:id="btn_update" fill="#cccccc" layoutX="115.0" layoutY="142.0" onMousePressed="#on_updateClick" size="25" wrappingWidth="12.0" />
          </children>
       </AnchorPane>
       <Label fx:id="lbl_header" layoutX="175.0" layoutY="232.0" text="Header:" textFill="#eda678">

@@ -11,19 +11,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static Controllers.Main.requiredFieldValidator;
-
 /**
  * Add Part Controller handles functionality for Adding new Parts to DB
  */
-public class AddPartController implements Initializable
-{
+public class AddPartController implements Initializable {
     @FXML
     private JFXComboBox<InventoryAccount> combo_accCode;
 
@@ -55,16 +54,15 @@ public class AddPartController implements Initializable
     private JFXButton btn_cancel;
 
 
-
     /**
      * Initalises combo boxes on AddPart.fxml
+     *
      * @param location
      * @param resources
      */
     @FXML
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
 
         ObservableList<InventoryAccount> inventoryAccounts = dbm.loadInventoryAccounts();
@@ -82,57 +80,61 @@ public class AddPartController implements Initializable
      */
     @FXML
     private void on_saveClick()
-   {
-        DBManager dbm = new DBManager();
-
-        combo_vendor.getValidators().add(requiredFieldValidator);
-        txt_vendorPartNo.getValidators().add(requiredFieldValidator);
-        combo_vendor.getValidators().add(requiredFieldValidator);
-        txt_partNoun.getValidators().add(requiredFieldValidator);
-        txt_description.getValidators().add(requiredFieldValidator);
-        txt_cost.getValidators().add(requiredFieldValidator);
-        txt_min.getValidators().add(requiredFieldValidator);
-        txt_max.getValidators().add(requiredFieldValidator);
-
-
-        InventoryAccount account = combo_accCode.getSelectionModel().getSelectedItem();
-        int accountCode = account.getAccountCode();
-
-        String vendorPN = txt_vendorPartNo.getText();
-
-        Vendor vendor = combo_vendor.getSelectionModel().getSelectedItem();
-        int vendorId = vendor.getVendorId();
-
-        String partNoun = txt_partNoun.getText();
-        String description = txt_description.getText();
-        Double cost = Double.parseDouble(txt_cost.getText());
-        int minLvl = Integer.parseInt(txt_min.getText());
-        int maxLvl = Integer.parseInt(txt_max.getText());
-
-        Location location = combo_location.getSelectionModel().getSelectedItem();
-        String locationId = location.getLocationId();
-
-
+    {
         try
         {
-            Part part = new Part(accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationId);
+            Window window = btn_cancel.getScene().getWindow();
+            DBManager dbm = new DBManager();
 
-            String partNumber = dbm.generateUniquePartNo(part);
-            part.setPartNumber(partNumber);
+            InventoryAccount account = combo_accCode.getSelectionModel().getSelectedItem();
+            int accountCode = account.getAccountCode();
 
-            dbm.createPart(part);
+            String vendorPN = txt_vendorPartNo.getText();
 
-            Stage partsStage = new Stage();
-            Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
-            Scene scene1 = new Scene(root1);
-            partsStage.setScene(scene1);
-            partsStage.setTitle("RICS 1.0 Part Master");
-            partsStage.initStyle(StageStyle.TRANSPARENT);
-            partsStage.show();
+            Vendor vendor = combo_vendor.getSelectionModel().getSelectedItem();
+            int vendorId = vendor.getVendorId();
 
-            closeAddPart();
-        }
-        catch(Exception e)
+            String partNoun = txt_partNoun.getText();
+            String description = txt_description.getText();
+            Double cost = Double.parseDouble(txt_cost.getText());
+            int minLvl = Integer.parseInt(txt_min.getText());
+            int maxLvl = Integer.parseInt(txt_max.getText());
+
+            Location location = combo_location.getSelectionModel().getSelectedItem();
+            String locationId = location.getLocationId();
+
+            if((vendorPN.isEmpty() || partNoun.isEmpty() || description.isEmpty()) ||
+                    combo_location.getSelectionModel().isEmpty() || combo_vendor.getSelectionModel().isEmpty() ||
+                    combo_location.getSelectionModel().isEmpty())
+            {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                        "Please complete all fields.");
+            }
+            else if(!isInt(txt_max) || !isInt(txt_min) || isDub(txt_cost))
+            {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                        "Min and Max should be a whole number using characters 0-9. Cost Should be A Decimal Number " +
+                                "such as '200.98'. ");
+            }
+            else
+                {
+                Part part = new Part(accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationId);
+
+                String partNumber = dbm.generateUniquePartNo(part);
+                part.setPartNumber(partNumber);
+
+                dbm.createPart(part);
+
+                Stage partsStage = new Stage();
+                Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
+                Scene scene1 = new Scene(root1);
+                partsStage.setScene(scene1);
+                partsStage.setTitle("RICS 1.0 Part Master");
+                partsStage.initStyle(StageStyle.TRANSPARENT);
+                partsStage.show();
+                closeAddPart();
+            }
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -140,12 +142,46 @@ public class AddPartController implements Initializable
     }
 
     /**
+     * Input validation for numeric fields
+     * @param num - textfield being validated
+     * @return boolean success value
+     */
+    private boolean isInt(JFXTextField num)
+    {
+        try
+        {
+            Integer.parseInt(num.getText());
+            return true;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
+    /**
+     * Input validation for cost field
+     * @param num textfield being validated
+     * @return boolean success value
+     */
+    private boolean isDub(JFXTextField num)
+    {
+        try
+        {
+            Double.parseDouble(num.getText());
+            return true;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return  false;
+        }
+    }
+    /**
      * Closes AddPart.fxml
      */
     @FXML
-    private void closeAddPart()
-    {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+    private void closeAddPart() {
+        Stage stage = (Stage) btn_cancel.getScene().getWindow();
         stage.close();
     }
 

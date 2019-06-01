@@ -92,50 +92,80 @@ public class AddOrderLineController implements Initializable
     {
 
         Window window = btn_clear.getScene().getWindow();
-        try
+
+        if(txt_partNo.getText().isEmpty() || txt_requestedBy.getText().isEmpty() || txt_qty.getText().isEmpty())
         {
-            DBManager dbm = new DBManager();
-
-            String orderNumber = lbl_orderNo.getText();
-            int orderLineId = dbm.generateUniqueOrderLineId(orderNumber);
-            int qty = Integer.parseInt(txt_qty.getText());
-            Part part = Part.returnPart(txt_partNo.getText());
-            String ref = txt_requestedBy.getText();
-            Order order = Order.returnOrder(orderNumber);
-            OrderLine orderLine = new OrderLine(orderLineId, qty, part, ref);
-            dbm.addOrderLine(orderLine, orderNumber);
-            order.calculateOrderTotal();
-
-            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
-                    qty + " of Part " + part.getPartNumber() + "were added to your order.");
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
-            Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);
-            ordersMenu.setTitle("RICS 1.0 Orders");
-            ordersMenu.setScene(new Scene(loader.load()));
-
-            OrdersMenuController controller = loader.getController();
-            controller.closeOrdersMenu();
-            ordersMenu.show();
-            closeAddOrderLine();
-
-
-            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
-                    qty + " of Part " + part.getPartNumber() + "were added to your order.");
-
-            controller.initData(order);
-
-
-        } catch (Exception e)
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                    "Please complete all fields.");
+        }
+        else if(!isInt(txt_qty))
         {
-            e.printStackTrace();
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                    "Quantity must be a whole number using characters 0-9");
+        }
+        else {
+            try {
+                DBManager dbm = new DBManager();
+
+                String orderNumber = lbl_orderNo.getText();
+                int orderLineId = dbm.generateUniqueOrderLineId(orderNumber);
+                int qty = Integer.parseInt(txt_qty.getText());
+                Part part = Part.returnPart(txt_partNo.getText());
+                String ref = txt_requestedBy.getText();
+                Order order = Order.returnOrder(orderNumber);
+                OrderLine orderLine = new OrderLine(orderLineId, qty, part, ref);
+                dbm.addOrderLine(orderLine, orderNumber);
+                order.calculateOrderTotal();
+
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
+                        qty + " of Part " + part.getPartNumber() + "were added to your order.");
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
+                Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);
+                ordersMenu.setTitle("RICS 1.0 Orders");
+                ordersMenu.setScene(new Scene(loader.load()));
+
+                OrdersMenuController controller = loader.getController();
+                controller.closeOrdersMenu();
+                ordersMenu.show();
+                closeAddOrderLine();
+
+
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
+                        qty + " of Part " + part.getPartNumber() + "were added to your order.");
+
+                controller.initData(order);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                        "Error: Unable to add to order ");
+            }
         }
 
     }
 
     /**
+     * Input validation for quantity field
+     * @param txt_qty quantity of part being added to orderLine
+     * @return
+     */
+    private boolean isInt(JFXTextField txt_qty)
+    {
+        try
+        {
+            Integer.parseInt(txt_qty.getText());
+            return true;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return  false;
+        }
+    }
+    /**
      * Initialises the Order Number Label
-     * @param orderNumber
+     * @param orderNumber - Order the orderline is being added to
      */
     public void initData(String orderNumber)
     {

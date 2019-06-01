@@ -86,14 +86,15 @@ public class InventoryAccountsController implements Initializable
         ObservableList<InventoryAccount> accountsOBS = dbm.loadInventoryAccounts();
         Window window = btn_cancel.getScene().getWindow();
 
+
         int accountCode = Integer.parseInt(txt_accountCode.getText());
+
         String accountName = txt_accountName.getText();
 
-        if(accountName.isEmpty() || txt_accountCode.getText().equals(""))
+        if(accountName.isEmpty() || txt_accountCode.getText().equals("") || !isFormat(txt_accountCode))
         {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing information", "Please complete all " +
-                    "fields");
-            return;
+            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid information", "Please provide a valid " +
+                    "account name and account code");
         }
 
         else if(InventoryAccount.containsAccount(accountsOBS, accountCode))
@@ -126,6 +127,9 @@ public class InventoryAccountsController implements Initializable
             catch (Exception e)
             {
                 e.printStackTrace();
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unable to Add", "The Account was " +
+                        "not added to the system.");
+
             }
             finally
             {
@@ -134,6 +138,23 @@ public class InventoryAccountsController implements Initializable
         }
     }
 
+    /**
+     * Input validation for accountCode field
+     * @param num textfield being validated
+     * @return boolean success value
+     */
+    private boolean isFormat(JFXTextField num)
+    {
+        try
+        {
+            Integer.parseInt(num.getText());
+            return num.getText().length() == 8;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return  false;
+        }
+    }
 
     /**
      *Clears Text Fields

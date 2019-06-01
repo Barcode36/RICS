@@ -20,6 +20,9 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles Actions for Adding and Updating Vendors in DB Vendors Table
+ */
 public class ManageVendorsController implements Initializable
 {
     @FXML
@@ -43,6 +46,11 @@ public class ManageVendorsController implements Initializable
     @FXML
     private TableColumn col_vendorName;
 
+    /**
+     * Initialises the Vendors Table
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -77,65 +85,71 @@ public class ManageVendorsController implements Initializable
 
     }
 
+    /**
+     * Updates or Adds Vendor Record in DB Vendors Table
+     */
     @FXML
-    private void on_saveClick()
-    {
-        DBManager dbm = new DBManager();
-        ObservableList<Vendor> vendors = dbm.loadVendors();
-        Window window = btn_cancel.getScene().getWindow();
+    private void on_saveClick() {
+        try {
+            DBManager dbm = new DBManager();
+            ObservableList<Vendor> vendors = dbm.loadVendors();
+            Window window = btn_cancel.getScene().getWindow();
 
-        int vendorId = Integer.parseInt(txt_vendorId.getText());
-        String vendorName = txt_vendorName.getText();
-        String phoneNumber = txt_phoneNumber.getText();
-        String address = txt_address.getText();
+            int vendorId = Integer.parseInt(txt_vendorId.getText());
+            String vendorName = txt_vendorName.getText();
+            String phoneNumber = txt_phoneNumber.getText();
+            String address = txt_address.getText();
 
-        if(vendorName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || txt_vendorId.getText().equals(""))
-        {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing information", "Please complete all " +
-                    "fields");
-            return;
-        }
-        else if(Vendor.containsVendor(vendors, vendorId))
-        {
-            try
-            {
+            if (vendorName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || txt_vendorId.getText().isEmpty() ||
+                    !isString(txt_address) || !isString(txt_vendorName)) {
+                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing information", "Please complete all " +
+                        "fields");
+                return;
+            } else if (Vendor.containsVendor(vendors, vendorId)) {
+
                 Vendor vendor = new Vendor(vendorId, vendorName, phoneNumber, address);
                 dbm.updateVendor(vendor);
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information updated", "The record for " +
                         vendorName + " has been updated. ");
                 return;
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        else
-            {
-
-                try {
-                    Vendor vendor = new Vendor(vendorId, vendorName, phoneNumber, address);
-                    dbm.createVendor(vendor);
-
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Vendor added", "you have " +
-                            "successfully created added a new vendor record");
-                    return;
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    finally
+            } else
                 {
-                    refresh();
-                }
+
+
+                Vendor vendor = new Vendor(vendorId, vendorName, phoneNumber, address);
+                dbm.createVendor(vendor);
+
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Vendor added", "you have " +
+                        "successfully created added a new vendor record");
+
+
+                refresh();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Verifies textfield is not a number
+     * @param input
+     * @return
+     */
+    private boolean isString(JFXTextField input)
+    {
+        try{
+            Integer.parseInt(input.getText());
+            return false;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return true;
+        }
+    }
 
-
-
+    /**
+     * Clears textfields for adding new record
+     */
     @FXML
     private void on_addClick()
     {
@@ -145,6 +159,9 @@ public class ManageVendorsController implements Initializable
         txt_address.setText("");
     }
 
+    /**
+     * Closes ManageVendors.fxml
+     */
     @FXML
     private void closeAddVendor()
     {
@@ -152,6 +169,9 @@ public class ManageVendorsController implements Initializable
         stage.close();
     }
 
+    /**
+     * refreshes the Vendors Table
+     */
     @FXML
     private void refresh()
     {

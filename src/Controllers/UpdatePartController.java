@@ -19,6 +19,9 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles Actions For Updating  select Part Information
+ */
 public class UpdatePartController implements Initializable
 {
     @FXML
@@ -26,7 +29,6 @@ public class UpdatePartController implements Initializable
 
     @FXML
     private Label lbl_part;
-
 
     @FXML
     private JFXTextArea txt_description;
@@ -50,18 +52,32 @@ public class UpdatePartController implements Initializable
     private JFXButton btn_save;
 
 
+    /**
+     * Initialises UpdatePart.fxml
+     * @param location
+     * @param resources
+     */
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
 
     }
+
+    /**
+     * Sets the partNumber label
+     * @param partNo
+     */
     @FXML
     public void setLabel(String partNo)
     {
         lbl_part.setText(partNo);
     }
 
+    /**
+     * Initalises the Part Info fields
+     * @param p
+     */
     @FXML
     protected void initData(String p)
     {
@@ -83,6 +99,9 @@ public class UpdatePartController implements Initializable
         }
     }
 
+    /**
+     * Saves the updated part to the DB Parts Table
+     */
     @FXML
     private void on_saveClick() {
         String partNo = lbl_part.getText();
@@ -139,6 +158,9 @@ public class UpdatePartController implements Initializable
     }
 
 
+    /**
+     * Closes UpdatePart.fxml
+     */
     @FXML
     private void closeUpdatePart()
     {

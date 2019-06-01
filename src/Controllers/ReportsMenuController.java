@@ -34,11 +34,14 @@ public class ReportsMenuController implements Initializable
     private JFXButton btn_generate;
 
     @FXML
-    private JFXComboBox combo_report, combo_account;
+    private JFXComboBox  combo_account;
 
     @FXML
     private JFXRadioButton rdo_acc;
 
+    /**
+     * Closes Reports Menu.fxml
+     */
     @FXML
     private void closeReportsMenu()
     {
@@ -46,6 +49,9 @@ public class ReportsMenuController implements Initializable
         stage.close();
     }
 
+    /**
+     * returns to LandingPage.fxml
+     */
     @FXML
     private void on_homeClick()
     {
@@ -66,6 +72,9 @@ public class ReportsMenuController implements Initializable
         }
     }
 
+    /**
+     * Generates a Current Open Order & OverMax Stock Report for ALl Inventory or Selected Account
+     */
     @FXML
     private void generateStockReport()
     {
@@ -187,7 +196,6 @@ public class ReportsMenuController implements Initializable
 
                 }
 
-
             }
             document.add(omTable);
             document.add(new Paragraph("Excess inventory: £" + excess));
@@ -204,6 +212,11 @@ public class ReportsMenuController implements Initializable
 
     }
 
+    /**
+     * Initialises the Inventory Accounts comboBox
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {

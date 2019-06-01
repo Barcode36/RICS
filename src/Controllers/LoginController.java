@@ -9,17 +9,16 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class LoginController implements Initializable
+/**
+ * Handles Login Action
+ */
+public class LoginController
 {
 
     @FXML
@@ -32,17 +31,9 @@ public class LoginController implements Initializable
     private JFXButton btn_login;
 
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-
-    }
-
-
-
-
-
+    /**
+     * Validates User Login & Navigates to LandingPage.fxml on success
+     */
     @FXML
     private void onClick_btn_login()
     {
@@ -69,8 +60,6 @@ public class LoginController implements Initializable
             }
             else
             {
-
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
                 Stage homeStage = new Stage();
                 homeStage.setTitle("RICS 1.0 Issue Part");
@@ -91,6 +80,9 @@ public class LoginController implements Initializable
         }
     }
 
+    /**
+     * Closes the application
+     */
     public void closeLogin()
     {
        Stage stage1 = (Stage)btn_login.getScene().getWindow();

@@ -16,6 +16,9 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
+/**
+ * Handles Actions for the Issue Stock Dialog
+ */
 public class IssuePartController
 {
 
@@ -32,8 +35,10 @@ public class IssuePartController
     private JFXButton btn_cancel;
 
 
-
-
+    /**
+     * sets the part number label
+     * @param partNo
+     */
     public void setLabel(String partNo)
     {
         try
@@ -46,30 +51,31 @@ public class IssuePartController
         }
     }
 
+    /**
+     * Issues the part from stock, saves the transaction in part history.
+     */
     @FXML
     private void on_issueClick()
     {
+
         int qty = Integer.parseInt(txt_quantity.getText());
         String partNo = lbl_partNo.getText();
         Window window = btn_cancel.getScene().getWindow();
 
         DBManager dbm = new DBManager();
         Part part = Part.returnPart(partNo);
-        try
+        if(isInt(txt_quantity))
         {
-                if (part.getOnHand() >= qty && qty > 0)
-                {
+            try {
+                if (part.getOnHand() >= qty && qty > 0) {
                     int newStockLevel = part.getOnHand() - qty;
                     dbm.updateStockLevel(newStockLevel, partNo);
                     dbm.saveTransaction(part, 'I', qty, txt_issuedTo.getText());
 
                     //flag X amount for order
-                    if(newStockLevel < part.getMaxRecVal() && part.getOnHand() > 0)
-                    {
+                    if (newStockLevel < part.getMaxRecVal() && part.getOnHand() > 0) {
                         part.setFlagged(part.getMaxRecVal() - (newStockLevel + part.getOnOrder()));
-                    }
-                    else if(part.getOnHand() == 0)
-                    {
+                    } else if (part.getOnHand() == 0) {
                         part.setFlagged(part.getMaxRecVal());
                     }
                     dbm.updatePart(part);
@@ -79,7 +85,7 @@ public class IssuePartController
                     partMaster.setTitle("RICS 1.0 PartMaster");
                     partMaster.setScene(new Scene(loader.load()));
 
-                   // PartMasterController controller = loader.getController();
+                    // PartMasterController controller = loader.getController();
                     //controller.closePartMaster();
                     partMaster.show();
                     closeIssuePart();
@@ -90,22 +96,45 @@ public class IssuePartController
 
                     return;
 
-                }
-                else
-                {
+                } else {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Quantity", "There " +
                             "aren't enough of " + partNo + " in stock to issue that amount.");
 
                     return;
                 }
-        }
-        catch(Exception e)
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else
         {
-            e.printStackTrace();
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Quantity", "Please enter a quantity " +
+                    "using characters 0-9");
         }
 
     }
 
+    /**
+     * Input validation for quantity field
+     * @param txt_qty
+     * @return
+     */
+    private boolean isInt(JFXTextField txt_qty)
+    {
+        try
+        {
+            Integer.parseInt(txt_qty.getText());
+            return true;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
+    /**
+     * Returns to PartMaster.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_cancelClick() throws IOException
     {
@@ -123,6 +152,9 @@ public class IssuePartController
     }
 
 
+    /**
+     * Closes IssuePart.fxml
+     */
     @FXML
     private void closeIssuePart()
     {

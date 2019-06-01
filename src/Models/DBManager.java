@@ -1154,8 +1154,7 @@ public class DBManager
              * Select all from DB Orders Table where orderNumber OR header OR orderDate OR location matches 'criteria' order by orderNumber;
              */
             ResultSet orderList =
-                    stmt.executeQuery("SELECT * FROM Orders WHERE orderNumber || header || orderDate || " +
-                            "location || description LIKE" + "'%" + criteria + "%' ORDER BY orderNumber");
+                    stmt.executeQuery("SELECT * FROM Orders WHERE orderNumber || header || orderDate LIKE" + "'%" + criteria + "%' ORDER BY orderNumber");
 
 
             /*

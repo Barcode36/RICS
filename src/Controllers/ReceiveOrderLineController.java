@@ -15,7 +15,9 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
-
+/**
+ * Controls Actions for Receiving OrderLines
+ */
 public class ReceiveOrderLineController
 {
     @FXML
@@ -33,7 +35,6 @@ public class ReceiveOrderLineController
     @FXML
     private Label lbl_qty;
 
-
     @FXML
     private JFXTextField txt_recQty;
 
@@ -46,13 +47,16 @@ public class ReceiveOrderLineController
     @FXML
     private JFXButton btn_cancel;
 
-
+    /**
+     * Sets the Labels with orderLine info
+     * @param orderNumber
+     * @param orderLineId
+     */
     @FXML
     public void setLabels(String orderNumber, int orderLineId)
     {
         try
         {
-            DBManager dbm = new DBManager();
             OrderLine ol = OrderLine.returnOrderLine(orderLineId, orderNumber);
             lbl_orderNo.setText(orderNumber);
             lbl_orderLineId.setText(String.valueOf(orderLineId));
@@ -66,6 +70,10 @@ public class ReceiveOrderLineController
         }
     }
 
+    /**
+     * Returns to OrdersMenu.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_cancelClick() throws IOException
     {
@@ -82,6 +90,9 @@ public class ReceiveOrderLineController
         closeRecOrderLine();
     }
 
+    /**
+     * Updates the Received Quantity on the orderLine given the number is valid
+     */
     @FXML
     private void on_recClick()
     {
@@ -138,6 +149,10 @@ public class ReceiveOrderLineController
 
     }
 
+    /**
+     * Checks if the order is Closed
+     * @return boolean success value
+     */
     private boolean orderClosed()
     {
         DBManager dbm = new DBManager();
@@ -150,6 +165,9 @@ public class ReceiveOrderLineController
         return true;
     }
 
+    /**
+     * Closes the Receive OrderLine Dialog
+     */
     @FXML
     private void closeRecOrderLine()
     {

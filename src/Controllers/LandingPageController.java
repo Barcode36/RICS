@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles Navigation Actions from Main Menu
+ */
 public class LandingPageController implements Initializable
 {
 
@@ -36,8 +39,11 @@ public class LandingPageController implements Initializable
     public static AnchorPane rootP;
 
 
-
-
+    /**
+     * Initialises LandingPage.fxml
+     * @param url
+     * @param rb
+     */
     public void initialize (URL url, ResourceBundle rb)
     {
         rootP = root;
@@ -50,6 +56,9 @@ public class LandingPageController implements Initializable
 
     }
 
+    /**
+     * Loads the SplashScreen if it hasn't been loaded already.
+     */
     //SplashScreen currently disabled
     @FXML
     private void loadSplashScreen()
@@ -99,37 +108,62 @@ public class LandingPageController implements Initializable
         }
     }
 
+    /**
+     * Navigates to UsersMenu.fxml
+     * @throws IOException
+     */
     @FXML
-    private void on_usersClick() throws IOException
+    private void on_usersClick()
     {
-
-        Stage usersStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("../Views/UsersMenu.fxml"));
-        Scene scene = new Scene(root);
-        usersStage.setScene(scene);
-        usersStage.setTitle("RICS 1.0 User Account Management");
-        usersStage.initStyle(StageStyle.TRANSPARENT);
-        usersStage.show();
-        closeLandingPage();
+        try
+        {
+            Stage usersStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("../Views/UsersMenu.fxml"));
+            Scene scene = new Scene(root);
+            usersStage.setScene(scene);
+            usersStage.setTitle("RICS 1.0 User Account Management");
+            usersStage.initStyle(StageStyle.TRANSPARENT);
+            usersStage.show();
+            closeLandingPage();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Navigates to PartMaster.fxml
+     * @throws IOException
+     */
     @FXML
-    private void on_partsClick() throws IOException
+    private void on_partsClick()
     {
 
-        Stage partsStage = new Stage();
-        Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
-        Scene scene1 = new Scene(root1);
-        partsStage.setScene(scene1);
-        partsStage.setTitle("RICS 1.0 Part Master");
-        partsStage.initStyle(StageStyle.TRANSPARENT);
-        partsStage.show();
-        closeLandingPage();
+        try
+        {
+            Stage partsStage = new Stage();
+            Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
+            Scene scene1 = new Scene(root1);
+            partsStage.setScene(scene1);
+            partsStage.setTitle("RICS 1.0 Part Master");
+            partsStage.initStyle(StageStyle.TRANSPARENT);
+            partsStage.show();
+            closeLandingPage();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Navigates to OrdersMenu.fxml
+     * @throws IOException
+     */
     @FXML
-    private void on_ordersClick() throws IOException
+    private void on_ordersClick()
     {
+        try
+        {
         Stage ordersStage = new Stage();
         Parent root2 = FXMLLoader.load(getClass().getResource("../Views/OrdersMenu.fxml"));
         Scene scene2 = new Scene(root2);
@@ -138,34 +172,40 @@ public class LandingPageController implements Initializable
         ordersStage.initStyle(StageStyle.TRANSPARENT);
         ordersStage.show();
         closeLandingPage();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
+
+    /**
+     * Navigates to ReportsMenu.fxml
+     * @throws IOException
+     */
     @FXML
-    private void on_manifestsClick() throws IOException
+    private void on_reportsClick()
     {
-        Stage manifestStage = new Stage();
-        Parent root3 = FXMLLoader.load(getClass().getResource("../Views/manifestMenu.fxml"));
-        Scene scene3 = new Scene(root3);
-        manifestStage.setScene(scene3);
-        manifestStage.setTitle("RICS 1.0 Manifests");
-        manifestStage.initStyle(StageStyle.TRANSPARENT);
-        manifestStage.show();
-        closeLandingPage();
+        try {
+            Stage reportsStage = new Stage();
+            Parent root4 = FXMLLoader.load(getClass().getResource("../Views/ReportsMenu.fxml"));
+            Scene scene4 = new Scene(root4);
+            reportsStage.setScene(scene4);
+            reportsStage.setTitle("RICS 1.0 Reports");
+            reportsStage.initStyle(StageStyle.TRANSPARENT);
+            reportsStage.show();
+            closeLandingPage();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    private void on_reportsClick() throws IOException
-    {
-        Stage reportsStage = new Stage();
-        Parent root4 = FXMLLoader.load(getClass().getResource("../Views/ReportsMenu.fxml"));
-        Scene scene4 = new Scene(root4);
-        reportsStage.setScene(scene4);
-        reportsStage.setTitle("RICS 1.0 Reports");
-        reportsStage.initStyle(StageStyle.TRANSPARENT);
-        reportsStage.show();
-        closeLandingPage();
-    }
-
+    /**
+     * Navigates to AddLocation.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_locationClick() throws IOException
     {
@@ -178,6 +218,10 @@ public class LandingPageController implements Initializable
         locationStage.show();
     }
 
+    /**
+     * Navigates to ManageRig.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_rigClick() throws IOException
     {
@@ -190,6 +234,10 @@ public class LandingPageController implements Initializable
         rigStage.show();
     }
 
+    /**
+     * Navigates to ManageVendors.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_vendorClick() throws IOException
     {
@@ -201,6 +249,11 @@ public class LandingPageController implements Initializable
         vendorStage.initStyle(StageStyle.TRANSPARENT);
         vendorStage.show();
     }
+
+    /**
+     * Navigate to InventoryAccounts.fxml
+     * @throws IOException
+     */
     @FXML
     private void on_accountClick() throws IOException
     {
@@ -213,12 +266,19 @@ public class LandingPageController implements Initializable
         accountStage.show();
     }
 
+    /**
+     * Closes Application
+     */
     public void closeLandingPage()
     {
         Stage stage = (Stage)btn_users.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Initalises Labels &  Buttons on LandingPage.fxml
+     * @param user Logged in user
+     */
     public void initData(User user)
     {
         lbl_username.setText("Welcome " + user.getFirstName());

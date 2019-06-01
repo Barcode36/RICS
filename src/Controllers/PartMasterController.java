@@ -34,6 +34,9 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/**
+ * PartMaster Controller allows Users to browse and Manage Inventory
+ */
 public class PartMasterController implements Initializable
 {
     @FXML
@@ -96,7 +99,6 @@ public class PartMasterController implements Initializable
     @FXML
     private JFXTextField txt_search;
 
-
     @FXML
     private Label lbl_onHand;
 
@@ -125,24 +127,17 @@ public class PartMasterController implements Initializable
     private ImageView btn_addPart, btn_edit, btn_delete, btn_issue;
 
 
-
+    /**
+     * Initialises the Parts Table
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
         initData(partsOBS.get(0));
-
-        ObservableList<Transaction> transactions = dbm.loadTransactions(partsOBS.get(0));
-        tbl_history.setItems(transactions);
-        col_transType.setCellValueFactory(new PropertyValueFactory<>("transType"));
-        col_transDate.setCellValueFactory(new PropertyValueFactory<>("transDate"));
-        col_partNo.setCellValueFactory(new PropertyValueFactory<>("partNo"));
-        col_reference.setCellValueFactory(new PropertyValueFactory<>("reference"));
-        col_qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
-        col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
-
 
         try {
             tbl_parts.setOnMouseClicked((MouseEvent event) -> {
@@ -161,6 +156,9 @@ public class PartMasterController implements Initializable
 
     }
 
+    /**
+     * Navigates to LandingPage.fxml
+     */
     @FXML
     private void on_homeClick()
     {
@@ -181,6 +179,9 @@ public class PartMasterController implements Initializable
         }
     }
 
+    /**
+     * Deletes current part from DB Parts Table
+     */
     @FXML
     private void on_deleteClick()
     {
@@ -199,6 +200,10 @@ public class PartMasterController implements Initializable
             e.printStackTrace();
         }
     }
+
+    /**
+     * Opens the Add new Part Dialog
+     */
     @FXML
     private void on_addPartClick()
     {
@@ -219,6 +224,10 @@ public class PartMasterController implements Initializable
         }
     }
 
+    /**
+     * Opens the Issue Part Dialog
+     * @throws IOException
+     */
     @FXML
     private void on_issueClick() throws IOException
     {
@@ -235,6 +244,10 @@ public class PartMasterController implements Initializable
 
     }
 
+    /**
+     * Allows users to edit some details of parts in inventory
+     * @throws IOException
+     */
     @FXML
     private void on_editClick() throws IOException
     {
@@ -252,6 +265,11 @@ public class PartMasterController implements Initializable
     }
 
 
+    /**
+     * Generates a PDF Stock Card for The Part with a list of transactions
+     * @throws IOException
+     * @throws DocumentException
+     */
     @FXML
     private void on_printClick() throws IOException, DocumentException {
 
@@ -334,6 +352,10 @@ public class PartMasterController implements Initializable
         Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard"+part.getPartNumber()+".pdf"));
     }
 
+    /**
+     * Initialises the data in the Parts Table, Transactions Table and the Part Information fields
+     * @param part
+     */
     @FXML
     protected void initData(Part part)
     {
@@ -393,6 +415,9 @@ public class PartMasterController implements Initializable
     }
 
 
+    /**
+     * Closes the Application
+     */
     @FXML
     protected void closePartMaster()
     {
@@ -400,11 +425,15 @@ public class PartMasterController implements Initializable
         stage.close();
     }
 
+    /**
+     * Searches the DB Parts Table Columns partNumber, Location, vendorsPartNumber, partNoun, description for matches
+     * to the users criteria
+     */
     @FXML
     private void on_searchClick()
     {
         DBManager dbm = new DBManager();
-        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_search.getText().toUpperCase());
+        ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_search.getText());
 
         tbl_parts.setItems(partsOBS);
 

@@ -15,6 +15,10 @@ public class Main extends Application
     public static User user;
     public static RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
 
+    /**Launches Application
+     * @param primaryStage Login Dialog
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../Views/Login.fxml"));

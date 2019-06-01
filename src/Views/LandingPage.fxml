@@ -11,52 +11,42 @@
             <Image url="@../assets/icon_rigDark.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_users" fx:id="btn_users" fitHeight="64.0" fitWidth="58.0" layoutX="45.0" layoutY="183.0" onMousePressed="#on_usersClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_users" fx:id="btn_users" fitHeight="64.0" fitWidth="58.0" layoutX="115.0" layoutY="183.0" onMousePressed="#on_usersClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_users.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_reports" fx:id="btn_reports" fitHeight="64.0" fitWidth="58.0" layoutX="479.0" layoutY="183.0" onMousePressed="#on_reportsClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_reports" fx:id="btn_reports" fitHeight="64.0" fitWidth="58.0" layoutX="417.0" layoutY="183.0" onMousePressed="#on_reportsClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_reports.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_manifests" fx:id="btn_manifests" fitHeight="64.0" fitWidth="58.0" layoutX="368.0" layoutY="183.0" onMousePressed="#on_manifestsClick" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/icon_manifestShip.png" />
-         </image>
-      </ImageView>
-      <ImageView id="btn_orders" fx:id="btn_orders" fitHeight="64.0" fitWidth="58.0" layoutX="271.0" layoutY="183.0" onMousePressed="#on_ordersClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_orders" fx:id="btn_orders" fitHeight="64.0" fitWidth="58.0" layoutX="320.0" layoutY="183.0" onMousePressed="#on_ordersClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_orders.png" />
          </image>
       </ImageView>
-      <ImageView id="btn_partMaster" fx:id="btn_partMaster" fitHeight="64.0" fitWidth="58.0" layoutX="163.0" layoutY="183.0" onMousePressed="#on_partsClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="btn_partMaster" fx:id="btn_partMaster" fitHeight="64.0" fitWidth="58.0" layoutX="223.0" layoutY="183.0" onMousePressed="#on_partsClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_parts.png" />
          </image>
       </ImageView>
-      <Label fx:id="lbl_users" alignment="CENTER" layoutX="26.0" layoutY="244.0" text="User Accounts" textFill="#eda678">
+      <Label fx:id="lbl_users" alignment="CENTER" layoutX="96.0" layoutY="244.0" text="User Accounts" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_partMaster" alignment="CENTER" layoutX="152.0" layoutY="244.0" text="Part Master" textFill="#eda678">
+      <Label fx:id="lbl_partMaster" alignment="CENTER" layoutX="212.0" layoutY="244.0" text="Part Master" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="280.0" layoutY="244.0" text="Orders" textFill="#eda678">
+      <Label fx:id="lbl_orders" alignment="CENTER" layoutX="329.0" layoutY="244.0" text="Orders" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_manifests" layoutX="364.0" layoutY="244.0" text="Manifests" textFill="#646464">
-         <font>
-            <Font name="Quicksand Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbl_reports" layoutX="481.0" layoutY="244.0" text="Reports" textFill="#646464">
+      <Label fx:id="lbl_reports" layoutX="419.0" layoutY="244.0" text="Reports" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>

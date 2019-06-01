@@ -28,10 +28,12 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Handles all Actions for The Users Menu (Add, Update, Delete)
+ */
 public class UsersMenuController implements Initializable {
     @FXML
     private ImageView btn_addUser;
-
 
     @FXML
     private JFXTextField txt_username;
@@ -74,6 +76,11 @@ public class UsersMenuController implements Initializable {
     private DBManager dbm = new DBManager();
 
 
+    /**
+     * Initialises UsersMenu.fxml
+     * @param location
+     * @param resources
+     */
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,6 +109,9 @@ public class UsersMenuController implements Initializable {
         }
     }
 
+    /**
+     * Clears fields to add new user
+     */
     @FXML
     private void on_addUserClick() {
         txt_username.setDisable(false);
@@ -114,6 +124,9 @@ public class UsersMenuController implements Initializable {
 
     }
 
+    /**
+     * Initalises the Table & Text Fields
+     */
     @FXML
     private void initData() {
         DBManager dbm = new DBManager();
@@ -137,6 +150,9 @@ public class UsersMenuController implements Initializable {
         rdo_admin.setSelected(false);
     }
 
+    /**
+     * Saves the new or updated users to DB Users Table
+     */
     @FXML
     private void on_saveClick()
     {
@@ -151,9 +167,10 @@ public class UsersMenuController implements Initializable {
         Window window = btn_addUser.getScene().getWindow();
 
         //field validation
-        if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() || passwordC.isEmpty())
+        if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() ||
+                passwordC.isEmpty() || !isString(txt_firstName) || isString(txt_lastName))
         {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing information", "Please complete all " +
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid information", "Please check all " +
                     "fields");
             return;
         }
@@ -226,6 +243,9 @@ public class UsersMenuController implements Initializable {
         initData();
     }
 
+    /**
+     * Undoes changes to textfields
+     */
     @FXML
     private void on_undoClick()
     {
@@ -247,6 +267,9 @@ public class UsersMenuController implements Initializable {
         }
     }
 
+    /**
+     * Deletes User from DB Users Table
+     */
     @FXML
     private void on_deleteClick()
     {
@@ -284,6 +307,9 @@ public class UsersMenuController implements Initializable {
 
     }
 
+    /**
+     * Returns to LandingPage.fxml
+     */
     @FXML
     private void on_homeClick()
     {
@@ -304,10 +330,30 @@ public class UsersMenuController implements Initializable {
         }
     }
 
+    /**
+     * Closes UsersMenu.fxml
+     */
     @FXML
     private void closeUsersMenu()
     {
         Stage stage = (Stage)btn_delete.getScene().getWindow();
         stage.close();
+    }
+
+    /**
+     * Checks the field is not a number
+     * @param input textfield to be checked
+     * @return boolean success value
+     */
+    private boolean isString(JFXTextField input)
+    {
+        try{
+            Integer.parseInt(input.getText());
+            return false;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return true;
+        }
     }
 }

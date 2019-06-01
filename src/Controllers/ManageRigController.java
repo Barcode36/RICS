@@ -20,6 +20,9 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles Actions for Adding & Updating Rig Files
+ */
 public class ManageRigController implements Initializable
 {
     @FXML
@@ -43,6 +46,11 @@ public class ManageRigController implements Initializable
     @FXML
     private TableColumn col_rigName;
 
+    /**
+     * Initialises the rigs table on ManageRig.fxml
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -77,6 +85,10 @@ public class ManageRigController implements Initializable
 
     }
 
+
+    /**
+     * Adds new Rig to DB Rigs Table or Updates Rig if RigNo is already registered
+     */
     @FXML
     private void on_saveClick()
     {
@@ -89,10 +101,11 @@ public class ManageRigController implements Initializable
         String clientName = txt_clientName.getText();
         String wellName = txt_wellName.getText();
 
-        if(rigName.isEmpty() || clientName.isEmpty() || wellName.isEmpty() || txt_rigNo.getText().equals(""))
+        if(rigName.isEmpty() || clientName.isEmpty() || wellName.isEmpty() || txt_rigNo.getText().isEmpty() ||
+                !isString(txt_clientName)|| !isString(txt_rigName) || !isString(txt_wellName))
         {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing information", "Please complete all " +
-                    "fields");
+            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Inavlid information", "Please check your  " +
+                    "inputs.");
             return;
         }
         else if(Rig.containsRig(rigsOBS, rigNo))
@@ -133,9 +146,9 @@ public class ManageRigController implements Initializable
             }
     }
 
-
-
-
+    /**
+     * Clears the text fields for addign a new record
+     */
     @FXML
     private void on_addClick()
     {
@@ -145,6 +158,9 @@ public class ManageRigController implements Initializable
         txt_wellName.setText("");
     }
 
+    /**
+     * Closes  ManageRig.fxml
+     */
     @FXML
     private void closeAddRig()
     {
@@ -152,6 +168,9 @@ public class ManageRigController implements Initializable
         stage.close();
     }
 
+    /**
+     * Refreshes the Rigs Table after change
+     */
     @FXML
     private void refresh() {
         DBManager dbm = new DBManager();
@@ -166,6 +185,23 @@ public class ManageRigController implements Initializable
         txt_rigName.setText("");
         txt_clientName.setText("");
         txt_wellName.setText("");
+    }
+
+    /**
+     * Checks the field is not a number
+     * @param input textfield to be checked
+     * @return boolean success value
+     */
+    private boolean isString(JFXTextField input)
+    {
+        try{
+            Integer.parseInt(input.getText());
+           return false;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+           return true;
+        }
     }
 
 }
