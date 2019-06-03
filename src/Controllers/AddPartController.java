@@ -78,12 +78,10 @@ public class AddPartController implements Initializable {
      * On clicking save adds new Part to DB using user inputs
      */
     @FXML
-    private void on_saveClick()
-    {
+    private void on_saveClick() {
         Window window = btn_cancel.getScene().getWindow();
 
-        try
-        {
+        try {
 
             DBManager dbm = new DBManager();
 
@@ -104,14 +102,12 @@ public class AddPartController implements Initializable {
             Location location = combo_location.getSelectionModel().getSelectedItem();
             String locationId = location.getLocationId();
 
-            if((vendorPN.isEmpty() || partNoun.isEmpty() || description.isEmpty()) ||
+            if ((vendorPN.isEmpty() || partNoun.isEmpty() || description.isEmpty()) ||
                     combo_location.getSelectionModel().isEmpty() || combo_vendor.getSelectionModel().isEmpty() ||
-                    combo_location.getSelectionModel().isEmpty())
-            {
+                    combo_location.getSelectionModel().isEmpty()) {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                         "Please complete all fields.");
-            } else if (!isInt(txt_max) || !isInt(txt_min) || !isDub(txt_cost))
-            {
+            } else if (!isInt(txt_max) || !isInt(txt_min) || !isDub(txt_cost)) {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                         "Min and Max should be a whole number using characters 0-9. Cost Should be A Decimal Number " +
                                 "such as '200.98'. ");
@@ -137,8 +133,7 @@ public class AddPartController implements Initializable {
                 partsStage.show();
                 closeAddPart();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                     "Please complete all fields correctly.");
             e.printStackTrace();
@@ -148,39 +143,36 @@ public class AddPartController implements Initializable {
 
     /**
      * Input validation for numeric fields
+     *
      * @param num - textfield being validated
      * @return boolean success value
      */
-    private boolean isInt(JFXTextField num)
-    {
-        try
-        {
+    private boolean isInt(JFXTextField num) {
+        try {
             Integer.parseInt(num.getText());
             return true;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
 
     /**
      * Input validation for cost field
+     *
      * @param num textfield being validated
      * @return boolean success value
      */
-    private boolean isDub(JFXTextField num)
-    {
-        try
-        {
+    private boolean isDub(JFXTextField num) {
+        try {
             Double.parseDouble(num.getText());
             return true;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
+
     /**
      * Closes AddPart.fxml
      */

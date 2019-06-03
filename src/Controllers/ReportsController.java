@@ -29,8 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class ReportsController implements Initializable
-{
+public class ReportsController implements Initializable {
     @FXML
     private JFXButton btn_generate;
 
@@ -38,7 +37,7 @@ public class ReportsController implements Initializable
     private ImageView btn_close;
 
     @FXML
-    private JFXComboBox  combo_account;
+    private JFXComboBox combo_account;
 
     @FXML
     private JFXRadioButton rdo_acc;
@@ -267,12 +266,12 @@ public class ReportsController implements Initializable
 
     /**
      * Initialises the Inventory Accounts comboBox
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<InventoryAccount> accounts = dbm.loadInventoryAccounts();
         combo_account.setItems(accounts);

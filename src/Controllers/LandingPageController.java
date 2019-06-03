@@ -25,30 +25,24 @@ import java.util.ResourceBundle;
 /**
  * Handles Navigation Actions from Main Menu
  */
-public class LandingPageController implements Initializable
-{
+public class LandingPageController implements Initializable {
 
 
+    public static AnchorPane rootP;
     @FXML
     private ImageView btn_users, btn_location, btn_accounts, btn_rig, btn_reports, btn_vendors;
-
-
     @FXML
     private Label lbl_username, lbl_users, lbl_location, lbl_accounts, lbl_rig, lbl_reports, lbl_vendor;
     @FXML
     private AnchorPane root;
 
-
-    public static AnchorPane rootP;
-
-
     /**
      * Initialises LandingPage.fxml
+     *
      * @param url
      * @param rb
      */
-    public void initialize (URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         rootP = root;
 
        /* if(!Main.isSplashLoaded)
@@ -65,11 +59,9 @@ public class LandingPageController implements Initializable
      */
 
     @FXML
-    private void loadSplashScreen()
-    {
+    private void loadSplashScreen() {
         Main.isSplashLoaded = true;
-        try
-        {
+        try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource("../Views/Splash.fxml"));
             root.getChildren().setAll(pane);
 
@@ -85,42 +77,36 @@ public class LandingPageController implements Initializable
 
             fadeIn.play();
 
-            fadeIn.setOnFinished((e)->
+            fadeIn.setOnFinished((e) ->
             {
                 fadeOut.play();
             });
 
-            fadeOut.setOnFinished((e)->
+            fadeOut.setOnFinished((e) ->
             {
-                try
-                {
+                try {
                     AnchorPane parentContent = FXMLLoader.load(getClass().getResource(("../Views/LandingPage.fxml")));
 
                     root.getChildren().setAll(parentContent);
-                }
-                catch(Exception ex)
-                {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             });
 
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Navigates to UsersMenu.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_usersClick()
-    {
-        try
-        {
+    private void on_usersClick() {
+        try {
             Stage usersStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../Views/UsersMenu.fxml"));
             Scene scene = new Scene(root);
@@ -129,19 +115,18 @@ public class LandingPageController implements Initializable
             usersStage.initStyle(StageStyle.TRANSPARENT);
             usersStage.show();
             closeLandingPage();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Navigates to PartMaster.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_partsClick()
-    {
+    private void on_partsClick() {
 
         try
         {
@@ -153,21 +138,19 @@ public class LandingPageController implements Initializable
             partsStage.initStyle(StageStyle.TRANSPARENT);
             partsStage.show();
             closeLandingPage();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Navigates to OrdersMenu.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_ordersClick()
-    {
-        try
-        {
+    private void on_ordersClick() {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
             Stage ordersStage = new Stage();
             ordersStage.setTitle("RICS 1.0 Orders Menu");
@@ -181,8 +164,7 @@ public class LandingPageController implements Initializable
             controller.initData(o);
             ordersStage.show();
             closeLandingPage();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -191,11 +173,11 @@ public class LandingPageController implements Initializable
 
     /**
      * Navigates to ReportsMenu.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_reportsClick()
-    {
+    private void on_reportsClick() {
         try {
             Stage reportsStage = new Stage();
             Parent root4 = FXMLLoader.load(getClass().getResource("../Views/ReportsMenu.fxml"));
@@ -205,19 +187,18 @@ public class LandingPageController implements Initializable
             reportsStage.initStyle(StageStyle.TRANSPARENT);
             reportsStage.show();
             closeLandingPage();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Navigates to AddLocation.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_locationClick() throws IOException
-    {
+    private void on_locationClick() throws IOException {
         Stage locationStage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../Views/AddLocation.fxml"));
         Scene scene = new Scene(root);
@@ -229,11 +210,11 @@ public class LandingPageController implements Initializable
 
     /**
      * Navigates to ManageRig.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_rigClick() throws IOException
-    {
+    private void on_rigClick() throws IOException {
         Stage rigStage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../Views/ManageRig.fxml"));
         Scene scene = new Scene(root);
@@ -245,11 +226,11 @@ public class LandingPageController implements Initializable
 
     /**
      * Navigates to ManageVendors.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_vendorClick() throws IOException
-    {
+    private void on_vendorClick() throws IOException {
         Stage vendorStage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../Views/ManageVendors.fxml"));
         Scene scene = new Scene(root);
@@ -261,11 +242,11 @@ public class LandingPageController implements Initializable
 
     /**
      * Navigate to InventoryAccounts.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_accountClick() throws IOException
-    {
+    private void on_accountClick() throws IOException {
         Stage accountStage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../Views/InventoryAccounts.fxml"));
         Scene scene = new Scene(root);
@@ -278,23 +259,21 @@ public class LandingPageController implements Initializable
     /**
      * Closes Application
      */
-    public void closeLandingPage()
-    {
-        Stage stage = (Stage)btn_users.getScene().getWindow();
+    public void closeLandingPage() {
+        Stage stage = (Stage) btn_users.getScene().getWindow();
         stage.close();
     }
 
     /**
      * Initalises Labels &  Buttons on LandingPage.fxml
+     *
      * @param user Logged in user
      */
-    public void initData(User user)
-    {
+    public void initData(User user) {
         lbl_username.setText("Welcome " + user.getFirstName());
 
         Main.user = user;
-        if(!Main.user.getAdminUser())
-        {
+        if (!Main.user.getAdminUser()) {
             lbl_username.setText("Basic users can use RICS to browse parts and orders. \n Only admin users have " +
                     "access to full functionality. ");
             btn_users.setVisible(false);
@@ -312,8 +291,6 @@ public class LandingPageController implements Initializable
             lbl_vendor.setVisible(false);
         }
     }
-
-
 
 
 }

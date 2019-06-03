@@ -18,8 +18,7 @@ import java.io.IOException;
 /**
  * Controls Actions for Receiving OrderLines
  */
-public class ReceiveOrderLineController
-{
+public class ReceiveOrderLineController {
     @FXML
     private Label lbl_orderNo;
 
@@ -49,34 +48,31 @@ public class ReceiveOrderLineController
 
     /**
      * Sets the Labels with orderLine info
+     *
      * @param orderNumber
      * @param orderLineId
      */
     @FXML
-    public void setLabels(String orderNumber, int orderLineId)
-    {
-        try
-        {
+    public void setLabels(String orderNumber, int orderLineId) {
+        try {
             OrderLine ol = OrderLine.returnOrderLine(orderLineId, orderNumber);
             lbl_orderNo.setText(orderNumber);
             lbl_orderLineId.setText(String.valueOf(orderLineId));
             lbl_partNumber.setText(ol.getPart().getPartNumber());
             lbl_noun.setText(ol.getPart().getPartNoun());
             lbl_qty.setText(String.valueOf(ol.getQuantity()));
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Returns to OrdersMenu.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_cancelClick() throws IOException
-    {
+    private void on_cancelClick() throws IOException {
         Order o = Order.returnOrder(lbl_orderNo.getText());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
@@ -94,8 +90,7 @@ public class ReceiveOrderLineController
      * Updates the Received Quantity on the orderLine given the number is valid
      */
     @FXML
-    private void on_recClick()
-    {
+    private void on_recClick() {
         Window window = btn_cancel.getScene().getWindow();
         try {
 
@@ -105,34 +100,29 @@ public class ReceiveOrderLineController
             Part p = Part.returnPart(ol.getPart().getPartNumber());
 
             int rec = Integer.parseInt(txt_recQty.getText()) - ol.getReceivedQty();
-            if(Integer.parseInt(txt_recQty.getText()) <= ol.getQuantity() && Integer.parseInt(txt_recQty.getText()) > ol.getReceivedQty())
-            {
-                if(Integer.parseInt(txt_recQty.getText()) == ol.getQuantity())
-                {
+            if (Integer.parseInt(txt_recQty.getText()) <= ol.getQuantity() && Integer.parseInt(txt_recQty.getText()) > ol.getReceivedQty()) {
+                if (Integer.parseInt(txt_recQty.getText()) == ol.getQuantity()) {
                     ol.setStatus('C');
                 }
 
                 ol.setManifestId(txt_manifest.getText());
                 ol.setReceivedQty(Integer.parseInt(txt_recQty.getText()));
                 dbm.updateOrderLine(ol, lbl_orderNo.getText());
-                dbm.saveTransaction(p,'R', rec, ol.getManifestId());
-                dbm.updateStockLevel(p.getOnHand()+rec, p.getPartNumber());
+                dbm.saveTransaction(p, 'R', rec, ol.getManifestId());
+                dbm.updateStockLevel(p.getOnHand() + rec, p.getPartNumber());
                 p.setOnOrder(p.getOnOrder() - rec);
                 dbm.updatePart(p);
 
 
                 on_cancelClick();
-            }
-            else
-            {
+            } else {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Receipt Error", "You have selected " +
-                         "an invalid quantity");
+                        "an invalid quantity");
                 return;
             }
 
 
-            if(orderClosed())
-            {
+            if (orderClosed()) {
                 o.setOrderStatus('C');
                 dbm.updateOrder(o);
             }
@@ -140,8 +130,7 @@ public class ReceiveOrderLineController
 
             return;
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Receipt Error", "You have selected " +
                     "an invalid quantity");
@@ -154,10 +143,10 @@ public class ReceiveOrderLineController
 
     /**
      * Checks if the order is Closed
+     *
      * @return boolean success value
      */
-    private boolean orderClosed()
-    {
+    private boolean orderClosed() {
         DBManager dbm = new DBManager();
         ObservableList<OrderLine> orderLines = dbm.loadOrderLines(lbl_orderNo.getText());
         for (OrderLine orderLine : orderLines) {
@@ -172,9 +161,8 @@ public class ReceiveOrderLineController
      * Closes the Receive OrderLine Dialog
      */
     @FXML
-    private void closeRecOrderLine()
-    {
-        Stage stage = (Stage)btn_receive.getScene().getWindow();
+    private void closeRecOrderLine() {
+        Stage stage = (Stage) btn_receive.getScene().getWindow();
         stage.close();
     }
 }

@@ -78,6 +78,7 @@ public class UsersMenuController implements Initializable {
 
     /**
      * Initialises UsersMenu.fxml
+     *
      * @param location
      * @param resources
      */
@@ -155,8 +156,7 @@ public class UsersMenuController implements Initializable {
      * Saves the new or updated users to DB Users Table
      */
     @FXML
-    private void on_saveClick()
-    {
+    private void on_saveClick() {
         ObservableList<User> usersOBS = dbm.loadUsers();
         String username = txt_username.getText();
         String firstName = txt_firstName.getText();
@@ -169,31 +169,20 @@ public class UsersMenuController implements Initializable {
 
         //field validation
         if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() ||
-                passwordC.isEmpty() || !isString(txt_firstName) || !isString(txt_lastName))
-        {
+                passwordC.isEmpty() || !isString(txt_firstName) || !isString(txt_lastName)) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid information", "Please check all " +
                     "fields");
             return;
-        }
-        else if (!password.equals(passwordC))
-        {
+        } else if (!password.equals(passwordC)) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Passwords", "Passwords do not match");
-        }
-        else if (User.containsUser(usersOBS, username))
-        {
-            if (userAlertCounter == 0)
-            {
+        } else if (User.containsUser(usersOBS, username)) {
+            if (userAlertCounter == 0) {
                 AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Username already exists", "To update " +
                         "details click OK & save, " + " to cancel click OK & undo.");
                 userAlertCounter++;
                 return;
-            }
-
-
-            else if (userAlertCounter == 1)
-            {
-                try
-                {
+            } else if (userAlertCounter == 1) {
+                try {
                     int rigNo = Integer.parseInt(rig);
                     User u = new User(username, password, firstName, lastName, rigNo, admin);
 
@@ -203,16 +192,12 @@ public class UsersMenuController implements Initializable {
                             "successfully updated account details");
                     return;
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
-        }
-        else if(!User.containsUser(usersOBS, username))
-        {
+        } else if (!User.containsUser(usersOBS, username)) {
             try {
                 int rigNo = Integer.parseInt(rig);
                 User u = new User(username, password, firstName, lastName, rigNo, admin);
@@ -248,22 +233,18 @@ public class UsersMenuController implements Initializable {
      * Undoes changes to textfields
      */
     @FXML
-    private void on_undoClick()
-    {
-        try
-        {
-           User user =  User.returnUser(txt_username.getText());
-           txt_username.setText(user.getUsername());
-           txt_firstName.setText(user.getFirstName());
-           txt_lastName.setText(user.getLastName());
-           txt_rig.setText(Integer.toString(user.getRig()));
-           rdo_admin.setSelected(user.getAdminUser());
-           txt_password.setText(user.getPassword());
-           txt_passwordConfirm.setText("");
-           userAlertCounter =0;
-        }
-        catch (Exception e)
-        {
+    private void on_undoClick() {
+        try {
+            User user = User.returnUser(txt_username.getText());
+            txt_username.setText(user.getUsername());
+            txt_firstName.setText(user.getFirstName());
+            txt_lastName.setText(user.getLastName());
+            txt_rig.setText(Integer.toString(user.getRig()));
+            rdo_admin.setSelected(user.getAdminUser());
+            txt_password.setText(user.getPassword());
+            txt_passwordConfirm.setText("");
+            userAlertCounter = 0;
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -272,36 +253,28 @@ public class UsersMenuController implements Initializable {
      * Deletes User from DB Users Table
      */
     @FXML
-    private void on_deleteClick()
-    {
+    private void on_deleteClick() {
         Window window = btn_addUser.getScene().getWindow();
 
-        if(userAlertCounter <= 0 && userAlertCounter >-1)
-        {
+        if (userAlertCounter <= 0 && userAlertCounter > -1) {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Delete account?", "to delete " +
                     "user click delete again" + "to cancel click OK undo.");
             return;
         }
-        userAlertCounter --;
+        userAlertCounter--;
 
-        if(userAlertCounter == -2)
-        {
-            try
-            {
+        if (userAlertCounter == -2) {
+            try {
                 ObservableList<User> usersOBS = dbm.loadUsers();
 
-                for(User user : usersOBS)
-                {
-                    if(user.getUsername().equals(txt_username.getText()))
-                    {
+                for (User user : usersOBS) {
+                    if (user.getUsername().equals(txt_username.getText())) {
                         dbm.deleteUser(user);
-                        userAlertCounter =0;
+                        userAlertCounter = 0;
                         initData();
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -312,10 +285,8 @@ public class UsersMenuController implements Initializable {
      * Returns to LandingPage.fxml
      */
     @FXML
-    private void on_homeClick()
-    {
-        try
-        {
+    private void on_homeClick() {
+        try {
             Stage homeStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
             Scene scene = new Scene(root);
@@ -324,9 +295,7 @@ public class UsersMenuController implements Initializable {
             homeStage.initStyle(StageStyle.TRANSPARENT);
             homeStage.show();
             closeUsersMenu();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -335,24 +304,22 @@ public class UsersMenuController implements Initializable {
      * Closes UsersMenu.fxml
      */
     @FXML
-    private void closeUsersMenu()
-    {
-        Stage stage = (Stage)btn_delete.getScene().getWindow();
+    private void closeUsersMenu() {
+        Stage stage = (Stage) btn_delete.getScene().getWindow();
         stage.close();
     }
 
     /**
      * Checks the field is not a number
+     *
      * @param input textfield to be checked
      * @return boolean success value
      */
-    private boolean isString(JFXTextField input)
-    {
-        try{
+    private boolean isString(JFXTextField input) {
+        try {
             Integer.parseInt(input.getText());
             return false;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return true;
         }

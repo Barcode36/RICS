@@ -19,8 +19,7 @@ import java.io.IOException;
 /**
  * Handles Actions for the Issue Stock Dialog
  */
-public class IssuePartController
-{
+public class IssuePartController {
 
     @FXML
     private JFXTextField txt_quantity;
@@ -37,16 +36,13 @@ public class IssuePartController
 
     /**
      * sets the part number label
+     *
      * @param partNo
      */
-    public void setLabel(String partNo)
-    {
-        try
-        {
+    public void setLabel(String partNo) {
+        try {
             lbl_partNo.setText(partNo);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -55,8 +51,7 @@ public class IssuePartController
      * Issues the part from stock, saves the transaction in part history.
      */
     @FXML
-    private void on_issueClick()
-    {
+    private void on_issueClick() {
         int qty = 0;
         String partNo = lbl_partNo.getText();
         Window window = btn_cancel.getScene().getWindow();
@@ -72,8 +67,7 @@ public class IssuePartController
         }
 
 
-        if(isInt(txt_quantity))
-        {
+        if (isInt(txt_quantity)) {
             try {
                 if (part.getOnHand() >= qty && qty > 0) {
                     int newStockLevel = part.getOnHand() - qty;
@@ -113,8 +107,7 @@ public class IssuePartController
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else
-        {
+        } else {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Quantity", "Please enter a quantity " +
                     "using characters 0-9");
         }
@@ -123,29 +116,27 @@ public class IssuePartController
 
     /**
      * Input validation for quantity field
+     *
      * @param txt_qty
      * @return
      */
-    private boolean isInt(JFXTextField txt_qty)
-    {
-        try
-        {
+    private boolean isInt(JFXTextField txt_qty) {
+        try {
             Integer.parseInt(txt_qty.getText());
             return true;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
 
     /**
      * Returns to PartMaster.fxml
+     *
      * @throws IOException
      */
     @FXML
-    private void on_cancelClick() throws IOException
-    {
+    private void on_cancelClick() throws IOException {
 
         Part p = Part.returnPart(lbl_partNo.getText());
         closeIssuePart();
@@ -164,9 +155,8 @@ public class IssuePartController
      * Closes IssuePart.fxml
      */
     @FXML
-    private void closeIssuePart()
-    {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+    private void closeIssuePart() {
+        Stage stage = (Stage) btn_cancel.getScene().getWindow();
         stage.close();
     }
 }

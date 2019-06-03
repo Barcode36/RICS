@@ -14,10 +14,9 @@ import java.util.Date;
 import static java.lang.Class.forName;
 
 /**
- *DBManager Class handles all DB CRUD Actions & User Login
+ * DBManager Class handles all DB CRUD Actions & User Login
  */
-public class DBManager
-{
+public class DBManager {
 
     /**
      * driver string
@@ -32,12 +31,12 @@ public class DBManager
 
     /**
      * Inserts new User 'u' to DB Users Table
+     *
      * @param u - new user to be store
      * @return boolean true is user registration is successful, false if unsuccessful
      */
     public boolean insertUser(User u) {
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -47,25 +46,20 @@ public class DBManager
              */
             int adminUser;
 
-            if (u.getAdminUser().equals(true))
-            {
+            if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
+            } else {
+                adminUser = 0;
             }
-            else
-                {
-                    adminUser = 0;
-                }
 
             /*
              * Insert User u to DB Users Table
-              */
+             */
             stmt.executeUpdate("INSERT INTO Users( username, password, firstName, lastName, rig, adminUser)" +
                     "VALUES ('" + u.getUsername() + "','" + u.getPassword() + "','" + u.getFirstName() + "','" +
                     u.getLastName() + "','" + u.getRig() + "','" + adminUser + "')");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -74,15 +68,14 @@ public class DBManager
 
     /**
      * loads all users from DB Users Table
+     *
      * @return users - an ObservableList of all users loaded from DB
      */
-    public ObservableList<User> loadUsers()
-    {
+    public ObservableList<User> loadUsers() {
         ObservableList<User> users = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -106,23 +99,20 @@ public class DBManager
                 ));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return users;
+        return users;
 
     }
 
     /**
      * Updates User 'u' in DB Users Table
+     *
      * @param u - User to be updated
      */
-    public void updateUser(User u)
-    {
-        try
-        {
+    public void updateUser(User u) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -131,14 +121,11 @@ public class DBManager
              * storing value as int to correct issue reading 'true' value from DB
              */
             int adminUser;
-            if (u.getAdminUser().equals(true))
-            {
+            if (u.getAdminUser().equals(true)) {
                 adminUser = 1;
+            } else {
+                adminUser = 0;
             }
-            else
-                {
-                    adminUser =0;
-                }
 
             /*
              * Update Users Table, update Part where 'partNumber' = p.partNumber
@@ -148,21 +135,18 @@ public class DBManager
                     "', adminUser = '" + adminUser + "'WHERE username = '" + u.getUsername() + "'");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Deletes User 'u' from DB Users Table
+     *
      * @param u - User to be deleted
      */
-    public void deleteUser(User u)
-    {
-        try
-        {
+    public void deleteUser(User u) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -172,30 +156,26 @@ public class DBManager
              */
             stmt.executeUpdate("DELETE FROM Users WHERE username ='" + u.getUsername() + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Handles User Login. Validates Users login info matches a record in DB Users Table
+     *
      * @param username - users supplied username to be checked
      * @param password - users supplied password   to be checked
      * @return User - if 'username' & 'password' match record in DB Users Table. else returns null.
      */
-    public User login(String username, String password)
-    {
+    public User login(String username, String password) {
         ObservableList<User> usersOBS = loadUsers();
 
         /*
          * Loops through each 'user' in 'usersOBS' and checks if user supplied information matches a record
          */
-        for (User user : usersOBS)
-        {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password))
-            {
+        for (User user : usersOBS) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
             }
         }
@@ -203,15 +183,13 @@ public class DBManager
     }
 
 
-
     /**
      * Insert new Part 'p' to DB Parts Table
+     *
      * @param p - Part to be inserted to DB
      */
-    public void createPart(Part p)
-    {
-        try
-        {
+    public void createPart(Part p) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -227,24 +205,21 @@ public class DBManager
                     "','" + p.getOnOrder() + "','" + p.getLastOrder() + "','" + p.getUnitOfMeasure() + "','" + p.getFlagged() + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Load all Parts from DB Parts Table
+     *
      * @return parts - ObservableList of all parts in DB, else returns null.
      */
-    public ObservableList<Part> loadParts()
-    {
+    public ObservableList<Part> loadParts() {
         ObservableList<Part> parts = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -277,22 +252,19 @@ public class DBManager
                 ));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return parts;
+        return parts;
     }
 
     /**
      * Update Part 'p' in DB Parts Table
+     *
      * @param p - Part to be updated in DB
      */
-    public void updatePart(Part p)
-    {
-        try
-        {
+    public void updatePart(Part p) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -307,21 +279,18 @@ public class DBManager
                     "', flagged = '" + p.getFlagged() + "'WHERE partNumber =" + " '" + p.getPartNumber() + "'");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Delete Part 'p' from DB Parts Table
+     *
      * @param p - Part to be deleted from DB
      */
-    public void deletePart(Part p)
-    {
-        try
-        {
+    public void deletePart(Part p) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -331,9 +300,7 @@ public class DBManager
              */
             stmt.executeUpdate("DELETE FROM Parts WHERE partNumber ='" + p.getPartNumber() + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -342,15 +309,14 @@ public class DBManager
     /**
      * Generates Unique partNumber for new Parts
      * Creates a partNumber using the parts Inventory Account as a prefix, suffixes are generated sequentially
+     *
      * @param part - new Part which needs partNumber
      * @return partNumber - String value, PK which uniquely identifies new part in DB
      */
-    public String generateUniquePartNo(Part part)
-    {
+    public String generateUniquePartNo(Part part) {
         int PXparts = 0;
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -358,12 +324,10 @@ public class DBManager
             /*
              * Select Count of Parts in DB Parts Table where 'accountCode' = part.accountCode AS 'parts'
              */
-            ResultSet partsList = stmt.executeQuery("SELECT COUNT (*) AS parts FROM Parts WHERE accountCode = '" + part.getAccountCode() +"'");
+            ResultSet partsList = stmt.executeQuery("SELECT COUNT (*) AS parts FROM Parts WHERE accountCode = '" + part.getAccountCode() + "'");
             PXparts = partsList.getInt("parts");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -376,8 +340,7 @@ public class DBManager
         String newPart = String.valueOf(PXparts);
         StringBuilder sb = new StringBuilder();
 
-        while (sb.length() + newPart.length() < 5)
-        {
+        while (sb.length() + newPart.length() < 5) {
             sb.append('0');
         }
 
@@ -397,16 +360,15 @@ public class DBManager
 
     /**
      * Performs basic search the DB Parts Table for entries with properties which are LIKE 'criteria'
+     *
      * @param criteria - the users search criteria
      * @return parts - ObservableList of Parts which has properties LIKE 'criteria'
      */
-    public ObservableList<Part> basicSearchParts(String criteria)
-    {
+    public ObservableList<Part> basicSearchParts(String criteria) {
         ObservableList<Part> parts = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -416,7 +378,7 @@ public class DBManager
              * order by partNumber asc
              */
             ResultSet partList = stmt.executeQuery("SELECT * FROM Parts WHERE partNumber || partNoun || vendorPartNumber || " +
-                            "location || description LIKE" + "'%" + criteria + "%' ORDER BY partNumber");
+                    "location || description LIKE" + "'%" + criteria + "%' ORDER BY partNumber");
 
 
             /*
@@ -442,9 +404,7 @@ public class DBManager
                 ));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return parts;
@@ -452,13 +412,12 @@ public class DBManager
 
     /**
      * Updates onHand for Part with 'partNo' in DB Parts Table on issue or receipt of Part
+     *
      * @param newStockLevel - the new stock level to be stored
-     * @param partNo - the partNumber of the Part which requires updating
+     * @param partNo        - the partNumber of the Part which requires updating
      */
-    public void updateStockLevel(int newStockLevel, String partNo)
-    {
-        try
-        {
+    public void updateStockLevel(int newStockLevel, String partNo) {
+        try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -470,21 +429,18 @@ public class DBManager
                     "'");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Insert new InventoryAccount 'account' to DB InventoryAccounts Table
+     *
      * @param account - InventoryAccount to be inserted to DB
      */
-    public void createInventoryAccount(InventoryAccount account)
-    {
-        try
-        {
+    public void createInventoryAccount(InventoryAccount account) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -493,26 +449,23 @@ public class DBManager
              * Insert InventoryAccount 'account' into DB InventoryAccounts Table
              */
             stmt.executeUpdate("INSERT INTO InventoryAccounts VALUES ('" + account.getAccountCode() + "','" +
-                    account.getAccountName()  + "')");
+                    account.getAccountName() + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all Inventory Accounts from DB InventoryAccounts Table
+     *
      * @return accounts - ObservableList of all InventoryAccounts loaded from DB
      */
-    public ObservableList<InventoryAccount> loadInventoryAccounts()
-    {
+    public ObservableList<InventoryAccount> loadInventoryAccounts() {
         ObservableList<InventoryAccount> accounts = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -542,12 +495,11 @@ public class DBManager
 
     /**
      * Update InventoryAccount 'account' in InventoryAccounts Table
+     *
      * @param account
      */
-    public void updateInventoryAccount(InventoryAccount account)
-    {
-        try
-        {
+    public void updateInventoryAccount(InventoryAccount account) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -558,21 +510,18 @@ public class DBManager
             stmt.executeUpdate("UPDATE InventoryAccounts SET accountCode = '" + account.getAccountCode() + "', " +
                     "accountName" + " = '" + account.getAccountName() + "'WHERE accountCode =" + " '" + account.getAccountCode() + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Inserts new Vendor 'vendor' to DB Vendors Table
+     *
      * @param vendor - new Vendor to be added to DB
      */
-    public void createVendor(Vendor vendor)
-    {
-        try
-        {
+    public void createVendor(Vendor vendor) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -583,23 +532,20 @@ public class DBManager
             stmt.executeUpdate("INSERT INTO Vendors VALUES ('" + vendor.getVendorId() + "','" +
                     vendor.getVendorName() + "','" + vendor.getPhoneNumber() + "','" + vendor.getShippingAddress() + "')");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all Vendors from DB Vendors Table
+     *
      * @return vendors = ObservableList of all Vendors loaded from DB
      */
-    public ObservableList<Vendor> loadVendors()
-    {
+    public ObservableList<Vendor> loadVendors() {
         ObservableList<Vendor> vendors = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -622,22 +568,19 @@ public class DBManager
             }
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return vendors;
+        return vendors;
     }
 
     /**
      * Update Vendor 'vendor' in DB Vendors Table
+     *
      * @param vendor - Vendor to be updated in DB
      */
-    public void updateVendor(Vendor vendor)
-    {
-        try
-        {
+    public void updateVendor(Vendor vendor) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -650,23 +593,20 @@ public class DBManager
                     "'WHERE " + "rigNo =" + " '" + vendor.getVendorId() + "'");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all Locations from DB Locations Table
+     *
      * @return locations - ObservableList of all Locations loaded from DB
      */
-    public ObservableList<Location> loadLocations()
-    {
+    public ObservableList<Location> loadLocations() {
         ObservableList<Location> locations = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -679,31 +619,27 @@ public class DBManager
             /*
              * Build Location from each entry in 'locationList' and add to 'locations'
              */
-            while (locationList.next())
-            {
+            while (locationList.next()) {
                 locations.add(new Location(
                         locationList.getString("locationId")
                 ));
             }
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return locations;
+        return locations;
     }
 
 
     /**
      * Inserts new Location 'loc' to DB Locations Table
+     *
      * @param loc
      */
-    public void addLocation(Location loc)
-    {
-        try
-        {
+    public void addLocation(Location loc) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -713,9 +649,7 @@ public class DBManager
              */
             stmt.executeUpdate("INSERT INTO Locations VALUES ('" + loc.getLocationId() + "')");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -723,12 +657,11 @@ public class DBManager
 
     /**
      * Inserts new Rig 'rig' to DB Rigs Table
+     *
      * @param rig - new Rig to be added to DB
      */
-    public void createRig(Rig rig)
-    {
-        try
-        {
+    public void createRig(Rig rig) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -739,23 +672,20 @@ public class DBManager
             stmt.executeUpdate("INSERT INTO Rigs VALUES ('" + rig.getRigNo() + "','" +
                     rig.getRigName() + "','" + rig.getClientName() + "','" + rig.getWellName() + "')");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all Rigs from DB Rigs Table
+     *
      * @return rigs - ObservableList of all Rigs loaded from DB
      */
-    public ObservableList<Rig> loadRigs()
-    {
+    public ObservableList<Rig> loadRigs() {
         ObservableList<Rig> rigs = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -768,15 +698,12 @@ public class DBManager
             /*
              * Build Rig for each entry in 'rigList' and add to 'rigs'
              */
-            while (rigList.next())
-            {
+            while (rigList.next()) {
                 rigs.add(new Rig(rigList.getInt("rigNo"), rigList.getString("rigName"),
                         rigList.getString("clientName"), rigList.getString("wellName")));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rigs;
@@ -785,12 +712,11 @@ public class DBManager
 
     /**
      * Update Rig 'rig' in DB Rigs Table
+     *
      * @param rig - Rig to be updated in DB
      */
-    public void updateRig(Rig rig)
-    {
-        try
-        {
+    public void updateRig(Rig rig) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -802,9 +728,7 @@ public class DBManager
                     "', clientName = '" + rig.getClientName() + "', wellName = '" + rig.getWellName() + "'WHERE rigNo =" +
                     " '" + rig.getRigNo() + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -812,46 +736,42 @@ public class DBManager
 
     /**
      * Inserts new Transaction to DB PartHistory Table when Ordering, Issuing or Receiving a Part
-     * @param p - Part the transaction belongs to
-     * @param type - whether it was an Issue, Receipt, or Ordering of goods
-     * @param quantity - the quantity of the part
+     *
+     * @param p         - Part the transaction belongs to
+     * @param type      - whether it was an Issue, Receipt, or Ordering of goods
+     * @param quantity  - the quantity of the part
      * @param reference - Personnel who requested, got Issued to OR Manifest ID if receipt of goods
      */
-    public void saveTransaction(Part p, char type, int quantity, String reference)
-    {
+    public void saveTransaction(Part p, char type, int quantity, String reference) {
         LocalDateTime now = LocalDateTime.now();
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
 
-            double totalVal = quantity*p.getUnitCost();
+            double totalVal = quantity * p.getUnitCost();
 
             /*
              * INSERT Transaction to DB PartHistory Table
              */
             stmt.executeUpdate("INSERT INTO partHistory( transType, transDate, partNo, quantity, " +
                     "reference, price, totalVal)" + "VALUES ('" + type + "','" + now + "','" + p.getPartNumber() +
-                    "','" + quantity + "','" + reference + "', '" + p.getUnitCost() + "', '"+ totalVal + "')");
-        }
-        catch (Exception e)
-        {
+                    "','" + quantity + "','" + reference + "', '" + p.getUnitCost() + "', '" + totalVal + "')");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all transactions for Part 'p' from DB PartHistory Table
+     *
      * @param p - Part which we want the list of transactions for;
      * @return transactions - ObservableList of all Transactions from DB PartHistory Table where partNo = p.partNumber
      */
-    public ObservableList<Transaction> loadTransactions(Part p)
-    {
+    public ObservableList<Transaction> loadTransactions(Part p) {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -866,8 +786,7 @@ public class DBManager
             /*
              * Build Transaction for each entry in 'transactionList' and add to 'transactions'
              */
-            while (transactionList.next())
-            {
+            while (transactionList.next()) {
                 transactions.add(new Transaction(
                         transactionList.getString("transType").charAt(0),
                         transactionList.getString("transDate"),
@@ -880,24 +799,22 @@ public class DBManager
             }
 
             conn.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return transactions;
+        return transactions;
     }
 
 
     /**
      * Generates unique orderNumber for new Orders
+     *
      * @returns orderNumber - String value, PK which uniquely identifies new Order in DB
      */
-    public String generateUniqueOrderNo()
-    {
+    public String generateUniqueOrderNo() {
         int PXorders = 0;
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -912,9 +829,7 @@ public class DBManager
             PXorders = ordersList.getInt("orders");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -944,12 +859,11 @@ public class DBManager
 
     /**
      * Insert new Order 'o' to DB Orders Table
+     *
      * @param o - new Order to be added to DB
      */
-    public void addOrder(Order o)
-    {
-        try
-        {
+    public void addOrder(Order o) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -963,29 +877,26 @@ public class DBManager
              * Insert new Order 'o' to DB orders Table
              */
             stmt.executeUpdate("INSERT INTO Orders(orderNumber, orderType, shippingMethod, orderDate, header," +
-                    "orderStatus, orderTotal, orderApproved) VALUES ('"+ o.getOrderNumber() + "','" + o.getOrderType() + "','" + o.getShippingMethod() +
+                    "orderStatus, orderTotal, orderApproved) VALUES ('" + o.getOrderNumber() + "','" + o.getOrderType() + "','" + o.getShippingMethod() +
                     "','" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.getDate()) + "','" + o.getHeader() +
                     "','" + o.getOrderStatus() + "','" + o.getOrderTotal() + "'," +
                     "'" + orderApproved + "')");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads all Orders from DB Orders Table
+     *
      * @return orders - ObservableList of all Orders loaded from DB
      */
-    public ObservableList<Order> loadOrders()
-    {
+    public ObservableList<Order> loadOrders() {
         ObservableList<Order> orders = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1002,27 +913,24 @@ public class DBManager
                 Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(orderList.getString("orderDate"));
                 orders.add(new Order(orderList.getString("orderNumber"), orderList.getString("orderType").charAt(0),
                         orderList.getString("shippingMethod"), orderDate, orderList.getString(
-                                "header"), orderList.getString("orderStatus").charAt(0), orderList.getDouble("orderTotal"),
+                        "header"), orderList.getString("orderStatus").charAt(0), orderList.getDouble("orderTotal"),
                         orderList.getBoolean("orderApproved")));
             }
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return orders;
+        return orders;
     }
 
     /**
      * Update Order 'o' in DB Orders Table
+     *
      * @param o - Order to be updated in DB
      */
-    public void updateOrder(Order o)
-    {
-        try
-        {
+    public void updateOrder(Order o) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1032,25 +940,22 @@ public class DBManager
              * UPDATE DB Orders Table, Update Order where orderNumber = o.orderNumber
              */
             stmt.executeUpdate("UPDATE Orders SET orderType = '" + o.getOrderType() + "', shippingMethod = '" + o.getShippingMethod() +
-                    "', header = '" + o.getHeader() + "', orderStatus = '" + o.getOrderStatus() +   "'WHERE orderNumber" +
+                    "', header = '" + o.getHeader() + "', orderStatus = '" + o.getOrderStatus() + "'WHERE orderNumber" +
                     " =" + " '" + o.getOrderNumber() + "'");
 
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * set Order 'order' APPROVED in DB Orders Table & Update associated OrderLines in DB OrderLines Table
+     *
      * @param order - order to be approved in DB
      */
-    public void approveOrder(Order order)
-    {
-        try
-        {
+    public void approveOrder(Order order) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1071,24 +976,21 @@ public class DBManager
             /*
              * Update DB OrderLines Table, set status = 'O' where orderNumber = order.orderNumber
              */
-            stmt.executeUpdate("UPDATE OrderLines SET status = '" + 'O'  + "'WHERE orderNumber =" +
+            stmt.executeUpdate("UPDATE OrderLines SET status = '" + 'O' + "'WHERE orderNumber =" +
                     " '" + order.getOrderNumber() + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     *Set Order 'order' orderStatus to 'X'in DB OrdersTable & Update assoc. OrderLines in DB OrderLines Table
+     * Set Order 'order' orderStatus to 'X'in DB OrdersTable & Update assoc. OrderLines in DB OrderLines Table
+     *
      * @param order - order to be cancelled in DB
      */
-    public void cancelOrder(Order order)
-    {
-        try
-        {
+    public void cancelOrder(Order order) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1104,21 +1006,19 @@ public class DBManager
              */
             stmt.executeUpdate("UPDATE OrderLines SET status =  '" + 'X' + "', lineTotal = '" + 0 + "'WHERE orderNumber =" + " '" + order.getOrderNumber() + "'");
             conn.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * update Order orderTotal in DB Orders Table
+     *
      * @param orderNumber - orderNumber of Order to be updated
-     * @param orderTotal - the new value of orderTotal;
+     * @param orderTotal  - the new value of orderTotal;
      */
-    public void updateOrderTotal(String orderNumber, double orderTotal)
-    {
-        try
-        {
+    public void updateOrderTotal(String orderNumber, double orderTotal) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1126,26 +1026,23 @@ public class DBManager
             /*
              * Update DB Orders Table, set Order orderTotal = 'orderTotal' where orderNumber = 'orderNumber'
              */
-            stmt.executeUpdate("UPDATE Orders SET orderTotal = '" + orderTotal  + "'WHERE orderNumber =" +
-                            " '" + orderNumber + "'");
-        }
-        catch(Exception e)
-        {
+            stmt.executeUpdate("UPDATE Orders SET orderTotal = '" + orderTotal + "'WHERE orderNumber =" +
+                    " '" + orderNumber + "'");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Returns a list of Orders from DB Orders Table which match 'criteria'
+     *
      * @param criteria - user specified search criteria
      * @return orders - ObservableList of Orders that match 'criteria'
      */
-    public ObservableList<Order> searchOrders(String criteria)
-    {
+    public ObservableList<Order> searchOrders(String criteria) {
         ObservableList<Order> orders = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1160,8 +1057,7 @@ public class DBManager
             /*
              * Build Order from each entry in 'orderList' and add to 'orders'
              */
-            while (orderList.next())
-            {
+            while (orderList.next()) {
                 Date orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(orderList.getString("orderDate"));
                 orders.add(new Order(orderList.getString("orderNumber"), orderList.getString("orderType").charAt(0),
                         orderList.getString("shippingMethod"), orderDate, orderList.getString(
@@ -1169,21 +1065,23 @@ public class DBManager
                         orderList.getBoolean("orderApproved")));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return orders;
+        return orders;
     }
 
-    public ObservableList<OrderLine> openOrders(String selection)
-    {
+    /**
+     * Returns a list of Open OrderLines fromDB OrderLines Table which match 'selection'
+     *
+     * @param selection - the inventory accounts we need orders for
+     * @return ObservableList of Open OrderLines that match 'selection'
+     */
+    public ObservableList<OrderLine> openOrders(String selection) {
         ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
 
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1192,20 +1090,17 @@ public class DBManager
             ResultSet openLinesSet = stmt.executeQuery("SELECT * FROM OrderLines WHERE status =" +
                     " '" + open + "' AND part LIKE" + " '" + selection + "%'");
 
-            while(openLinesSet.next())
-            {
+            while (openLinesSet.next()) {
                 String partNumber = openLinesSet.getString("part");
-                    Part part = Part.returnPart(partNumber);
-                    orderLines.add(new OrderLine(openLinesSet.getInt("orderLineId"), openLinesSet.getInt(
-                            "quantity"), part, openLinesSet.getDouble("lineTotal"),
-                            openLinesSet.getString("requestedBy"), openLinesSet.getString("status").charAt(0),
-                            openLinesSet.getInt("receivedQty"), openLinesSet.getString("manifestId"),
-                            openLinesSet.getString("orderNumber")));
+                Part part = Part.returnPart(partNumber);
+                orderLines.add(new OrderLine(openLinesSet.getInt("orderLineId"), openLinesSet.getInt(
+                        "quantity"), part, openLinesSet.getDouble("lineTotal"),
+                        openLinesSet.getString("requestedBy"), openLinesSet.getString("status").charAt(0),
+                        openLinesSet.getInt("receivedQty"), openLinesSet.getString("manifestId"),
+                        openLinesSet.getString("orderNumber")));
             }
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return orderLines;
@@ -1213,22 +1108,20 @@ public class DBManager
 
     /**
      * Generates orderLineId unqiue to that Order
+     *
      * @param orderNumber - orderNumber of Order 'orderLines' belongs to
      * @return orderLineId - orderLineId generated
      */
-    public int generateUniqueOrderLineId(String orderNumber)
-    {
-        int orderLineId =1;
+    public int generateUniqueOrderLineId(String orderNumber) {
+        int orderLineId = 1;
         ObservableList<OrderLine> orderLines = loadOrderLines(orderNumber);
 
 
         /*
          * Loop through 'orderLines' if, 'orderLineId' already exists, increment 'orderLineId'
          */
-        for(OrderLine orderLine : orderLines)
-        {
-            if(orderLine.getOrderLineId()==orderLineId)
-            {
+        for (OrderLine orderLine : orderLines) {
+            if (orderLine.getOrderLineId() == orderLineId) {
                 orderLineId++;
             }
         }
@@ -1237,15 +1130,14 @@ public class DBManager
 
     /**
      * Loads all OrderLines from DB OrderLines Table where orderNumber = 'orderNumber'
+     *
      * @param orderNumber - Order to retrieve orderLines for
      * @return orderLines - ObservableList of orderLines loaded from DB
      */
-    public ObservableList<OrderLine> loadOrderLines(String orderNumber)
-    {
+    public ObservableList<OrderLine> loadOrderLines(String orderNumber) {
         ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1258,34 +1150,29 @@ public class DBManager
             /*
              * Build OrderLine from each entry in 'olList' and add to 'orderLines'
              */
-            while(olList.next())
-            {
+            while (olList.next()) {
                 String partNumber = olList.getString("part");
                 Part part = Part.returnPart(partNumber);
                 orderLines.add(new OrderLine(olList.getInt("orderLineId"), olList.getInt("quantity"), part,
                         olList.getDouble(
-                        "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
+                                "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
                         olList.getInt("receivedQty"), olList.getString("manifestId")));
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
+        } finally {
             return orderLines;
         }
     }
 
     /**
      * Insert new OrderLine 'ol' to DB OrderLines Table
-     * @param ol  - new OrderLine to be added to DB OrderLines Table
+     *
+     * @param ol          - new OrderLine to be added to DB OrderLines Table
      * @param orderNumber - orderNumber of Order that orderLines belong to
      */
-    public void addOrderLine(OrderLine ol, String orderNumber)
-    {
-        try
-        {
+    public void addOrderLine(OrderLine ol, String orderNumber) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1295,26 +1182,24 @@ public class DBManager
              * Insert new OrderLine 'ol' to DB OrderLines Table
              */
             stmt.executeUpdate("INSERT INTO OrderLines(orderLineId, quantity, part, lineTotal, requestedBy," +
-                    "status, receivedQty, manifestId, orderNumber) VALUES " + "('"+ ol.getOrderLineId()+ "','" + ol.getQuantity() +
+                    "status, receivedQty, manifestId, orderNumber) VALUES " + "('" + ol.getOrderLineId() + "','" + ol.getQuantity() +
                     "','" + ol.getPart() + "','" + ol.getLineTotal() + "','" + ol.getRequestedBy() + "','" + ol.getStatus() +
-                    "','" + ol.getReceivedQty() +"','" + ol.getManifestId() + "'," + "'" + orderNumber + "')");
+                    "','" + ol.getReceivedQty() + "','" + ol.getManifestId() + "'," + "'" + orderNumber + "')");
 
             conn.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Update OrderLine 'orderLine' in DB OrderLines Table
-     * @param orderLine - OrderLine to be updated
+     *
+     * @param orderLine   - OrderLine to be updated
      * @param orderNumber - orderNumber of Order that 'orderLine' belongs to
      */
-    public void updateOrderLine(OrderLine orderLine, String orderNumber)
-    {
-        try
-        {
+    public void updateOrderLine(OrderLine orderLine, String orderNumber) {
+        try {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
@@ -1322,26 +1207,23 @@ public class DBManager
 
             //Update DB OrderLines Table, update OrderLine where orderLineId = orderLine.orderLineId && orderNumber ='orderNumber'
             stmt.executeUpdate("UPDATE OrderLines SET status = '" + orderLine.getStatus() + "', manifestId = '" +
-                    orderLine.getManifestId() + "', receivedQty = '" + orderLine.getReceivedQty() +  "'WHERE orderLineId =" +
-                    " '" + orderLine.getOrderLineId() + "' AND orderNumber =" + " '" + orderNumber+ "'");
+                    orderLine.getManifestId() + "', receivedQty = '" + orderLine.getReceivedQty() + "'WHERE orderLineId =" +
+                    " '" + orderLine.getOrderLineId() + "' AND orderNumber =" + " '" + orderNumber + "'");
             conn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Remove OrderLine 'orderLine' from DB OrderLines Table
-     * @param orderLine - orderLine to be deleted from DB
+     *
+     * @param orderLine   - orderLine to be deleted from DB
      * @param orderNumber - orderNumber of Order 'orderLine' belongs to
      * @return boolean success value
      */
-    public boolean removeOrderLine(OrderLine orderLine, String orderNumber)
-    {
-        try
-        {
+    public boolean removeOrderLine(OrderLine orderLine, String orderNumber) {
+        try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
 
@@ -1352,9 +1234,7 @@ public class DBManager
                     "' AND orderNumber =" + " '" + orderNumber + "'");
             conn.close();
             return true;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

@@ -22,8 +22,7 @@ import java.util.ResourceBundle;
 /**
  * Handles Actions for Adding and Updating Vendors in DB Vendors Table
  */
-public class ManageVendorsController implements Initializable
-{
+public class ManageVendorsController implements Initializable {
 
     @FXML
     private JFXTextField txt_vendorId;
@@ -45,24 +44,22 @@ public class ManageVendorsController implements Initializable
 
     /**
      * Initialises the Vendors Table
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<Vendor> vendors = dbm.loadVendors();
 
         tbl_vendors.setItems(vendors);
         col_vendorName.setCellValueFactory(new PropertyValueFactory<>("vendorName"));
 
-        try
-        {
+        try {
             tbl_vendors.setOnMouseClicked((MouseEvent event) ->
             {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_vendors.getSelectionModel().getSelectedIndex();
                     Vendor vendor = (Vendor) tbl_vendors.getItems().get(index);
 
@@ -72,12 +69,9 @@ public class ManageVendorsController implements Initializable
                     txt_address.setText(vendor.getShippingAddress());
                 }
             });
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -107,8 +101,7 @@ public class ManageVendorsController implements Initializable
                 dbm.updateVendor(vendor);
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information updated", "The record for " +
                         vendorName + " has been updated. ");
-            } else
-                {
+            } else {
 
 
                 Vendor vendor = new Vendor(vendorId, vendorName, phoneNumber, address);
@@ -127,16 +120,15 @@ public class ManageVendorsController implements Initializable
 
     /**
      * Verifies textfield is not a number
+     *
      * @param input
      * @return
      */
-    private boolean isString(JFXTextField input)
-    {
-        try{
+    private boolean isString(JFXTextField input) {
+        try {
             Integer.parseInt(input.getText());
             return false;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return true;
         }
@@ -146,8 +138,7 @@ public class ManageVendorsController implements Initializable
      * Clears textfields for adding new record
      */
     @FXML
-    private void on_addClick()
-    {
+    private void on_addClick() {
         txt_vendorId.setText("");
         txt_vendorName.setText("");
         txt_phoneNumber.setText("");
@@ -158,8 +149,7 @@ public class ManageVendorsController implements Initializable
      * Closes ManageVendors.fxml
      */
     @FXML
-    private void closeAddVendor()
-    {
+    private void closeAddVendor() {
         Stage stage = (Stage) tbl_vendors.getScene().getWindow();
         stage.close();
     }
@@ -168,8 +158,7 @@ public class ManageVendorsController implements Initializable
      * refreshes the Vendors Table
      */
     @FXML
-    private void refresh()
-    {
+    private void refresh() {
         DBManager dbm = new DBManager();
         ObservableList<Vendor> vendors = dbm.loadVendors();
 

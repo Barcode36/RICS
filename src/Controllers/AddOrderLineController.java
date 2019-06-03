@@ -25,8 +25,7 @@ import java.util.ResourceBundle;
 /**
  * AddOrderLine allows Admin Users to add new OrderLines to unapproved Orders
  */
-public class AddOrderLineController implements Initializable
-{
+public class AddOrderLineController implements Initializable {
     @FXML
     private TableView tbl_parts;
 
@@ -53,12 +52,12 @@ public class AddOrderLineController implements Initializable
 
     /**
      * Initalises the Parts Table and fills fields with selected Part Info
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
 
@@ -70,8 +69,7 @@ public class AddOrderLineController implements Initializable
 
         try {
             tbl_parts.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_parts.getSelectionModel().getSelectedIndex();
                     Part part = (Part) tbl_parts.getItems().get(index);
 
@@ -88,22 +86,17 @@ public class AddOrderLineController implements Initializable
      * AddOrderLine Controller Adds the new OrderLine to Order / Inserts OrderLine to DB OrderLines Table
      */
     @FXML
-    private void on_addClick()
-    {
+    private void on_addClick() {
 
         Window window = btn_clear.getScene().getWindow();
 
-        if(txt_partNo.getText().isEmpty() || txt_requestedBy.getText().isEmpty() || txt_qty.getText().isEmpty())
-        {
+        if (txt_partNo.getText().isEmpty() || txt_requestedBy.getText().isEmpty() || txt_qty.getText().isEmpty()) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                     "Please complete all fields.");
-        }
-        else if(!isInt(txt_qty))
-        {
+        } else if (!isInt(txt_qty)) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                     "Quantity must be a whole number using characters 0-9");
-        }
-        else {
+        } else {
             try {
                 DBManager dbm = new DBManager();
 
@@ -146,27 +139,26 @@ public class AddOrderLineController implements Initializable
 
     /**
      * Input validation for quantity field
+     *
      * @param txt_qty quantity of part being added to orderLine
      * @return
      */
-    private boolean isInt(JFXTextField txt_qty)
-    {
-        try
-        {
+    private boolean isInt(JFXTextField txt_qty) {
+        try {
             Integer.parseInt(txt_qty.getText());
             return true;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
+
     /**
      * Initialises the Order Number Label
+     *
      * @param orderNumber - Order the orderline is being added to
      */
-    public void initData(String orderNumber)
-    {
+    public void initData(String orderNumber) {
         lbl_orderNo.setText(orderNumber);
     }
 
@@ -175,8 +167,7 @@ public class AddOrderLineController implements Initializable
      * Clears the text fields of any input
      */
     @FXML
-    private void on_clearClick()
-    {
+    private void on_clearClick() {
         txt_partNo.setText("");
         txt_qty.setText("");
         txt_requestedBy.setText("");
@@ -187,8 +178,7 @@ public class AddOrderLineController implements Initializable
      * Checks the criteria against PartNumber, Description, VendorPartNumber, Location
      */
     @FXML
-    private void on_filterClick()
-    {
+    private void on_filterClick() {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_filter.getText());
 
@@ -203,9 +193,8 @@ public class AddOrderLineController implements Initializable
      * Closes addOrderLine.fxml
      */
     @FXML
-    private void closeAddOrderLine()
-    {
-        Stage stage = (Stage)btn_clear.getScene().getWindow();
+    private void closeAddOrderLine() {
+        Stage stage = (Stage) btn_clear.getScene().getWindow();
         stage.close();
     }
 

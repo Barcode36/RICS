@@ -6,18 +6,17 @@ import javafx.stage.Window;
 /**
  * AlertHelper Class for displaying Error/Confirmation messages to user
  */
-public class AlertHelper
-{
+public class AlertHelper {
 
     /**
-     *Constructor for showing Alert
+     * Constructor for showing Alert
+     *
      * @param alertType
      * @param window
      * @param title
      * @param message
      */
-    public static void showAlert(Alert.AlertType alertType, Window window, String title, String message)
-    {
+    public static void showAlert(Alert.AlertType alertType, Window window, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

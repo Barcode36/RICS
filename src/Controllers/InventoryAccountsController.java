@@ -23,8 +23,7 @@ import java.util.ResourceBundle;
 /**
  * Handles Actions for Managing Inventory Accounts (View, Add, Update)
  */
-public class InventoryAccountsController implements Initializable
-{
+public class InventoryAccountsController implements Initializable {
 
     @FXML
     private JFXTextField txt_accountCode;
@@ -40,24 +39,22 @@ public class InventoryAccountsController implements Initializable
 
     /**
      * Initialises The Accounts Table & Fills TextFields on selection from Table
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<InventoryAccount> accountsOBS = dbm.loadInventoryAccounts();
 
         tbl_accounts.setItems(accountsOBS);
         col_accountCode.setCellValueFactory(new PropertyValueFactory<>("accountCode"));
 
-        try
-        {
+        try {
             tbl_accounts.setOnMouseClicked((MouseEvent event) ->
             {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_accounts.getSelectionModel().getSelectedIndex();
                     InventoryAccount account = (InventoryAccount) tbl_accounts.getItems().get(index);
 
@@ -65,9 +62,7 @@ public class InventoryAccountsController implements Initializable
                     txt_accountName.setText(account.getAccountName());
                 }
             });
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -76,8 +71,7 @@ public class InventoryAccountsController implements Initializable
      * Controls Actions for adding + updating InventoryAccounts
      */
     @FXML
-    private void on_saveClick()
-    {
+    private void on_saveClick() {
         DBManager dbm = new DBManager();
         ObservableList<InventoryAccount> accountsOBS = dbm.loadInventoryAccounts();
         Window window = tbl_accounts.getScene().getWindow();
@@ -93,31 +87,21 @@ public class InventoryAccountsController implements Initializable
 
         String accountName = txt_accountName.getText();
 
-        if (accountName.isEmpty() || !isFormat(txt_accountCode))
-        {
+        if (accountName.isEmpty() || !isFormat(txt_accountCode)) {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid information", "Please provide a valid " +
                     "account name");
             return;
-        }
-
-        else if(InventoryAccount.containsAccount(accountsOBS, accountCode))
-        {
-            try
-            {
+        } else if (InventoryAccount.containsAccount(accountsOBS, accountCode)) {
+            try {
                 InventoryAccount account = new InventoryAccount(accountCode, accountName);
                 dbm.updateInventoryAccount(account);
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information updated", "Account name for " +
                         accountCode + "has been updated. ");
                 return;
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        else
-        {
+        } else {
 
             try {
                 InventoryAccount account = new InventoryAccount(accountCode, accountName);
@@ -126,17 +110,13 @@ public class InventoryAccountsController implements Initializable
                 AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Account added", "you have " +
                         "successfully created a new Inventory Account");
                 return;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unable to Add", "The Account was " +
                         "not added to the system.");
                 return;
 
-            }
-            finally
-            {
+            } finally {
                 refresh();
             }
         }
@@ -144,28 +124,25 @@ public class InventoryAccountsController implements Initializable
 
     /**
      * Input validation for accountCode field
+     *
      * @param num textfield being validated
      * @return boolean success value
      */
-    private boolean isFormat(JFXTextField num)
-    {
-        try
-        {
+    private boolean isFormat(JFXTextField num) {
+        try {
             Integer.parseInt(num.getText());
             return num.getText().length() == 7;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
 
     /**
-     *Clears Text Fields
+     * Clears Text Fields
      */
     @FXML
-    private void on_addClick()
-    {
+    private void on_addClick() {
         txt_accountCode.setText("");
         txt_accountName.setText("");
     }
@@ -174,8 +151,7 @@ public class InventoryAccountsController implements Initializable
      * Closes InventoryAccounts.fxml
      */
     @FXML
-    private void closeInventoryAccounts()
-    {
+    private void closeInventoryAccounts() {
         Stage stage = (Stage) tbl_accounts.getScene().getWindow();
         stage.close();
     }

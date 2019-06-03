@@ -37,8 +37,7 @@ import java.util.ResourceBundle;
 /**
  * PartMaster Controller allows Users to browse and Manage Inventory
  */
-public class PartMasterController implements Initializable
-{
+public class PartMasterController implements Initializable {
     @FXML
     private TableView tbl_parts;
 
@@ -129,20 +128,19 @@ public class PartMasterController implements Initializable
 
     /**
      * Initialises the Parts Table
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.loadParts();
         initData(partsOBS.get(0));
 
         try {
             tbl_parts.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_parts.getSelectionModel().getSelectedIndex();
                     Part part = (Part) tbl_parts.getItems().get(index);
 
@@ -160,10 +158,8 @@ public class PartMasterController implements Initializable
      * Navigates to LandingPage.fxml
      */
     @FXML
-    private void on_homeClick()
-    {
-        try
-        {
+    private void on_homeClick() {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
             Stage homeStage = new Stage();
             homeStage.setTitle("RICS 1.0 Landing Page");
@@ -173,9 +169,7 @@ public class PartMasterController implements Initializable
             controller.initData(Main.user);
             homeStage.show();
             closePartMaster();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -184,10 +178,8 @@ public class PartMasterController implements Initializable
      * Deletes current part from DB Parts Table
      */
     @FXML
-    private void on_deleteClick()
-    {
-        try
-        {
+    private void on_deleteClick() {
+        try {
             DBManager dbm = new DBManager();
             ObservableList<Part> parts = dbm.loadParts();
             Part part = Part.returnPart(lbl_partNo.getText());
@@ -196,8 +188,7 @@ public class PartMasterController implements Initializable
             initData(parts.get(0));
 
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -206,10 +197,8 @@ public class PartMasterController implements Initializable
      * Opens the Add new Part Dialog
      */
     @FXML
-    private void on_addPartClick()
-    {
-        try
-        {
+    private void on_addPartClick() {
+        try {
             Stage addPartStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../Views/AddPart.fxml"));
             Scene scene = new Scene(root);
@@ -218,20 +207,18 @@ public class PartMasterController implements Initializable
             addPartStage.initStyle(StageStyle.TRANSPARENT);
             addPartStage.show();
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Opens the Issue Part Dialog
+     *
      * @throws IOException
      */
     @FXML
-    private void on_issueClick() throws IOException
-    {
+    private void on_issueClick() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/IssuePart.fxml"));
         Stage issueStage = new Stage();
@@ -247,11 +234,11 @@ public class PartMasterController implements Initializable
 
     /**
      * Allows users to edit some details of parts in inventory
+     *
      * @throws IOException
      */
     @FXML
-    private void on_editClick() throws IOException
-    {
+    private void on_editClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/UpdatePart.fxml"));
         Stage updateStage = new Stage();
         updateStage.setTitle("RICS 1.0 Update Part");
@@ -268,6 +255,7 @@ public class PartMasterController implements Initializable
 
     /**
      * Generates a PDF Stock Card for The Part with a list of transactions
+     *
      * @throws IOException
      * @throws DocumentException
      */
@@ -281,7 +269,7 @@ public class PartMasterController implements Initializable
         Window window = btn_home.getScene().getWindow();
         Document document = new Document();
 
-        PdfWriter.getInstance(document, new FileOutputStream(new File("stockCard" + part.getPartNumber()+".pdf")));
+        PdfWriter.getInstance(document, new FileOutputStream(new File("stockCard" + part.getPartNumber() + ".pdf")));
         document.open();
 
         Image logo = Image.getInstance("ddlogo.png");
@@ -311,7 +299,7 @@ public class PartMasterController implements Initializable
         document.add(new Paragraph("   "));
 
         PdfPTable table = new PdfPTable(7);
-        PdfPCell cell = new PdfPCell( new Paragraph("Transaction History"));
+        PdfPCell cell = new PdfPCell(new Paragraph("Transaction History"));
         cell.setColspan(7);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setBackgroundColor(Color.LIGHT_GRAY);
@@ -326,8 +314,7 @@ public class PartMasterController implements Initializable
         table.addCell("Cost");
         table.addCell("Total Value");
 
-        for(Transaction transaction : transactions)
-        {
+        for (Transaction transaction : transactions) {
             String type = String.valueOf(transaction.getTransType());
             String date = String.valueOf(transaction.getTransDate());
             String partNo = transaction.getPartNo();
@@ -348,18 +335,18 @@ public class PartMasterController implements Initializable
         document.close();
 
         AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Stock card generated", "stock card for " +
-                 lbl_partNo.getText() + " has been generated.");
+                lbl_partNo.getText() + " has been generated.");
 
-        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard"+part.getPartNumber()+".pdf"));
+        Desktop.getDesktop().open(new File("C:\\Users\\David\\Documents\\2nd Year\\InventoryControlSystem\\stockCard" + part.getPartNumber() + ".pdf"));
     }
 
     /**
      * Initialises the data in the Parts Table, Transactions Table and the Part Information fields
+     *
      * @param part
      */
     @FXML
-    protected void initData(Part part)
-    {
+    protected void initData(Part part) {
         DBManager dbm = new DBManager();
         ObservableList<Vendor> vendors = dbm.loadVendors();
         ObservableList<Part> partsOBS = dbm.loadParts();
@@ -384,10 +371,8 @@ public class PartMasterController implements Initializable
         lbl_flagged.setText("  F : " + part.getFlagged());
         txt_description.setText(part.getDescription());
         txt_unitOfMeasure.setText(part.getUnitOfMeasure());
-        for(Vendor vendor : vendors)
-        {
-            if(vendor.getVendorId()==part.getVendorId())
-            {
+        for (Vendor vendor : vendors) {
+            if (vendor.getVendorId() == part.getVendorId()) {
                 txt_vendor.setText(vendor.toString());
             }
         }
@@ -402,8 +387,7 @@ public class PartMasterController implements Initializable
         col_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_totalVal.setCellValueFactory(new PropertyValueFactory<>("totalVal"));
 
-        if(!Main.user.getAdminUser())
-        {
+        if (!Main.user.getAdminUser()) {
             lbl_add.setVisible(false);
             lbl_update.setVisible(false);
             lbl_issue.setVisible(false);
@@ -420,9 +404,8 @@ public class PartMasterController implements Initializable
      * Closes the Application
      */
     @FXML
-    protected void closePartMaster()
-    {
-        Stage stage = (Stage)btn_home.getScene().getWindow();
+    protected void closePartMaster() {
+        Stage stage = (Stage) btn_home.getScene().getWindow();
         stage.close();
     }
 
@@ -431,8 +414,7 @@ public class PartMasterController implements Initializable
      * to the users criteria
      */
     @FXML
-    private void on_searchClick()
-    {
+    private void on_searchClick() {
         DBManager dbm = new DBManager();
         ObservableList<Part> partsOBS = dbm.basicSearchParts(txt_search.getText());
 

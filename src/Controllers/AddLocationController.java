@@ -14,13 +14,11 @@ import javafx.stage.Window;
 /**
  * Handles Actions for AddLocation.fxml
  */
-public class AddLocationController
-{
+public class AddLocationController {
 
 
     @FXML
     private JFXTextField txt_locationId;
-
 
 
     /**
@@ -33,31 +31,22 @@ public class AddLocationController
         ObservableList<Location> locs = dbm.loadLocations();
         Window window = txt_locationId.getScene().getWindow();
 
-        if(txt_locationId.getText().equals(""))
-        {
+        if (txt_locationId.getText().isEmpty()) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing Information", "please " +
                     "enter a Location ID.");
             return;
-        }
-
-        else if (!Location.containsLocation(locs, txt_locationId.getText()))
-        {
-            try
-            {
+        } else if (!Location.containsLocation(locs, txt_locationId.getText())) {
+            try {
                 Location loc = new Location(txt_locationId.getText());
                 dbm.addLocation(loc);
 
                 AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Location added", "you have " +
                         "successfully created a new stock location");
                 return;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Location exists", "This location " +
                     "already exists");
             return;

@@ -26,8 +26,7 @@ import java.util.ResourceBundle;
 /**
  * Handles Actions For Updating  select Part Information
  */
-public class UpdatePartController implements Initializable
-{
+public class UpdatePartController implements Initializable {
     @FXML
     private JFXTextField txt_partNoun;
 
@@ -53,39 +52,36 @@ public class UpdatePartController implements Initializable
     private JFXButton btn_cancel;
 
 
-
-
     /**
      * Initialises UpdatePart.fxml
+     *
      * @param location
      * @param resources
      */
     @FXML
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
     /**
      * Sets the partNumber label
+     *
      * @param partNo
      */
     @FXML
-    public void setLabel(String partNo)
-    {
+    public void setLabel(String partNo) {
         lbl_part.setText(partNo);
     }
 
     /**
      * Initalises the Part Info fields
+     *
      * @param p
      */
     @FXML
-    protected void initData(String p)
-    {
-        try
-        {
+    protected void initData(String p) {
+        try {
             DBManager dbm = new DBManager();
             ObservableList<Location> locations = dbm.loadLocations();
             Part part = Part.returnPart(p);
@@ -95,9 +91,7 @@ public class UpdatePartController implements Initializable
             txt_min.setText(String.valueOf(part.getMinRecVal()));
             txt_max.setText(String.valueOf(part.getMaxRecVal()));
             combo_location.setItems(locations);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -134,31 +128,23 @@ public class UpdatePartController implements Initializable
         }
 
 
-        if(partNoun.isEmpty() ||description.isEmpty() || txt_cost.getText().equals("") || txt_min.getText().equals("") ||  txt_max.getText().equals("")  || locationId.isEmpty())
-        {
+        if (partNoun.isEmpty() || description.isEmpty() || txt_cost.getText().equals("") || txt_min.getText().equals("") || txt_max.getText().equals("") || locationId.isEmpty()) {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing Information", "please ensure all fields " +
                     "are completed");
 
             return;
-        }
-        else if(min > max || min < 0)
-        {
+        } else if (min > max || min < 0) {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid Information", "please ensure the min is " +
                     "a valid number and less than the max");
 
             return;
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 DBManager dbm = new DBManager();
                 ObservableList<Part> partsOBS = dbm.loadParts();
 
-                for(Part part : partsOBS)
-                {
-                    if(part.getPartNumber().equals(partNo))
-                    {
+                for (Part part : partsOBS) {
+                    if (part.getPartNumber().equals(partNo)) {
                         //accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationI
                         Part uPart = new Part(partNo, partNoun, description, min, max, cost, locationId);
                         dbm.updatePart(uPart);
@@ -169,8 +155,7 @@ public class UpdatePartController implements Initializable
 
                     }
                 }
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -181,8 +166,7 @@ public class UpdatePartController implements Initializable
      * Closes UpdatePart.fxml
      */
     @FXML
-    private void closeUpdatePart()
-    {
+    private void closeUpdatePart() {
         try {
             Stage partsStage = new Stage();
             Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));

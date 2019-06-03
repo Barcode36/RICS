@@ -18,8 +18,7 @@ import javafx.stage.Window;
 /**
  * Handles Login Action
  */
-public class LoginController
-{
+public class LoginController {
 
     @FXML
     private JFXTextField txt_username;
@@ -35,10 +34,8 @@ public class LoginController
      * Validates User Login & Navigates to LandingPage.fxml on success
      */
     @FXML
-    private void onClick_btn_login()
-    {
-        try
-        {
+    private void onClick_btn_login() {
+        try {
             String uname = txt_username.getText();
             String pword = txt_password.getText();
             Window window = btn_login.getScene().getWindow();
@@ -53,13 +50,10 @@ public class LoginController
             DBManager dbm = new DBManager();
             User u = dbm.login(uname, pword);
 
-            if (u == null)
-            {
+            if (u == null) {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid login", "Re-enter your details");
 
-            }
-            else
-            {
+            } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
                 Stage homeStage = new Stage();
                 homeStage.setTitle("RICS 1.0 Issue Part");
@@ -73,9 +67,7 @@ public class LoginController
 
             }
 
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -83,9 +75,8 @@ public class LoginController
     /**
      * Closes the application
      */
-    public void closeLogin()
-    {
-       Stage stage1 = (Stage)btn_login.getScene().getWindow();
+    public void closeLogin() {
+        Stage stage1 = (Stage) btn_login.getScene().getWindow();
         stage1.close();
     }
 

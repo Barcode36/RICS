@@ -22,8 +22,7 @@ import java.util.ResourceBundle;
 /**
  * Handles Actions for Adding & Updating Rig Files
  */
-public class ManageRigController implements Initializable
-{
+public class ManageRigController implements Initializable {
 
     @FXML
     private JFXTextField txt_rigNo;
@@ -45,24 +44,22 @@ public class ManageRigController implements Initializable
 
     /**
      * Initialises the rigs table on ManageRig.fxml
+     *
      * @param location
      * @param resources
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         DBManager dbm = new DBManager();
         ObservableList<Rig> rigsOBS = dbm.loadRigs();
 
         tbl_rigs.setItems(rigsOBS);
         col_rigName.setCellValueFactory(new PropertyValueFactory<>("rigName"));
 
-        try
-        {
+        try {
             tbl_rigs.setOnMouseClicked((MouseEvent event) ->
             {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     int index = tbl_rigs.getSelectionModel().getSelectedIndex();
                     Rig rig = (Rig) tbl_rigs.getItems().get(index);
 
@@ -72,12 +69,9 @@ public class ManageRigController implements Initializable
                     txt_wellName.setText(rig.getWellName());
                 }
             });
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -87,8 +81,7 @@ public class ManageRigController implements Initializable
      * Adds new Rig to DB Rigs Table or Updates Rig if RigNo is already registered
      */
     @FXML
-    private void on_saveClick()
-    {
+    private void on_saveClick() {
         try {
             DBManager dbm = new DBManager();
             ObservableList<Rig> rigsOBS = dbm.loadRigs();
@@ -134,15 +127,14 @@ public class ManageRigController implements Initializable
             }
         } catch (Exception e) {
             e.printStackTrace();
-            }
+        }
     }
 
     /**
      * Clears the text fields for adding a new record
      */
     @FXML
-    private void on_addClick()
-    {
+    private void on_addClick() {
         txt_rigNo.setText("");
         txt_rigName.setText("");
         txt_clientName.setText("");
@@ -153,8 +145,7 @@ public class ManageRigController implements Initializable
      * Closes  ManageRig.fxml
      */
     @FXML
-    private void closeAddRig()
-    {
+    private void closeAddRig() {
 
         Stage stage = (Stage) tbl_rigs.getScene().getWindow();
         stage.close();
@@ -181,18 +172,17 @@ public class ManageRigController implements Initializable
 
     /**
      * Checks the field is not a number
+     *
      * @param input textfield to be checked
      * @return boolean success value
      */
-    private boolean isString(JFXTextField input)
-    {
-        try{
+    private boolean isString(JFXTextField input) {
+        try {
             Integer.parseInt(input.getText());
-           return false;
-        }catch (Exception e)
-        {
+            return false;
+        } catch (Exception e) {
             e.printStackTrace();
-           return true;
+            return true;
         }
     }
 
