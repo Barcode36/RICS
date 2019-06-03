@@ -1,8 +1,11 @@
 package Controllers;
 
 
+import Models.DBManager;
+import Models.Order;
 import Models.User;
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,11 +30,11 @@ public class LandingPageController implements Initializable
 
 
     @FXML
-    private ImageView btn_users, btn_location, btn_manifests, btn_accounts, btn_rig, btn_reports, btn_vendors;
+    private ImageView btn_users, btn_location, btn_accounts, btn_rig, btn_reports, btn_vendors;
 
 
     @FXML
-    private Label lbl_username, lbl_users, lbl_location, lbl_manifests, lbl_accounts, lbl_rig, lbl_reports, lbl_vendor;
+    private Label lbl_username, lbl_users, lbl_location, lbl_accounts, lbl_rig, lbl_reports, lbl_vendor;
     @FXML
     private AnchorPane root;
 
@@ -58,8 +61,9 @@ public class LandingPageController implements Initializable
 
     /**
      * Loads the SplashScreen if it hasn't been loaded already.
+     * SplashScreen works but currently disabled - wasn't happy with animation quality
      */
-    //SplashScreen currently disabled
+
     @FXML
     private void loadSplashScreen()
     {
@@ -164,14 +168,19 @@ public class LandingPageController implements Initializable
     {
         try
         {
-        Stage ordersStage = new Stage();
-        Parent root2 = FXMLLoader.load(getClass().getResource("../Views/OrdersMenu.fxml"));
-        Scene scene2 = new Scene(root2);
-        ordersStage.setScene(scene2);
-        ordersStage.setTitle("RICS 1.0 Orders");
-        ordersStage.initStyle(StageStyle.TRANSPARENT);
-        ordersStage.show();
-        closeLandingPage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
+            Stage ordersStage = new Stage();
+            ordersStage.setTitle("RICS 1.0 Orders Menu");
+            ordersStage.initStyle(StageStyle.TRANSPARENT);
+            ordersStage.setScene(new Scene(loader.load()));
+            OrdersMenuController controller = loader.getController();
+
+            DBManager dbm = new DBManager();
+            ObservableList<Order> ordersOBS = dbm.loadOrders();
+            Order o = ordersOBS.get(0);
+            controller.initData(o);
+            ordersStage.show();
+            closeLandingPage();
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -293,7 +302,6 @@ public class LandingPageController implements Initializable
             btn_accounts.setVisible(false);
             btn_rig.setVisible(false);
             btn_reports.setVisible(false);
-            btn_manifests.setVisible(false);
             btn_vendors.setVisible(false);
             lbl_users.setVisible(false);
             lbl_location.setVisible(false);
@@ -301,7 +309,6 @@ public class LandingPageController implements Initializable
             lbl_accounts.setVisible(false);
             lbl_reports.setVisible(false);
             lbl_rig.setVisible(false);
-            lbl_manifests.setVisible(false);
             lbl_vendor.setVisible(false);
         }
     }

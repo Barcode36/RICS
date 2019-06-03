@@ -2,11 +2,12 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="396.0" style="-fx-background-color: #3d4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddPartController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="545.0" prefWidth="396.0" style="-fx-background-color: #3d4956;"
+            stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            fx:controller="Controllers.AddPartController">
    <children>
       <JFXTextField fx:id="txt_vendorPartNo" focusColor="#cccccc" labelFloat="true" layoutX="131.0" layoutY="114.0" prefHeight="23.0" prefWidth="198.0" unFocusColor="#cccccc">
          <font>
@@ -88,10 +89,5 @@
       <JFXComboBox fx:id="combo_location" focusColor="#cccccc" layoutX="133.0" layoutY="432.0" prefHeight="25.0" prefWidth="198.0" promptText="location" styleClass="formFields" unFocusColor="#cccccc" />
       <JFXButton fx:id="btn_save" layoutX="104.0" layoutY="489.0" onAction="#on_saveClick" text="Save" />
       <JFXButton fx:id="btn_cancel" layoutX="231.0" layoutY="489.0" onAction="#closeAddPart" text="Cancel" />
-      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="370.0" layoutY="2.0" onMousePressed="#closeAddPart" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/icon_delete32.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

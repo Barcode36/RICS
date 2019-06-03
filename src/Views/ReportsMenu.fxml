@@ -8,14 +8,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="pane_anchorPane" prefHeight="200.0" prefWidth="353.0" style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportsMenuController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane_anchorPane" prefHeight="200.0" prefWidth="353.0"
+            style="-fx-background-color: #3D4956;" stylesheets="@../assets/Theme.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="Controllers.ReportsController">
    <children>
       <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="328.0" layoutY="4.0" onMousePressed="#closeReportsMenu" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />
          </image>
       </ImageView>
-      <Label layoutX="147.0" layoutY="32.0" text="Reports" textFill="#eda678">
+       <Label layoutX="154.0" layoutY="22.0" text="Reports" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
          </font>
@@ -26,12 +28,15 @@
             <Font name="Quicksand Bold" size="12.0" />
          </font>
       </JFXRadioButton>
-      <JFXButton fx:id="btn_generate" onAction="#generateStockReport" layoutX="49.0" layoutY="132.0" text="Generate Report" />
-      <JFXButton fx:id="btn_clear" layoutX="242.0" layoutY="132.0" text="Clear" />
-      <ImageView fx:id="btn_home" fitHeight="29.0" fitWidth="31.0" layoutX="6.0" layoutY="2.0" onMousePressed="#on_homeClick" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/icon_rigDark.png" />
-         </image>
-      </ImageView>
+       <JFXButton fx:id="btn_generate" layoutX="49.0" layoutY="132.0" onAction="#generateStockReport"
+                  text="Generate Report"/>
+       <JFXButton fx:id="btn_clear" onAction="#on_clearClick" layoutX="242.0" layoutY="132.0" text="Clear"/>
+       <Label layoutX="59.0" layoutY="37.0" prefHeight="39.0" prefWidth="236.0"
+              text="Here you can generate Open Order, Flagged Items  &amp; Over Max Reports" textAlignment="CENTER"
+              textFill="#cccccc" wrapText="true">
+           <font>
+               <Font name="Quicksand Bold" size="12.0"/>
+           </font>
+       </Label>
    </children>
 </AnchorPane>

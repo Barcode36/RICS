@@ -3,7 +3,6 @@ package Controllers;
 import Models.AlertHelper;
 import Models.DBManager;
 import Models.Rig;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,8 +24,6 @@ import java.util.ResourceBundle;
  */
 public class ManageRigController implements Initializable
 {
-    @FXML
-    private JFXButton btn_cancel;
 
     @FXML
     private JFXTextField txt_rigNo;
@@ -92,62 +89,56 @@ public class ManageRigController implements Initializable
     @FXML
     private void on_saveClick()
     {
-        DBManager dbm = new DBManager();
-        ObservableList<Rig> rigsOBS = dbm.loadRigs();
-        Window window = btn_cancel.getScene().getWindow();
+        try {
+            DBManager dbm = new DBManager();
+            ObservableList<Rig> rigsOBS = dbm.loadRigs();
+            Window window = tbl_rigs.getScene().getWindow();
 
-        int rigNo = Integer.parseInt(txt_rigNo.getText());
-        String rigName = txt_rigName.getText();
-        String clientName = txt_clientName.getText();
-        String wellName = txt_wellName.getText();
+            int rigNo = 0;
 
-        if(rigName.isEmpty() || clientName.isEmpty() || wellName.isEmpty() || txt_rigNo.getText().isEmpty() ||
-                !isString(txt_clientName)|| !isString(txt_rigName) || !isString(txt_wellName))
-        {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Inavlid information", "Please check your  " +
-                    "inputs.");
-            return;
-        }
-        else if(Rig.containsRig(rigsOBS, rigNo))
-        {
-            try
-            {
+            try {
+                rigNo = Integer.parseInt(txt_rigNo.getText());
+            } catch (Exception e) {
+                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Inavlid information", "Please provide  " +
+                        "a rig no.");
+            }
+
+            String rigName = txt_rigName.getText();
+            String clientName = txt_clientName.getText();
+            String wellName = txt_wellName.getText();
+
+            if (rigName.isEmpty() || clientName.isEmpty() || wellName.isEmpty() || !isString(txt_clientName) ||
+                    !isString(txt_rigName) || !isString(txt_wellName)) {
+                AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid information", "Please check your  " +
+                        "inputs.");
+                return;
+            } else if (Rig.containsRig(rigsOBS, rigNo)) {
+
                 Rig rig = new Rig(rigNo, rigName, clientName, wellName);
                 dbm.updateRig(rig);
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information updated", "The record for Rig " +
                         rigNo + "has been updated. ");
-                return;
+
+                refresh();
+
+            } else {
+
+
+                Rig rig = new Rig(rigNo, rigName, clientName, wellName);
+                dbm.createRig(rig);
+
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Rig added", "you have " +
+                        "successfully created added a new rig record");
+
+                refresh();
             }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        else
-            {
-
-                try {
-                    Rig rig = new Rig(rigNo, rigName, clientName, wellName);
-                    dbm.createRig(rig);
-
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Rig added", "you have " +
-                            "successfully created added a new rig record");
-                    return;
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    finally
-                {
-                    refresh();
-                }
+        } catch (Exception e) {
+            e.printStackTrace();
             }
     }
 
     /**
-     * Clears the text fields for addign a new record
+     * Clears the text fields for adding a new record
      */
     @FXML
     private void on_addClick()
@@ -164,7 +155,8 @@ public class ManageRigController implements Initializable
     @FXML
     private void closeAddRig()
     {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+
+        Stage stage = (Stage) tbl_rigs.getScene().getWindow();
         stage.close();
     }
 

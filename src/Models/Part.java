@@ -294,6 +294,23 @@ public class Part
     }
 
 
+    /**
+     * Returns whether or not a new part already exists in inventory
+     *
+     * @param venNum the vendors part number
+     * @param venId  the vendors Id
+     * @return
+     */
+    public static boolean dupeFound(String venNum, int venId) {
+        DBManager dbm = new DBManager();
+        ObservableList<Part> parts = dbm.loadParts();
+        for (Part part : parts) {
+            if (part.getVendorNumber().equals(venNum) && part.getVendorId() == venId) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

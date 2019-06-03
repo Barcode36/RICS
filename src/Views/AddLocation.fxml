@@ -7,15 +7,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="286.0" style="-fx-background-color: #3d4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddLocationController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="193.0" prefWidth="286.0" style="-fx-background-color: #3d4956;"
+            stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            fx:controller="Controllers.AddLocationController">
    <children>
       <Label fx:id="lbl_title" layoutX="101.0" layoutY="27.0" text="Add location" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btn_add" layoutX="46.0" layoutY="138.0" onAction="#on_addClick" prefHeight="25.0" prefWidth="57.0" text="Add" />
-      <JFXButton fx:id="btn_cancel" layoutX="182.0" layoutY="138.0" onAction="#closeAddLocation" text="Cancel" />
+      <JFXButton fx:id="btn_add" layoutX="115.0" layoutY="137.0" onAction="#on_addClick" prefHeight="25.0"
+                 prefWidth="57.0" text="Add"/>
       <JFXTextField fx:id="txt_locationId" focusColor="#cccccc" labelFloat="true" layoutX="80.0" layoutY="74.0" prefHeight="23.0" prefWidth="127.0" promptText="Location ID" unFocusColor="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />

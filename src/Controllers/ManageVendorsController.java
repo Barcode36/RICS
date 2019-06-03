@@ -3,7 +3,6 @@ package Controllers;
 import Models.AlertHelper;
 import Models.DBManager;
 import Models.Vendor;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,8 +24,6 @@ import java.util.ResourceBundle;
  */
 public class ManageVendorsController implements Initializable
 {
-    @FXML
-    private JFXButton btn_cancel;
 
     @FXML
     private JFXTextField txt_vendorId;
@@ -93,7 +90,7 @@ public class ManageVendorsController implements Initializable
         try {
             DBManager dbm = new DBManager();
             ObservableList<Vendor> vendors = dbm.loadVendors();
-            Window window = btn_cancel.getScene().getWindow();
+            Window window = tbl_vendors.getScene().getWindow();
 
             int vendorId = Integer.parseInt(txt_vendorId.getText());
             String vendorName = txt_vendorName.getText();
@@ -104,14 +101,12 @@ public class ManageVendorsController implements Initializable
                     !isString(txt_address) || !isString(txt_vendorName)) {
                 AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing information", "Please complete all " +
                         "fields");
-                return;
             } else if (Vendor.containsVendor(vendors, vendorId)) {
 
                 Vendor vendor = new Vendor(vendorId, vendorName, phoneNumber, address);
                 dbm.updateVendor(vendor);
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information updated", "The record for " +
                         vendorName + " has been updated. ");
-                return;
             } else
                 {
 
@@ -165,7 +160,7 @@ public class ManageVendorsController implements Initializable
     @FXML
     private void closeAddVendor()
     {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+        Stage stage = (Stage) tbl_vendors.getScene().getWindow();
         stage.close();
     }
 

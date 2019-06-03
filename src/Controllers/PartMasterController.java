@@ -164,12 +164,13 @@ public class PartMasterController implements Initializable
     {
         try
         {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
             Stage homeStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
-            Scene scene = new Scene(root);
-            homeStage.setScene(scene);
-            homeStage.setTitle("RICS 1.0 Home");
+            homeStage.setTitle("RICS 1.0 Landing Page");
             homeStage.initStyle(StageStyle.TRANSPARENT);
+            homeStage.setScene(new Scene(loader.load()));
+            LandingPageController controller = loader.getController();
+            controller.initData(Main.user);
             homeStage.show();
             closePartMaster();
         }

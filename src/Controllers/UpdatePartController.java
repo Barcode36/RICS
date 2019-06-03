@@ -10,10 +10,14 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.net.URL;
@@ -48,8 +52,7 @@ public class UpdatePartController implements Initializable
     @FXML
     private JFXButton btn_cancel;
 
-    @FXML
-    private JFXButton btn_save;
+
 
 
     /**
@@ -104,16 +107,32 @@ public class UpdatePartController implements Initializable
      */
     @FXML
     private void on_saveClick() {
-        String partNo = lbl_part.getText();
-        String partNoun = txt_partNoun.getText();
-        String description = txt_description.getText();
-        Double cost = Double.parseDouble(txt_cost.getText());
-        int min =Integer.parseInt(txt_min.getText());
-        int max =Integer.parseInt(txt_min.getText());
-        Location location = combo_location.getSelectionModel().getSelectedItem();
-        String locationId = location.getLocationId();
 
         Window window = btn_cancel.getScene().getWindow();
+        String partNo = "";
+        String partNoun = "";
+        String description = "";
+        Double cost = 0.0;
+        int min = 0;
+        int max = 0;
+        Location location;
+        String locationId = "";
+
+        try {
+            partNo = lbl_part.getText();
+            partNoun = txt_partNoun.getText();
+            description = txt_description.getText();
+            cost = Double.parseDouble(txt_cost.getText());
+            min = Integer.parseInt(txt_min.getText());
+            max = Integer.parseInt(txt_min.getText());
+            location = combo_location.getSelectionModel().getSelectedItem();
+            locationId = location.getLocationId();
+        } catch (Exception e) {
+            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Missing Information", "please ensure all fields " +
+                    "are completed");
+            e.printStackTrace();
+        }
+
 
         if(partNoun.isEmpty() ||description.isEmpty() || txt_cost.getText().equals("") || txt_min.getText().equals("") ||  txt_max.getText().equals("")  || locationId.isEmpty())
         {
@@ -143,9 +162,9 @@ public class UpdatePartController implements Initializable
                         //accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationI
                         Part uPart = new Part(partNo, partNoun, description, min, max, cost, locationId);
                         dbm.updatePart(uPart);
+                        closeUpdatePart();
                         AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Part Updated", "you have " +
                                 "successfully updated the stock card for " + partNo + ".");
-                        closeUpdatePart();
                         return;
 
                     }
@@ -164,8 +183,18 @@ public class UpdatePartController implements Initializable
     @FXML
     private void closeUpdatePart()
     {
-        Stage stage = (Stage)btn_save.getScene().getWindow();
-        stage.close();
+        try {
+            Stage partsStage = new Stage();
+            Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
+            Scene scene1 = new Scene(root1);
+            partsStage.setScene(scene1);
+            partsStage.setTitle("RICS 1.0 Part Master");
+            partsStage.initStyle(StageStyle.TRANSPARENT);
+            partsStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

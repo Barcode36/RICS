@@ -1,7 +1,6 @@
 package Controllers;
 
 import Models.User;
-import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +12,7 @@ public class Main extends Application
 {
     public static Boolean isSplashLoaded = false;
     public static User user;
-    public static RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+
 
     /**Launches Application
      * @param primaryStage Login Dialog
@@ -27,7 +26,6 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.show();
-        requiredFieldValidator.setMessage("Please complete all fields");
     }
 
 

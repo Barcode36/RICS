@@ -9,12 +9,12 @@ import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -42,58 +42,30 @@ import java.util.ResourceBundle;
 public class OrdersMenuController implements Initializable
 {
     @FXML
-    private ImageView btn_home;
+    FontAwesomeIconView btn_update;
+    @FXML
+    private ImageView btn_home, btn_newOrder, btn_newLine, btn_approve, btn_cancel, btn_removeItem,
+            btn_receive;
+    @FXML
+    private Label lbl_orderNo, lbl_new, lbl_update, lbl_addLine, lbl_approve, lbl_cancel, lbl_remove,
+            lbl_receive;
 
     @FXML
-    private ImageView btn_cancel;
+    private JFXTextField txt_date, txt_status, txt_total, txt_search;
 
     @FXML
-    private Label lbl_orderNo;
-
-    @FXML
-    private JFXTextField txt_date;
-
-    @FXML
-    private JFXComboBox combo_shipping;
-
-    @FXML
-    private JFXComboBox combo_orderType;
-
-    @FXML
-    private JFXTextField txt_status;
-
-    @FXML
-    private JFXTextField txt_total, txt_search;
+    private JFXComboBox combo_shipping, combo_orderType;
 
     @FXML
     private JFXTextArea txt_header;
 
     @FXML
-    private TableView tbl_order;
+    private TableView tbl_order, tbl_orderLines;
+
 
     @FXML
-    private TableView tbl_orderLines;
+    private TableColumn col_orderNo, col_status, col_qty, col_rec, col_partNo, col_manifestId, col_lineTotal;
 
-    @FXML
-    private TableColumn col_orderNo;
-
-    @FXML
-    private TableColumn col_status;
-
-    @FXML
-    private TableColumn col_qty;
-
-    @FXML
-    private TableColumn col_rec;
-
-    @FXML
-    private TableColumn col_partNo;
-
-    @FXML
-    private TableColumn col_manifestId;
-
-    @FXML
-    private TableColumn col_lineTotal;
 
 
     /**
@@ -188,6 +160,26 @@ public class OrdersMenuController implements Initializable
             col_partNo.setCellValueFactory(new PropertyValueFactory<>("part"));
             col_manifestId.setCellValueFactory(new PropertyValueFactory<>("manifestId"));
             col_lineTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
+
+            if (!Main.user.getAdminUser()) {
+                btn_newOrder.setVisible(false);
+                btn_approve.setVisible(false);
+                btn_cancel.setVisible(false);
+                btn_newLine.setVisible(false);
+                btn_receive.setVisible(false);
+                btn_removeItem.setVisible(false);
+                btn_update.setVisible(false);
+                lbl_new.setVisible(false);
+                lbl_approve.setVisible(false);
+                lbl_cancel.setVisible(false);
+                lbl_addLine.setVisible(false);
+                lbl_receive.setVisible(false);
+                lbl_remove.setVisible(false);
+                lbl_update.setVisible(false);
+                txt_header.setEditable(false);
+                combo_orderType.setDisable(true);
+                combo_shipping.setDisable(true);
+            }
         }
         catch(Exception e)
         {
@@ -210,12 +202,13 @@ public class OrdersMenuController implements Initializable
     {
         try
         {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
             Stage homeStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("../Views/LandingPage.fxml"));
-            Scene scene = new Scene(root);
-            homeStage.setScene(scene);
-            homeStage.setTitle("RICS 1.0 Home");
+            homeStage.setTitle("RICS 1.0 Issue Part");
             homeStage.initStyle(StageStyle.TRANSPARENT);
+            homeStage.setScene(new Scene(loader.load()));
+            LandingPageController controller = loader.getController();
+            controller.initData(Main.user);
             homeStage.show();
             closeOrdersMenu();
         }
@@ -234,7 +227,7 @@ public class OrdersMenuController implements Initializable
     {
         Window window = btn_cancel.getScene().getWindow();
         Order order = Order.returnOrder(lbl_orderNo.getText());
-        if(!order.getOrderApproved()) {
+        if (order.getOrderStatus() == 'U') {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/AddOrderLine.fxml"));
             Stage orderLineStage = new Stage();
             orderLineStage.setTitle("RICS 1.0 Add a line item");
@@ -308,19 +301,22 @@ public class OrdersMenuController implements Initializable
 
         Order order = Order.returnOrder(orderNumber);
 
-        if(order.getOrderApproved() || order.getOrderStatus() != 'C')
-        {
-            dbm.cancelOrder(order);
-            order.calculateOrderTotal();
-            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order cancelled", "Please inform " +
-                    "the purchasing dept.");
-            initData(order);
-            return;
-        }else{
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unapproved order", "Unapproved orders " +
-                    "can be re-purposed.");
-            return;
-        }
+            if (order.getOrderApproved() && order.getOrderStatus() != 'C' && order.getOrderStatus() != 'X') {
+                dbm.cancelOrder(order);
+                order.calculateOrderTotal();
+                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order cancelled", "Please inform " +
+                        "the purchasing dept.");
+                initData(order);
+                return;
+            } else if (order.getOrderStatus() == 'X' || order.getOrderStatus() == 'C') {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid order", "Order is already" +
+                        " cancelled/closed");
+                return;
+            }else{
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unapproved order", "Unapproved orders " +
+                        "can be re-purposed.");
+                return;
+            }
     }
         catch(Exception e)
     {
@@ -343,18 +339,16 @@ public class OrdersMenuController implements Initializable
 
             Order order = Order.returnOrder(orderNumber);
             ObservableList<OrderLine> ol = dbm.loadOrderLines(orderNumber);
-            if(ol.size() > 0) {
+            if (ol.size() > 0 && !order.getOrderApproved()) {
                 dbm.approveOrder(order);
                 AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Order Approved", "Send your approved " +
                         "orders to the Purchasing Dept at the end of the day.");
 
-                for(OrderLine orderLine : ol)
-                {
+                for(OrderLine orderLine : ol) {
                     Part p =  orderLine.getPart();
                     p.setLastOrder(orderNumber);
                     p.setOnOrder(p.getOnOrder() + orderLine.getQuantity());
-                    if(p.getFlagged() >= orderLine.getQuantity())
-                    {
+                    if(p.getFlagged() >= orderLine.getQuantity()) {
                         p.setFlagged(p.getFlagged() - orderLine.getQuantity());
                     }
                     dbm.updatePart(p);
@@ -363,12 +357,14 @@ public class OrdersMenuController implements Initializable
                 }
                 initData(order);
                 return;
-            }else
-                {
-                    AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Not Approved", "Add something " +
+            } else if (order.getOrderApproved()) {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Already Approved", "The order has already been " +
+                        "approved");
+            }else {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Not Approved", "Add something " +
                         "to the order before approving it.");
 
-                }
+            }
         }
         catch(Exception e)
         {

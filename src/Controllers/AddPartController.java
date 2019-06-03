@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -81,9 +80,11 @@ public class AddPartController implements Initializable {
     @FXML
     private void on_saveClick()
     {
+        Window window = btn_cancel.getScene().getWindow();
+
         try
         {
-            Window window = btn_cancel.getScene().getWindow();
+
             DBManager dbm = new DBManager();
 
             InventoryAccount account = combo_accCode.getSelectionModel().getSelectedItem();
@@ -109,15 +110,15 @@ public class AddPartController implements Initializable {
             {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                         "Please complete all fields.");
-            }
-            else if(!isInt(txt_max) || !isInt(txt_min) || isDub(txt_cost))
+            } else if (!isInt(txt_max) || !isInt(txt_min) || !isDub(txt_cost))
             {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
                         "Min and Max should be a whole number using characters 0-9. Cost Should be A Decimal Number " +
                                 "such as '200.98'. ");
-            }
-            else
-                {
+            } else if (Part.dupeFound(vendorPN, vendorId)) {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Dupe Found",
+                        "A Part with this number is already provided by this vendor");
+            } else {
                 Part part = new Part(accountCode, vendorPN, vendorId, partNoun, description, minLvl, maxLvl, cost, locationId);
 
                 String partNumber = dbm.generateUniquePartNo(part);
@@ -125,17 +126,21 @@ public class AddPartController implements Initializable {
 
                 dbm.createPart(part);
 
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/PartMaster.fxml"));
                 Stage partsStage = new Stage();
-                Parent root1 = FXMLLoader.load(getClass().getResource("../Views/PartMaster.fxml"));
-                Scene scene1 = new Scene(root1);
-                partsStage.setScene(scene1);
                 partsStage.setTitle("RICS 1.0 Part Master");
                 partsStage.initStyle(StageStyle.TRANSPARENT);
+                partsStage.setScene(new Scene(loader.load()));
+                PartMasterController controller = loader.getController();
+                controller.initData(part);
+
                 partsStage.show();
                 closeAddPart();
             }
         } catch (Exception e)
         {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Information",
+                    "Please complete all fields correctly.");
             e.printStackTrace();
         }
 

@@ -3,7 +3,6 @@ package Controllers;
 import Models.AlertHelper;
 import Models.DBManager;
 import Models.Location;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,8 +17,6 @@ import javafx.stage.Window;
 public class AddLocationController
 {
 
-    @FXML
-    private JFXButton btn_cancel;
 
     @FXML
     private JFXTextField txt_locationId;
@@ -34,12 +31,13 @@ public class AddLocationController
     {
         DBManager dbm = new DBManager();
         ObservableList<Location> locs = dbm.loadLocations();
-        Window window = btn_cancel.getScene().getWindow();
+        Window window = txt_locationId.getScene().getWindow();
 
         if(txt_locationId.getText().equals(""))
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Missing Information", "please " +
                     "enter a Location ID.");
+            return;
         }
 
         else if (!Location.containsLocation(locs, txt_locationId.getText()))
@@ -70,9 +68,16 @@ public class AddLocationController
      * Closes AddLocation.fxml
      */
     @FXML
-    private void closeAddLocation()
-    {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+    private void closeAddLocation() {
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
+        Stage homeStage = new Stage();
+        homeStage.setTitle("RICS 1.0 Landing Page");
+        homeStage.initStyle(StageStyle.TRANSPARENT);
+        homeStage.setScene(new Scene(loader.load()));
+        LandingPageController controller = loader.getController();
+        controller.initData(Main.user);
+        homeStage.show();*/
+        Stage stage = (Stage) txt_locationId.getScene().getWindow();
         stage.close();
     }
 }

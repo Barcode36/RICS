@@ -117,8 +117,6 @@ public class AddOrderLineController implements Initializable
                 dbm.addOrderLine(orderLine, orderNumber);
                 order.calculateOrderTotal();
 
-                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, window, "Item added",
-                        qty + " of Part " + part.getPartNumber() + "were added to your order.");
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/OrdersMenu.fxml"));
                 Stage ordersMenu = new Stage(StageStyle.TRANSPARENT);

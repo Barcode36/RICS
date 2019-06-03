@@ -8,15 +8,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="414.0" style="-fx-background-color: #3d4956;" stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManageVendorsController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="329.0" prefWidth="414.0" style="-fx-background-color: #3d4956;"
+            stylesheets="@../assets/Theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            fx:controller="Controllers.ManageVendorsController">
    <children>
       <Label fx:id="lbl_title" layoutX="165.0" layoutY="28.0" text="Manage Vendors" textFill="#eda678">
          <font>
             <Font name="Quicksand Bold" size="14.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btn_save" layoutX="207.0" layoutY="268.0" onAction="#on_saveClick" prefHeight="25.0" prefWidth="57.0" text="Save" />
-      <JFXButton fx:id="btn_cancel" layoutX="299.0" layoutY="268.0" onAction="#closeAddVendor" text="Cancel" />
+      <JFXButton fx:id="btn_save" layoutX="254.0" layoutY="269.0" onAction="#on_saveClick" prefHeight="25.0"
+                 prefWidth="57.0" text="Save"/>
       <JFXTextField fx:id="txt_vendorId" focusColor="#cccccc" labelFloat="true" layoutX="219.0" layoutY="73.0" prefHeight="23.0" prefWidth="127.0" promptText="Vendor ID" unFocusColor="#eda678">
          <font>
             <Font name="Quicksand Bold" size="12.0" />
@@ -47,8 +50,8 @@
             <Image url="@../assets/icon_add32.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="388.0" layoutY="2.0" onMousePressed="#closeAddVendor"
-                 pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btn_close" fitHeight="25.0" fitWidth="26.0" layoutX="388.0" layoutY="2.0"
+                 onMousePressed="#closeAddVendor" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_delete32.png" />
          </image>

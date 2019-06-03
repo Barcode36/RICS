@@ -4,7 +4,6 @@ package Controllers;
 import Models.AlertHelper;
 import Models.DBManager;
 import Models.InventoryAccount;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,15 +25,12 @@ import java.util.ResourceBundle;
  */
 public class InventoryAccountsController implements Initializable
 {
-    @FXML
-    private JFXButton btn_cancel;
 
     @FXML
     private JFXTextField txt_accountCode;
 
     @FXML
     private JFXTextField txt_accountName;
-
 
     @FXML
     private TableView tbl_accounts;
@@ -84,17 +80,24 @@ public class InventoryAccountsController implements Initializable
     {
         DBManager dbm = new DBManager();
         ObservableList<InventoryAccount> accountsOBS = dbm.loadInventoryAccounts();
-        Window window = btn_cancel.getScene().getWindow();
+        Window window = tbl_accounts.getScene().getWindow();
 
-
-        int accountCode = Integer.parseInt(txt_accountCode.getText());
+        int accountCode = 0;
+        try {
+            accountCode = Integer.parseInt(txt_accountCode.getText());
+        } catch (Exception e) {
+            AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid information", "Please provide a valid " +
+                    " account code");
+            return;
+        }
 
         String accountName = txt_accountName.getText();
 
-        if(accountName.isEmpty() || txt_accountCode.getText().equals("") || !isFormat(txt_accountCode))
+        if (accountName.isEmpty() || !isFormat(txt_accountCode))
         {
             AlertHelper.showAlert(Alert.AlertType.WARNING, window, "Invalid information", "Please provide a valid " +
-                    "account name and account code");
+                    "account name");
+            return;
         }
 
         else if(InventoryAccount.containsAccount(accountsOBS, accountCode))
@@ -129,6 +132,7 @@ public class InventoryAccountsController implements Initializable
                 e.printStackTrace();
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Unable to Add", "The Account was " +
                         "not added to the system.");
+                return;
 
             }
             finally
@@ -148,7 +152,7 @@ public class InventoryAccountsController implements Initializable
         try
         {
             Integer.parseInt(num.getText());
-            return num.getText().length() == 8;
+            return num.getText().length() == 7;
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -167,12 +171,12 @@ public class InventoryAccountsController implements Initializable
     }
 
     /**
-     * Closes InventotyAccounts.fxml
+     * Closes InventoryAccounts.fxml
      */
     @FXML
     private void closeInventoryAccounts()
     {
-        Stage stage = (Stage)btn_cancel.getScene().getWindow();
+        Stage stage = (Stage) tbl_accounts.getScene().getWindow();
         stage.close();
     }
 

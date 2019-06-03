@@ -57,13 +57,21 @@ public class IssuePartController
     @FXML
     private void on_issueClick()
     {
-
-        int qty = Integer.parseInt(txt_quantity.getText());
+        int qty = 0;
         String partNo = lbl_partNo.getText();
         Window window = btn_cancel.getScene().getWindow();
-
         DBManager dbm = new DBManager();
         Part part = Part.returnPart(partNo);
+
+        try {
+            qty = Integer.parseInt(txt_quantity.getText());
+        } catch (Exception e) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid Quantity", "Please enter a quantity " +
+                    "using characters 0-9");
+            e.printStackTrace();
+        }
+
+
         if(isInt(txt_quantity))
         {
             try {

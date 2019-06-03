@@ -121,6 +121,7 @@ public class UsersMenuController implements Initializable {
         txt_rig.clear();
         txt_password.clear();
         txt_passwordConfirm.clear();
+        rdo_admin.setSelected(false);
 
     }
 
@@ -168,7 +169,7 @@ public class UsersMenuController implements Initializable {
 
         //field validation
         if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || rig.isEmpty() || password.isEmpty() ||
-                passwordC.isEmpty() || !isString(txt_firstName) || isString(txt_lastName))
+                passwordC.isEmpty() || !isString(txt_firstName) || !isString(txt_lastName))
         {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Invalid information", "Please check all " +
                     "fields");

@@ -96,9 +96,9 @@ public class ReceiveOrderLineController
     @FXML
     private void on_recClick()
     {
-        try
-        {
-            Window window = btn_cancel.getScene().getWindow();
+        Window window = btn_cancel.getScene().getWindow();
+        try {
+
             DBManager dbm = new DBManager();
             OrderLine ol = OrderLine.returnOrderLine(Integer.parseInt(lbl_orderLineId.getText()), lbl_orderNo.getText());
             Order o = Order.returnOrder(lbl_orderNo.getText());
@@ -143,9 +143,12 @@ public class ReceiveOrderLineController
         }catch(Exception e)
         {
             e.printStackTrace();
+            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Receipt Error", "You have selected " +
+                    "an invalid quantity");
+            return;
+
         }
 
-        closeRecOrderLine();
 
     }
 
