@@ -21,6 +21,55 @@ public class Order {
     private ObservableList<OrderLine> orderLines;
 
 
+    //getters and setters
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public char getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(char orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public char getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(char orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public double getOrderTotal() {
+        return orderTotal;
+    }
+
+    public Boolean getOrderApproved() {
+        return orderApproved;
+    }
+
     //constructors
     public Order() {
         this.orderNumber = "";
@@ -73,71 +122,6 @@ public class Order {
         this.orderLines = orderLines;
     }
 
-    /**
-     * Returns Order where Order.orderNumber = 'orderNumber'
-     *
-     * @param orderNumber - orderNumber of Order to be returned
-     * @return order - Found Order, else null
-     */
-    public static Order returnOrder(String orderNumber) {
-        DBManager dbm = new DBManager();
-        ObservableList<Order> orders = dbm.loadOrders();
-        for (Order order : orders) {
-            if (order.getOrderNumber().equals(orderNumber)) {
-                return order;
-            }
-        }
-        return null;
-    }
-
-    //getters and setters
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public char getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(char orderType) {
-        this.orderType = orderType;
-    }
-
-    public String getShippingMethod() {
-        return shippingMethod;
-    }
-
-    public void setShippingMethod(String shippingMethod) {
-        this.shippingMethod = shippingMethod;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    public char getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(char orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public double getOrderTotal() {
-        return orderTotal;
-    }
-
-    public Boolean getOrderApproved() {
-        return orderApproved;
-    }
 
     /**
      * Calculates Order Total
@@ -156,6 +140,23 @@ public class Order {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns Order where Order.orderNumber = 'orderNumber'
+     *
+     * @param orderNumber - orderNumber of Order to be returned
+     * @return order - Found Order, else null
+     */
+    public static Order returnOrder(String orderNumber) {
+        DBManager dbm = new DBManager();
+        ObservableList<Order> orders = dbm.loadOrders();
+        for (Order order : orders) {
+            if (order.getOrderNumber().equals(orderNumber)) {
+                return order;
+            }
+        }
+        return null;
     }
 
 

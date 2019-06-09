@@ -6,10 +6,21 @@ import javafx.collections.ObservableList;
 /**
  * Class contains Data describing inventory accounts & Methods that work on it
  */
-public class InventoryAccount {
+public class InventoryAccount
+{
     //private properties
     private int accountCode;
     private String accountName;
+
+
+
+    public int getAccountCode() {
+        return accountCode;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
 
     /**
      * Constructor
@@ -40,14 +51,6 @@ public class InventoryAccount {
             }
         }
         return false;
-    }
-
-    public int getAccountCode() {
-        return accountCode;
-    }
-
-    public String getAccountName() {
-        return accountName;
     }
 
     /**

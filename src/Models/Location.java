@@ -5,8 +5,13 @@ import javafx.collections.ObservableList;
 /**
  * Contains Data describing Stock Locations and the Methods which act on it
  */
-public class Location {
+public class Location
+{
     private String locationId;
+
+    public String getLocationId() {
+        return locationId;
+    }
 
     /**
      * Empty Constructor
@@ -44,9 +49,6 @@ public class Location {
         return false;
     }
 
-    public String getLocationId() {
-        return locationId;
-    }
 
     /**
      * Inventory Account toString method

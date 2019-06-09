@@ -25,6 +25,33 @@ public class User {
         this.adminUser = false;
     }
 
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public int getRig() {
+        return rig;
+    }
+
+    public Boolean getAdminUser() {
+        return adminUser;
+    }
+
+    //constructors
     /**
      * Constructor
      *
@@ -43,6 +70,8 @@ public class User {
         this.rig = rig;
         this.adminUser = adminUser;
     }
+
+    //all other methods and functions
 
     /**
      * Checks if User with 'username' exists in list of Users DB Users Table
@@ -78,34 +107,5 @@ public class User {
             }
         }
         return null;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    //constructors
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    //all other methods and functions
-
-    public int getRig() {
-        return rig;
-    }
-
-    public Boolean getAdminUser() {
-        return adminUser;
     }
 }

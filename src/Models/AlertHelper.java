@@ -9,12 +9,11 @@ import javafx.stage.Window;
 public class AlertHelper {
 
     /**
-     * Constructor for showing Alert
-     *
-     * @param alertType
+     * Constructor for showing Alertz
+     * @param alertType Confirm, error, warning etc
      * @param window
-     * @param title
-     * @param message
+     * @param title alert title
+     * @param message message display in alert
      */
     public static void showAlert(Alert.AlertType alertType, Window window, String title, String message) {
         Alert alert = new Alert(alertType);

@@ -5,12 +5,32 @@ import javafx.collections.ObservableList;
 /**
  * Class contains the data that describes a Rig and the methods which act on it
  */
-public class Rig {
+public class Rig
+{
     //private properties
     private int rigNo;
     private String rigName;
     private String wellName;
     private String clientName;
+
+
+    //getters and setters
+    public int getRigNo() {
+        return rigNo;
+    }
+
+    public String getRigName() {
+        return rigName;
+    }
+
+    public String getWellName() {
+        return wellName;
+    }
+
+
+    public String getClientName() {
+        return clientName;
+    }
 
 
     //Constructors
@@ -36,6 +56,7 @@ public class Rig {
         this.clientName = clientName;
     }
 
+    //all other methods and functions
     /**
      * Checks if Rig with 'rigNo' exists in DB Rigs Table
      *
@@ -52,23 +73,5 @@ public class Rig {
         return false;
     }
 
-    //getters and setters
-    public int getRigNo() {
-        return rigNo;
-    }
-
-    public String getRigName() {
-        return rigName;
-    }
-
-    public String getWellName() {
-        return wellName;
-    }
-
-    //all other methods and functions
-
-    public String getClientName() {
-        return clientName;
-    }
 
 }

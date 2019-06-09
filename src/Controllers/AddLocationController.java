@@ -57,15 +57,8 @@ public class AddLocationController {
      * Closes AddLocation.fxml
      */
     @FXML
-    private void closeAddLocation() {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/LandingPage.fxml"));
-        Stage homeStage = new Stage();
-        homeStage.setTitle("RICS 1.0 Landing Page");
-        homeStage.initStyle(StageStyle.TRANSPARENT);
-        homeStage.setScene(new Scene(loader.load()));
-        LandingPageController controller = loader.getController();
-        controller.initData(Main.user);
-        homeStage.show();*/
+    private void closeAddLocation()
+    {
         Stage stage = (Stage) txt_locationId.getScene().getWindow();
         stage.close();
     }

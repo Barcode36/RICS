@@ -15,6 +15,66 @@ public class OrderLine {
     private String orderNumber;
 
 
+
+
+    //getters and setters
+    public int getOrderLineId() {
+        return orderLineId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
+    public double getLineTotal() {
+        return lineTotal;
+    }
+
+    public void setLineTotal(double lineTotal) {
+        this.lineTotal = lineTotal;
+    }
+
+    public String getRequestedBy() {
+        return requestedBy;
+    }
+
+    public char getStatus() {
+        return status;
+    }
+
+    public void setStatus(char status) {
+        this.status = status;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public int getReceivedQty() {
+        return receivedQty;
+    }
+
+    public void setReceivedQty(int receivedQty) {
+        this.receivedQty = receivedQty;
+    }
+
+    public String getManifestId() {
+        return manifestId;
+    }
+
+    public void setManifestId(String manifestId) {
+        this.manifestId = manifestId;
+    }
+
+    //constructors
     /**
      * Empty Constructor
      */
@@ -92,65 +152,6 @@ public class OrderLine {
             }
         }
         return null;
-    }
-
-    //getters and setters
-    public int getOrderLineId() {
-        return orderLineId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public Part getPart() {
-        return part;
-    }
-
-    public void setPart(Part part) {
-        this.part = part;
-    }
-
-    public double getLineTotal() {
-        return lineTotal;
-    }
-
-    public void setLineTotal(double lineTotal) {
-        this.lineTotal = lineTotal;
-    }
-
-    public String getRequestedBy() {
-        return requestedBy;
-    }
-
-    public char getStatus() {
-        return status;
-    }
-
-    public void setStatus(char status) {
-        this.status = status;
-    }
-
-    //constructors
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public int getReceivedQty() {
-        return receivedQty;
-    }
-
-    public void setReceivedQty(int receivedQty) {
-        this.receivedQty = receivedQty;
-    }
-
-    public String getManifestId() {
-        return manifestId;
-    }
-
-    public void setManifestId(String manifestId) {
-        this.manifestId = manifestId;
     }
 
 

@@ -12,6 +12,24 @@ public class Vendor {
     private String phoneNumber;
     private String shippingAddress;
 
+
+    //getters and setters
+    public int getVendorId() {
+        return vendorId;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
     //constructors
     public Vendor() {
         this.vendorId = 0;
@@ -35,6 +53,8 @@ public class Vendor {
         this.shippingAddress = shippingAddress;
     }
 
+    //all other methods and functions
+
     /**
      * Checks if Vendor with 'vendorId' exists in DB Vendors Table
      *
@@ -49,25 +69,6 @@ public class Vendor {
             }
         }
         return false;
-    }
-
-    //getters and setters
-    public int getVendorId() {
-        return vendorId;
-    }
-
-    public String getVendorName() {
-        return vendorName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    //all other methods and functions
-
-    public String getShippingAddress() {
-        return shippingAddress;
     }
 
     /**
