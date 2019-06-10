@@ -320,6 +320,9 @@ public class OrdersMenuController implements Initializable {
                     p.setOnOrder(p.getOnOrder() + orderLine.getQuantity());
                     if (p.getFlagged() >= orderLine.getQuantity()) {
                         p.setFlagged(p.getFlagged() - orderLine.getQuantity());
+                    } else
+                    {
+                        p.setFlagged(0);
                     }
                     dbm.updatePart(p);
                     dbm.saveTransaction(p, 'O', orderLine.getQuantity(), orderLine.getRequestedBy());
@@ -344,10 +347,9 @@ public class OrdersMenuController implements Initializable {
      * Saves Changes to the Order type, Shipping Method and Header
      */
     @FXML
-    private void on_updateClick() {
+     private void on_updateClick() {
         Window window = btn_cancel.getScene().getWindow();
         DBManager dbm = new DBManager();
-        ObservableList<Order> ordersOBS = dbm.loadOrders();
         String orderNumber = lbl_orderNo.getText();
         Order order = Order.returnOrder(orderNumber);
 

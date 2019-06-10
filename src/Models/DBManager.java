@@ -162,7 +162,7 @@ public class DBManager {
     }
 
     /**
-     * Handles User Login. Validates Users login info matches a record in DB Users Table
+         * Handles User Login. Validates Users login info matches a record in DB Users Table
      *
      * @param username - users supplied username to be checked
      * @param password - users supplied password   to be checked
@@ -1239,44 +1239,6 @@ public class DBManager {
         }
         return false;
     }
-
-//    public ObservableList<OrderLine> loadOpenOrderLines()
-//    {
-//        ObservableList<OrderLine> orderLines = FXCollections.observableArrayList();
-//
-//        try
-//        {
-//            forName(driver);
-//            Connection conn = DriverManager.getConnection(connectionString);
-//            Statement stmt = conn.createStatement();
-//
-//            /*
-//             * Select all from DB OrderLines Table where orderNumber = 'orderNumber'
-//             */
-//            ResultSet olList = stmt.executeQuery("SELECT * FROM OrderLines WHERE status = '" + 'O' + "'");
-//
-//            /*
-//             * Build OrderLine from each entry in 'olList' and add to 'orderLines'
-//             */
-//            while(olList.next())
-//            {
-//                String partNumber = olList.getString("part");
-//                Part part = Part.returnPart(partNumber);
-//                orderLines.add(new OrderLine(olList.getInt("orderLineId"), olList.getInt("quantity"), part,
-//                        olList.getDouble(
-//                                "lineTotal"), olList.getString("requestedBy"), olList.getString("status").charAt(0),
-//                        olList.getInt("receivedQty"), olList.getString("manifestId")));
-//            }
-//        }catch(Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        finally
-//        {
-//            return orderLines;
-//        }
-//    }
-
 
 }
 
