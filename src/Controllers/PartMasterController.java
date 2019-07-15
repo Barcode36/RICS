@@ -206,6 +206,7 @@ public class PartMasterController implements Initializable {
             addPartStage.setTitle("RICS 1.0 New Part");
             addPartStage.initStyle(StageStyle.TRANSPARENT);
             addPartStage.show();
+            closePartMaster();
 
         } catch (Exception e) {
             e.printStackTrace();

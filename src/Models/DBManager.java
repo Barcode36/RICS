@@ -294,11 +294,22 @@ public class DBManager {
             forName(driver);
             Connection conn = DriverManager.getConnection(connectionString);
             Statement stmt = conn.createStatement();
+            Statement stmt2 = conn.createStatement();
 
+            /*
+             *Inserts part 'p' into PartsArchive Table
+             */
+            stmt.executeUpdate("INSERT INTO PartsArchive(partNumber, accountCode, vendorPartNumber, partNoun, " +
+                    "description, " +
+                    "vendor, location, unitCost, onHand, minLvl, maxLvl, onOrder, lastOrder, unitOfMeasure, flagged)" +
+                    "VALUES ('" + p.getPartNumber() + "','" + p.getAccountCode() + "','" + p.getVendorNumber() +
+                    "','" + p.getPartNoun() + "','" + p.getDescription() + "','" + p.getVendorId() + "','" + p.getLocation() +
+                    "','" + p.getUnitCost() + "','" + p.getOnHand() + "','" + p.getMinRecVal() + "','" + p.getMaxRecVal() +
+                    "','" + p.getOnOrder() + "','" + p.getLastOrder() + "','" + p.getUnitOfMeasure() + "','" + p.getFlagged() + "')");
             /*
              * Delete Part 'p' from DB Parts Table where 'partNumber' = p.partNumber
              */
-            stmt.executeUpdate("DELETE FROM Parts WHERE partNumber ='" + p.getPartNumber() + "'");
+            stmt2.executeUpdate("DELETE FROM Parts WHERE partNumber ='" + p.getPartNumber() + "'");
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -315,6 +326,7 @@ public class DBManager {
      */
     public String generateUniquePartNo(Part part) {
         int PXparts = 0;
+        String partNumber;
 
         try {
             forName(driver);
@@ -336,25 +348,29 @@ public class DBManager {
          * StringBuilder used to pad suffix to correspond to business rule
          * partNumber format '000-00000'
          */
-        PXparts++;
-        String newPart = String.valueOf(PXparts);
-        StringBuilder sb = new StringBuilder();
+        do {
+            PXparts++;
+            String newPart = String.valueOf(PXparts);
+            StringBuilder sb = new StringBuilder();
 
-        while (sb.length() + newPart.length() < 5) {
-            sb.append('0');
+            while (sb.length() + newPart.length() < 5) {
+                sb.append('0');
+            }
+
+            sb.append(PXparts);
+
+            /*
+             * Generates prefix portion of partNumber using first 3 digits of accountCode
+             */
+            String suffix = sb.toString();
+            String prefix = String.valueOf(part.getAccountCode()).substring(0, 3);
+
+            partNumber = prefix + "-" + suffix;
+
+        }while(Part.returnPart(partNumber) != null);
+        {
+            return partNumber;
         }
-
-        sb.append(PXparts);
-
-        /*
-         * Generates prefix portion of partNumber using first 3 digits of accountCode
-         */
-        String suffix = sb.toString();
-        String prefix = String.valueOf(part.getAccountCode()).substring(0, 3);
-
-        String partNumber = prefix + "-" + suffix;
-
-        return partNumber;
 
     }
 
